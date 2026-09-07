@@ -658,7 +658,7 @@
       <div class="uni-view active" data-uni-view="root">
         <ul class="division-list">
           <li><button class="link-btn" data-goto="dnevnoe">Дневное отделение</button></li>
-          <li><a href="https://rustem-af.ru/vechernee-otdelenie" target="_blank" rel="noopener">Вечернее отделение</a></li>
+          <li><button class="link-btn" data-goto="vechernee">Вечернее отделение</button></li>
           <li><a href="https://rustem-af.ru/dnevnoe" target="_blank" rel="noopener">Оригинальный сайт</a></li>
           <li><a href="https://www.kstu.ru/" target="_blank" rel="noopener">Сайт университета — Казанский национальный исследовательский технологический университет</a></li>
         </ul>
@@ -692,6 +692,81 @@
           <li><button class="link-btn" data-goto="sem2">Второй семестр</button></li>
           <li><button class="link-btn" data-goto="sem3">Третий семестр</button></li>
         </ul>
+      </div>
+
+      <!-- ВЕЧЕРНЕЕ ОТДЕЛЕНИЕ -->
+      <div class="uni-view" data-uni-view="vechernee">
+        <div class="category-list">
+          <button class="category-row" data-goto="praktika1-vech">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="cat-text">
+              <span class="cat-name">Практические занятия первого семестра</span>
+            </span>
+          </button>
+          <button class="category-row" data-goto="praktika3-vech">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="cat-text">
+              <span class="cat-name">Практические занятия третьего семестра</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ПРАКТИЧЕСКИЕ ЗАНЯТИЯ 1 СЕМЕСТРА (вечернее) -->
+      <div class="uni-view" data-uni-view="praktika1-vech">
+        <div class="file-list">
+          <a class="file-row" href="1-prakticheskoe-zanyatie.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              1-prakticheskoe-zanyatie.pdf
+            </span>
+          </a>
+          <a class="file-row" href="2-vektory-i-dejstviya-nad-nimi.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              2-vektory-i-dejstviya-nad-nimi.pdf
+            </span>
+          </a>
+          <a class="file-row" href="3-analiticheskaya-geometriya.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              3-analiticheskaya-geometriya.pdf
+            </span>
+          </a>
+          <a class="file-row" href="4-predely-i-proizvodnaya.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              4-predely-i-proizvodnaya.pdf
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- ПРАКТИЧЕСКИЕ ЗАНЯТИЯ 3 СЕМЕСТРА (вечернее) -->
+      <div class="uni-view" data-uni-view="praktika3-vech">
+        <div class="file-list">
+          <a class="file-row" href="ryady-praktikum.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              ryady-praktikum.pdf
+            </span>
+          </a>
+        </div>
       </div>
 
       <!-- ПЕРВЫЙ СЕМЕСТР -->
@@ -1010,6 +1085,9 @@
   const uniTree = {
     root:    { label:'Университет',        parent:null   },
     dnevnoe: { label:'Дневное отделение',   parent:'root' },
+    vechernee: { label:'Вечернее отделение', parent:'root' },
+    'praktika1-vech': { label:'Практические занятия первого семестра', parent:'vechernee' },
+    'praktika3-vech': { label:'Практические занятия третьего семестра', parent:'vechernee' },
     sem1:    { label:'Первый семестр',      parent:'dnevnoe' },
     sem2:    { label:'Второй семестр',      parent:'dnevnoe' },
     sem3:    { label:'Третий семестр',      parent:'dnevnoe' },
