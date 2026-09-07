@@ -398,6 +398,13 @@
     color:var(--ink);
     font-size:.95rem;
     transition:background .15s ease, transform .15s ease;
+    appearance:none;
+    background:none;
+    border:none;
+    font-family:inherit;
+    width:100%;
+    cursor:pointer;
+    text-align:left;
   }
   .category-row:hover{
     background:var(--blue-tint);
@@ -575,7 +582,6 @@
               </span>
               vm-posobie-zhurbenko.pdf
             </span>
-            <span class="badge">0</span>
           </a>
           <a class="file-row" href="zadachnik.pdf" target="_blank" rel="noopener">
             <span class="file-name">
@@ -585,7 +591,6 @@
               </span>
               zadachnik.pdf
             </span>
-            <span class="badge">0</span>
           </a>
         </div>
       </div>
@@ -602,25 +607,73 @@
       <!-- ПЕРВЫЙ СЕМЕСТР -->
       <div class="uni-view" data-uni-view="sem1">
         <div class="category-list">
-          <a class="category-row" href="https://rustem-af.ru/pervyj-semestr/lekcii" target="_blank" rel="noopener">
+          <button class="category-row" data-goto="lekcii">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span class="cat-text">
               <span class="cat-name">Лекции</span>
               <span class="cat-date">06.09.2026 г.</span>
             </span>
-          </a>
-          <a class="category-row" href="https://rustem-af.ru/pervyj-semestr/raschetnye-raboty" target="_blank" rel="noopener">
+          </button>
+          <button class="category-row" data-goto="raschetnye">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span class="cat-text">
               <span class="cat-name">Расчётные работы</span>
               <span class="cat-date">30.08.2026 г.</span>
             </span>
-          </a>
+          </button>
           <a class="category-row" href="https://rustem-af.ru/pervyj-semestr/prakticheskie-zanyatiya-1-semestra" target="_blank" rel="noopener">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span class="cat-text">
               <span class="cat-name">Практические занятия 1 семестра</span>
               <span class="cat-date">06.09.2022 г.</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- ЛЕКЦИИ (1 семестр) -->
+      <div class="uni-view" data-uni-view="lekcii">
+        <div class="file-list">
+          <a class="file-row" href="1-1-itlpmd-matricy-slau-vektora.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              1-1-itlpmd-matricy-slau-vektora.pdf
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- РАСЧЁТНЫЕ РАБОТЫ (1 семестр) -->
+      <div class="uni-view" data-uni-view="raschetnye">
+        <div class="file-list">
+          <a class="file-row" href="inhn-itlpmd-2-analiticheskaya-geometriya.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              inhn-itlpmd-2-analiticheskaya-geometriya.pdf
+            </span>
+          </a>
+          <a class="file-row" href="inhn_itlpmd_3_differencialnoe_ischislenie_funkcii_odnoj_peremennoj.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              inhn_itlpmd_3_differencialnoe_ischislenie_funkcii_odnoj_peremennoj.pdf
+            </span>
+          </a>
+          <a class="file-row" href="itlpmd-1-raschtenaya-rabota-linejnaya-i-vektornaya-algebra.pdf" target="_blank" rel="noopener">
+            <span class="file-name">
+              <span class="file-icon">
+                <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              itlpmd-1-raschtenaya-rabota-linejnaya-i-vektornaya-algebra.pdf
             </span>
           </a>
         </div>
@@ -772,6 +825,8 @@
     sem1:    { label:'Первый семестр',      parent:'dnevnoe' },
     sem2:    { label:'Второй семестр',      parent:'dnevnoe' },
     sem3:    { label:'Третий семестр',      parent:'dnevnoe' },
+    lekcii:      { label:'Лекции',            parent:'sem1' },
+    raschetnye:  { label:'Расчётные работы',  parent:'sem1' },
   };
 
   const uniViews  = Array.from(document.querySelectorAll('.uni-view'));
