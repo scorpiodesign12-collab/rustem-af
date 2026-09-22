@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Дифференциальное исчисление функции одной переменной — решение</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff;
+    --ink:#1b2333;
+    --ink-soft:#5b6577;
+    --blue-deep:#123a8c;
+    --blue:#2458d6;
+    --blue-bright:#3d6fef;
+    --blue-tint:#eef3ff;
+    --blue-tint-2:#e2ebff;
+    --line:#dde5f5;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html, body{max-width:100%; overflow-x:hidden;}
+  body{
+    margin:0; background:var(--white); color:var(--ink);
+    font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+    font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Manrope','Inter',sans-serif; color:var(--blue-deep);
+    margin:0 0 .4em 0; font-weight:800; letter-spacing:-0.02em; line-height:1.2;
+  }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 20px; }
+
+  header.site-head{ padding:30px 0 18px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-icon{
+    flex:none; width:44px; height:44px; border-radius:12px;
+    background:linear-gradient(145deg,var(--blue-bright),var(--blue-deep));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.2rem;
+  }
+  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.35rem; font-weight:800; color:var(--blue-deep); letter-spacing:-0.01em; }
+  .brand-text .thin{
+    color:var(--ink-soft); font-weight:500; font-size:.85rem; display:block;
+    font-family:'Inter',sans-serif; letter-spacing:.01em; margin-top:4px;
+  }
+
+  .variant-card{
+    margin-top:18px; border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--blue-tint); padding:14px 18px; font-size:.92rem;
+  }
+  .variant-card b{ color:var(--blue-deep); }
+  .variant-grid{ display:flex; flex-wrap:wrap; gap:6px 22px; margin-top:8px; }
+  .variant-grid span{ white-space:nowrap; }
+
+  nav.toc{ margin:22px 0 0; }
+  .toc-label{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin:0 0 8px 0; }
+  .toc ul{ list-style:none; margin:0; padding:0; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .toc li + li{ border-top:1px solid var(--line); }
+  .toc a{
+    display:block; padding:11px 14px; font-size:.94rem; color:var(--ink); text-decoration:none;
+  }
+  .toc a:hover{ background:var(--blue-tint); color:var(--blue-deep); }
+
+  main{ padding:30px 0 60px; }
+
+  section.task{ margin-bottom:38px; scroll-margin-top:16px; }
+  .task-head{ padding-bottom:14px; border-bottom:1px solid var(--line); margin-bottom:18px; }
+  .task-tag{
+    display:inline-block; font-size:.78rem; font-weight:600; color:var(--blue);
+    background:var(--blue-tint); padding:4px 10px; border-radius:999px; margin-bottom:8px;
+  }
+  .task-head h2{ font-size:1.2rem; }
+  .given{ color:var(--ink-soft); font-size:.92rem; margin-top:4px; }
+
+  .qa-body{
+    padding:2px 0 4px 0; color:var(--ink); font-size:.95rem; line-height:1.85;
+  }
+  .qa-body .tag{ color:var(--blue-deep); font-weight:700; }
+  .qa-body .ans{
+    margin-top:10px; padding:10px 14px; background:var(--blue-tint); border-radius:8px;
+    color:var(--ink); font-weight:600;
+  }
+  .qa-body p{ margin:0 0 8px 0; }
+  .qa-body .eq{ display:block; margin:6px 0; font-family:'Manrope',sans-serif; font-weight:600; color:var(--blue-deep); overflow-x:auto; }
+
+  .fig{ margin:14px 0; text-align:center; }
+  .fig svg{ max-width:100%; height:auto; background:var(--white); border:1px solid var(--line); border-radius:8px; }
+  .fig-cap{ font-size:.82rem; color:var(--ink-soft); margin-top:6px; }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:24px 0 40px; }
+
+  @media (max-width:600px){
+    .task-head h2{ font-size:1.05rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site-head">
+    <div class="brand">
+      <div class="brand-icon">√</div>
+      <div class="brand-text">
+        Дифференциальное исчисление функции одной переменной
+        <span class="thin">Расчётное задание — полное решение всех 9 заданий по своему варианту</span>
+      </div>
+    </div>
+
+    <div class="variant-card">
+      <div><b>Вариант:</b> группа 761-101 (α=7, β=6, γ=1, δ=1), номер по списку n=3</div>
+      <div class="variant-grid">
+        <span>k = ⌊(α+β+γ+δ)/2⌋+1 = ⌊15/2⌋+1 = 7+1 = <b>8</b></span>
+        <span>m = ⌊n/2⌋+3 = ⌊3/2⌋+3 = 1+3 = <b>4</b></span>
+      </div>
+    </div>
+
+    <nav class="toc">
+      <div class="toc-label">Задания</div>
+      <ul>
+        <li><a href="#task1">1. Производная по определению (лог. дифференцирование)</a></li>
+        <li><a href="#task2">2. Производная сложной/показательно-степенной функции</a></li>
+        <li><a href="#task3">3. Уравнение нормали</a></li>
+        <li><a href="#task4">4. Приближённое вычисление с помощью дифференциала</a></li>
+        <li><a href="#task5">5. Касательная к параметрически заданной кривой</a></li>
+        <li><a href="#task6">6. Производная n-го порядка</a></li>
+        <li><a href="#task7">7. Правило Лопиталя</a></li>
+        <li><a href="#task8">8. Исследование функции и построение графика</a></li>
+        <li><a href="#task9">9. Задача на экстремум</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+  <!-- ===================== TASK 1 ===================== -->
+  <section class="task" id="task1">
+    <div class="task-head">
+      <span class="task-tag">Задание 1</span>
+      <h2>Вычислить y′(x)</h2>
+      <div class="given">
+        Вариант n=3: φ(x)=e^(x−1)−1, x₀=1. При k=8, m=4:
+        <br>y(x) = φ(x)·(x+x₀+1)^k·(x−k)^m / (x−x₀+1)^(m+1) = (e^(x−1)−1)(x+2)⁸(x−8)⁴ / x⁵
+      </div>
+    </div>
+
+    <div class="qa-body">
+      <p>Функция — произведение и частное степеней, поэтому удобнее всего логарифмическое дифференцирование: берём модуль, логарифмируем обе части, а затем дифференцируем как сложную функцию.</p>
+      <span class="eq">ln|y| = ln|e^(x−1)−1| + 8·ln|x+2| + 4·ln|x−8| − 5·ln|x|</span>
+      <p>Дифференцируем обе части по x (слева — производная логарифма функции, т.е. y′/y):</p>
+      <span class="eq">y′/y = e^(x−1)/(e^(x−1)−1) + 8/(x+2) + 4/(x−8) − 5/x</span>
+      <p>Отсюда y′ = y·[...], то есть:</p>
+      <div class="ans">
+        Ответ: y′(x) = (e^(x−1)−1)(x+2)⁸(x−8)⁴/x⁵ · [ e^(x−1)/(e^(x−1)−1) + 8/(x+2) + 4/(x−8) − 5/x ]
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TASK 2 ===================== -->
+  <section class="task" id="task2">
+    <div class="task-head">
+      <span class="task-tag">Задание 2</span>
+      <h2>Вычислить производную функции</h2>
+      <div class="given">
+        Вариант n=3: φ(x)=arctg(x+1), ψ(x)=sin√x. k=8, m=4 (из задания 1).
+        <br>y = φ[ψ(x)] / (ᵐ√(x^k)+1)^((−1)ⁿ) + φ(x)^ψ(x)
+      </div>
+    </div>
+
+    <div class="qa-body">
+      <p>Сначала упростим знаменатель первого слагаемого: ᵐ√(x^k) = x^(k/m) = x^(8/4) = x². Показатель степени (−1)ⁿ = (−1)³ = −1, поэтому (x²+1)^(−1), а деление на него — это умножение на (x²+1):</p>
+      <span class="eq">y = arctg(sin√x + 1)·(x²+1) + (arctg(x+1))^(sin√x)</span>
+      <p><span class="tag">Первое слагаемое</span> u(x) = arctg(sin√x+1)·(x²+1) — произведение, дифференцируем по правилу произведения; внутренняя производная по цепному правилу:</p>
+      <span class="eq">[arctg(sin√x+1)]′ = cos√x /(2√x) · 1/(1+(sin√x+1)²)</span>
+      <span class="eq">u′(x) = (x²+1)· cos√x /[2√x(1+(sin√x+1)²)] + 2x·arctg(sin√x+1)</span>
+      <p><span class="tag">Второе слагаемое</span> v(x) = (arctg(x+1))^(sin√x) — степенно-показательная функция, логарифмируем:</p>
+      <span class="eq">ln v = sin√x · ln(arctg(x+1))</span>
+      <span class="eq">v′/v = cos√x/(2√x) · ln(arctg(x+1)) + sin√x · 1/[(1+(x+1)²)·arctg(x+1)]</span>
+      <span class="eq">v′(x) = (arctg(x+1))^(sin√x) · { cos√x/(2√x)·ln(arctg(x+1)) + sin√x /[(1+(x+1)²)·arctg(x+1)] }</span>
+      <div class="ans">
+        Ответ: y′(x) = u′(x) + v′(x), где u′, v′ приведены выше (y′ = сумма этих двух выражений)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TASK 3 ===================== -->
+  <section class="task" id="task3">
+    <div class="task-head">
+      <span class="task-tag">Задание 3</span>
+      <h2>Уравнение нормали к y=f(x) в точке x₀</h2>
+      <div class="given">Вариант n=3: f(x) = x − x³, x₀ = −1</div>
+    </div>
+
+    <div class="qa-body">
+      <p>f(−1) = −1 − (−1)³ = −1+1 = 0 — точка касания (−1; 0).</p>
+      <p>f′(x) = 1 − 3x² ⇒ f′(−1) = 1 − 3 = −2.</p>
+      <p>Уравнение нормали: y − f(x₀) = −1/f′(x₀) · (x − x₀)</p>
+      <span class="eq">y − 0 = −1/(−2) · (x+1) = 1/2·(x+1)</span>
+      <div class="ans">Ответ: y = (x+1)/2, или x − 2y + 1 = 0</div>
+    </div>
+  </section>
+
+  <!-- ===================== TASK 4 ===================== -->
+  <section class="task" id="task4">
+    <div class="task-head">
+      <span class="task-tag">Задание 4</span>
+      <h2>Приближённое вычисление с помощью дифференциала</h2>
+      <div class="given">Вариант n=3: y(x) = (x+√(5−x²))/2, x₀ = 0,98</div>
+    </div>
+
+    <div class="qa-body">
+      <p>Берём «удобную» базовую точку a=1, близкую к x₀=0,98, Δx = x₀ − a = −0,02.</p>
+      <span class="eq">y(a) = y(1) = (1+√(5−1))/2 = (1+2)/2 = 1,5</span>
+      <p>Находим производную:</p>
+      <span class="eq">y′(x) = [1 − x/√(5−x²)] / 2</span>
+      <span class="eq">y′(1) = [1 − 1/2]/2 = 1/4 = 0,25</span>
+      <p>Дифференциал: dy = y′(a)·Δx = 0,25·(−0,02) = −0,005</p>
+      <span class="eq">y(0,98) ≈ y(1) + dy = 1,5 − 0,005 = 1,495</span>
+      <div class="ans">Ответ: y(0,98) ≈ 1,495</div>
+    </div>
+  </section>
+
+  <!-- ===================== TASK 5 ===================== -->
+  <section class="task" id="task5">
+    <div class="task-head">
+      <span class="task-tag">Задание 5</span>
+      <h2>Касательная к параметрически заданной кривой</h2>
+      <div class="given">Вариант n=3: x(t) = a(t−sin t), y(t) = a(1−cos t), t₀ = π/3</div>
+    </div>
+
+    <div class="qa-body">
+      <p>Точка касания:</p>
+      <span class="eq">x₀ = a(π/3 − sin(π/3)) = a(π/3 − √3/2)</span>
+      <span class="eq">y₀ = a(1 − cos(π/3)) = a(1 − 1/2) = a/2</span>
+      <p>Производные по параметру: x′(t) = a(1−cos t), y′(t) = a·sin t. При t₀=π/3:</p>
+      <span class="eq">x′(π/3) = a(1−1/2) = a/2,&nbsp;&nbsp; y′(π/3) = a·√3/2</span>
+      <p>Угловой коэффициент касательной:</p>
+      <span class="eq">k = y′(t₀)/x′(t₀) = (a√3/2)/(a/2) = √3</span>
+      <p>Уравнение касательной: y − y₀ = √3·(x − x₀)</p>
+      <span class="eq">y − a/2 = √3·[x − a(π/3 − √3/2)]</span>
+      <div class="ans">Ответ: y = √3·x + a(2 − π√3/3)</div>
+    </div>
+  </section>
+
+  <!-- ===================== TASK 6 ===================== -->
+  <section class="task" id="task6">
+    <div class="task-head">
+      <span class="task-tag">Задание 6</span>
+      <h2>Производная n-го порядка</h2>
+      <div class="given">Вариант n=3: f(x) = ⁵√(e^(7x−1))</div>
+    </div>
+
+    <div class="qa-body">
+      <p>Упрощаем: f(x) = (e^(7x−1))^(1/5) = e^((7x−1)/5).</p>
+      <p>Это функция вида e^(cx+d) с c=7/5. Каждое дифференцирование даёт множитель c:</p>
+      <span class="eq">f′(x) = (7/5)·e^((7x−1)/5)</span>
+      <span class="eq">f″(x) = (7/5)²·e^((7x−1)/5)</span>
+      <p>По индукции:</p>
+      <div class="ans">Ответ: f⁽ⁿ⁾(x) = (7/5)ⁿ · e^((7x−1)/5)</div>
+    </div>
+  </section>
+
+  <!-- ===================== TASK 7 ===================== -->
+  <section class="task" id="task7">
+    <div class="task-head">
+      <span class="task-tag">Задание 7</span>
+      <h2>Правило Лопиталя</h2>
+      <div class="given">Вариант n=3: φ(x) = x − sin x, ψ(x) = x − tg x, a = 0</div>
+    </div>
+
+    <div class="qa-body">
+      <p>При x→0 обе функции стремятся к 0 (0/0). Дифференцируем числитель и знаменатель:</p>
+      <span class="eq">φ′(x) = 1 − cos x,&nbsp;&nbsp; ψ′(x) = 1 − sec²x = −tg²x</span>
+      <p>При x=0 снова 0/0 — применяем правило ещё раз:</p>
+      <span class="eq">φ″(x) = sin x,&nbsp;&nbsp; ψ″(x) = −2·tg x·sec²x</span>
+      <p>При x=0 опять 0/0 — третье применение:</p>
+      <span class="eq">φ‴(x) = cos x,&nbsp;&nbsp; ψ‴(x) = −2sec⁴x − 4tg²x·sec²x</span>
+      <p>При x=0: φ‴(0) = 1, ψ‴(0) = −2·1 − 0 = −2. Предел уже не 0/0:</p>
+      <div class="ans">Ответ: lim = 1/(−2) = −1/2</div>
+      <p style="margin-top:8px">Проверка через ряды: x−sin x ≈ x³/6, x−tg x ≈ −x³/3, отношение → (1/6)/(−1/3) = −1/2 ✓</p>
+    </div>
+  </section>
+
+  <!-- ===================== TASK 8 ===================== -->
+  <section class="task" id="task8">
+    <div class="task-head">
+      <span class="task-tag">Задание 8</span>
+      <h2>Исследование функции и построение графика</h2>
+      <div class="given">Вариант n=3: f(x) = √(x+1)/√x = √((x+1)/x)</div>
+    </div>
+
+    <div class="qa-body">
+      <p><span class="tag">1. Область определения.</span> Нужно x+1≥0 и x>0 (знаменатель), значит D(f) = (0; +∞).</p>
+
+      <p><span class="tag">2. Асимптоты.</span> При x→0⁺: f(x)→+∞ — вертикальная асимптота x=0. При x→+∞: f(x)=√(1+1/x)→1 — горизонтальная асимптота y=1. Наклонных асимптот нет (есть горизонтальная).</p>
+
+      <p><span class="tag">3. Производная.</span> Перепишем f(x)=(x+1)^(1/2)·x^(−1/2) и применим правило произведения:</p>
+      <span class="eq">f′(x) = ½(x+1)^(−1/2)x^(−1/2) − ½(x+1)^(1/2)x^(−3/2) = ½x^(−3/2)(x+1)^(−1/2)[x−(x+1)]</span>
+      <span class="eq">f′(x) = −1 / [2√(x³(x+1))]</span>
+      <p>f′(x) &lt; 0 при всех x∈(0;+∞) ⇒ функция строго убывает на всей области определения, критических точек (экстремумов) нет.</p>
+
+      <p><span class="tag">4. Вторая производная.</span></p>
+      <span class="eq">f″(x) = ¾x^(−5/2)(x+1)^(−1/2) + ¼x^(−3/2)(x+1)^(−3/2)</span>
+      <p>Оба слагаемых положительны при x&gt;0 ⇒ f″(x)&gt;0 всюду ⇒ график вогнут вверх (выпуклый вниз) на всей области определения; точек перегиба нет.</p>
+
+      <p><span class="tag">5. Контрольная точка:</span> f(1) = √2 ≈ 1,414.</p>
+
+      <div class="ans">Вывод: функция определена на (0;+∞), непрерывно убывает от +∞ до 1, всюду выпукла вниз; асимптоты x=0 и y=1, экстремумов и перегибов нет.</div>
+
+      <div class="fig">
+        <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+          <line x1="30" y1="310" x2="390" y2="310" stroke="#c7d3ec" stroke-width="1.5"/>
+          <line x1="51.2" y1="310" x2="51.2" y2="30" stroke="#c7d3ec" stroke-width="1.5"/>
+          <text x="393" y="314" font-size="12" fill="#5b6577">x</text>
+          <text x="55" y="34" font-size="12" fill="#5b6577">y</text>
+          <line x1="30" y1="267.6" x2="390" y2="267.6" stroke="#9fb3d9" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <text x="34" y="263" font-size="11" fill="#5b6577">y=1</text>
+          <line x1="51.2" y1="310" x2="51.2" y2="60" stroke="#9fb3d9" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <text x="55" y="70" font-size="11" fill="#5b6577">x=0</text>
+          <polyline points="54.6,154.4 63.2,219.8 71.8,235.9 80.4,243.7 89.0,248.3 97.6,251.4 106.2,253.7 114.8,255.3 123.4,256.7 132.0,257.7 140.6,258.6 149.2,259.3 157.8,259.9 166.4,260.5 175.0,260.9 183.6,261.3 192.2,261.7 200.8,262.0 209.4,262.3 218.0,262.6 226.6,262.8 235.2,263.0 243.8,263.2 252.4,263.4 261.0,263.6 269.6,263.7 278.2,263.9 286.8,264.0 295.4,264.1 304.0,264.2 312.6,264.3 321.2,264.4 329.8,264.5 338.4,264.6 347.0,264.7 355.6,264.8 364.2,264.9 372.8,264.9 381.4,265.0 390.0,265.1" fill="none" stroke="#2458d6" stroke-width="2.4"/>
+          <circle cx="93.5" cy="250.1" r="4" fill="#123a8c"/>
+          <text x="99" y="246" font-size="12" fill="#123a8c" font-weight="700">(1;√2)</text>
+        </svg>
+        <div class="fig-cap">График f(x)=√((x+1)/x): убывает от +∞ к 1, выпуклый вниз</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TASK 9 ===================== -->
+  <section class="task" id="task9">
+    <div class="task-head">
+      <span class="task-tag">Задание 9</span>
+      <h2>Задача на экстремум</h2>
+      <div class="given">Вариант n=3: «Из деревянного шара требуется вырезать цилиндр наибольшего объёма»</div>
+    </div>
+
+    <div class="qa-body">
+      <p>Пусть R — радиус шара (дан), r — радиус цилиндра, h — его высота. Из сечения шара плоскостью, проходящей через ось цилиндра, видно прямоугольный треугольник со связью:</p>
+      <span class="eq">r² + (h/2)² = R²&nbsp;&nbsp;⇒&nbsp;&nbsp; r² = R² − h²/4</span>
+      <p>Объём цилиндра:</p>
+      <span class="eq">V(h) = πr²h = π(R² − h²/4)h = πR²h − (π/4)h³</span>
+      <p>Находим критическую точку:</p>
+      <span class="eq">V′(h) = πR² − (3π/4)h² = 0&nbsp;&nbsp;⇒&nbsp;&nbsp; h² = 4R²/3&nbsp;&nbsp;⇒&nbsp;&nbsp; h = 2R/√3 = 2R√3/3</span>
+      <p>V″(h) = −(3π/2)h &lt; 0 при h&gt;0 ⇒ это максимум.</p>
+      <p>Находим соответствующий радиус:</p>
+      <span class="eq">r² = R² − (1/4)(4R²/3) = R² − R²/3 = 2R²/3&nbsp;&nbsp;⇒&nbsp;&nbsp; r = R√(2/3) = R√6/3</span>
+      <p>Максимальный объём:</p>
+      <span class="eq">V_max = πr²h = π·(2R²/3)·(2R/√3) = 4πR³/(3√3) = 4√3πR³/9</span>
+      <div class="ans">
+        Ответ: h = 2R√3/3, r = R√6/3, V_max = 4√3πR³/9 ≈ 0,77·πR³
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <footer>Расчётное задание «Дифференциальное исчисление функции одной переменной» — вариант k=8, m=4, n=3 (группа 761-101)</footer>
+</div>
+</body>
+</html>
