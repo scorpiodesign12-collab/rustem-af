@@ -296,6 +296,67 @@
     transform:translate(-1px,-1px);
   }
 
+  /* file row variant: filename on the left, "Ответы" button on the right */
+  .file-row.has-answer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:6px 6px 6px 12px;
+    border-radius:var(--radius);
+    text-decoration:none;
+    transition:background .15s ease;
+  }
+  .file-row.has-answer:hover{ background:var(--blue-tint); }
+
+  .file-main{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex:1;
+    min-width:0;
+    padding:6px 0;
+    font-size:.95rem;
+    color:var(--ink);
+    text-decoration:none;
+    word-break:break-word;
+    transition:color .15s ease;
+  }
+  .file-main:hover{ color:var(--blue-deep); }
+  .file-main:hover .icon-back{ opacity:1; transform:translate(4px,4px); }
+  .file-main:hover .icon-front{ transform:translate(-1px,-1px); }
+
+  .answer-btn{
+    flex:none;
+    display:inline-flex;
+    align-items:center;
+    padding:8px 18px;
+    border-radius:999px;
+    border:1.5px solid var(--blue);
+    background:transparent;
+    color:var(--blue);
+    font-size:.85rem;
+    font-weight:700;
+    font-family:'Manrope',sans-serif;
+    text-decoration:none;
+    white-space:nowrap;
+    letter-spacing:-0.01em;
+    transition:background .15s ease, color .15s ease, transform .15s ease;
+  }
+  .answer-btn:hover{
+    background:var(--blue);
+    color:#fff;
+    transform:translateY(-1px);
+  }
+  .answer-btn:active{ transform:translateY(0); }
+
+  @media (max-width:480px){
+    .answer-btn{
+      padding:7px 14px;
+      font-size:.8rem;
+    }
+  }
+
   .badge{
     flex:none;
     min-width:22px;
@@ -832,48 +893,52 @@
       <!-- РАСЧЁТНЫЕ РАБОТЫ (1 семестр) -->
       <div class="uni-view" data-uni-view="raschetnye">
         <div class="file-list">
-          <a class="file-row" href="inhn-itlpmd-2-analiticheskaya-geometriya.pdf" target="_blank" rel="noopener">
-            <span class="file-name">
+          <div class="file-row has-answer">
+            <a class="file-main" href="inhn-itlpmd-2-analiticheskaya-geometriya.pdf" target="_blank" rel="noopener">
               <span class="file-icon">
                 <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
                 <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
               </span>
               inhn-itlpmd-2-analiticheskaya-geometriya.pdf
-            </span>
-          </a>
-          <a class="file-row" href="inhn_itlpmd_3_differencialnoe_ischislenie_funkcii_odnoj_peremennoj.pdf" target="_blank" rel="noopener">
-            <span class="file-name">
+            </a>
+            <a class="answer-btn" href="inhn-itlpmd-2-analiticheskaya-geometriya-otvety.pdf" target="_blank" rel="noopener">Ответы</a>
+          </div>
+          <div class="file-row has-answer">
+            <a class="file-main" href="inhn_itlpmd_3_differencialnoe_ischislenie_funkcii_odnoj_peremennoj.pdf" target="_blank" rel="noopener">
               <span class="file-icon">
                 <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
                 <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
               </span>
               inhn_itlpmd_3_differencialnoe_ischislenie_funkcii_odnoj_peremennoj.pdf
-            </span>
-          </a>
-          <a class="file-row" href="itlpmd-1-raschtenaya-rabota-linejnaya-i-vektornaya-algebra.pdf" target="_blank" rel="noopener">
-            <span class="file-name">
+            </a>
+            <a class="answer-btn" href="inhn_itlpmd_3_differencialnoe_ischislenie_funkcii_odnoj_peremennoj_otvety.pdf" target="_blank" rel="noopener">Ответы</a>
+          </div>
+          <div class="file-row has-answer">
+            <a class="file-main" href="itlpmd-1-raschtenaya-rabota-linejnaya-i-vektornaya-algebra.pdf" target="_blank" rel="noopener">
               <span class="file-icon">
                 <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
                 <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
               </span>
               itlpmd-1-raschtenaya-rabota-linejnaya-i-vektornaya-algebra.pdf
-            </span>
-          </a>
+            </a>
+            <a class="answer-btn" href="itlpmd-1-raschtenaya-rabota-linejnaya-i-vektornaya-algebra-otvety.pdf" target="_blank" rel="noopener">Ответы</a>
+          </div>
         </div>
       </div>
 
       <!-- ПРАКТИЧЕСКИЕ ЗАНЯТИЯ 1 СЕМЕСТРА -->
       <div class="uni-view" data-uni-view="praktika1">
         <div class="file-list">
-          <a class="file-row" href="1_pourochnye_razrabotki_prakticheskih_zanyatij_po_vysshej_matematike%2018.7.pdf" target="_blank" rel="noopener">
-            <span class="file-name">
+          <div class="file-row has-answer">
+            <a class="file-main" href="1_pourochnye_razrabotki_prakticheskih_zanyatij_po_vysshej_matematike%2018.7.pdf" target="_blank" rel="noopener">
               <span class="file-icon">
                 <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
                 <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
               </span>
               1_pourochnye_razrabotki_prakticheskih_zanyatij_po_vysshej_matematike 18.7.pdf
-            </span>
-          </a>
+            </a>
+            <a class="answer-btn" href="1_pourochnye_razrabotki_prakticheskih_zanyatij_po_vysshej_matematike_18.7_otvety.pdf" target="_blank" rel="noopener">Ответы</a>
+          </div>
           <a class="file-row" href="1_pourochnye_razrabotki_prakticheskih_zanyatij_po_vysshej_matematike%20_27.11.pdf" target="_blank" rel="noopener">
             <span class="file-name">
               <span class="file-icon">
