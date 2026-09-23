@@ -146,6 +146,9 @@
     padding:14px 16px;
     margin:14px 0;
     border:1px solid var(--line);
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
   }
   .box-label{
     font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
@@ -166,6 +169,17 @@
 
   .box p:last-child{ margin-bottom:0; }
   .box p{ margin:0 0 8px; }
+
+  mjx-container{
+    overflow-x:auto;
+    overflow-y:hidden;
+    max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  mjx-container[display="true"]{
+    display:block;
+    margin:6px 0 !important;
+  }
 
   hr.sep{ border:none; border-top:1px solid var(--line); margin:34px 0; }
 
