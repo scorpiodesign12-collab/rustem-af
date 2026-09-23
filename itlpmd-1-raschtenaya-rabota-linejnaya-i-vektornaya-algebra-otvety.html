@@ -3,10 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Линейная и векторная алгебра — решение</title>
+<title>Линейная и векторная алгебра — решение типового расчёта</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+  };
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 <style>
   :root{
     --white:#ffffff;
@@ -19,42 +26,55 @@
     --blue-tint-2:#e2ebff;
     --line:#dde5f5;
     --radius:10px;
+    --amber:#b4720a;
+    --amber-tint:#fff6e6;
+    --green:#187a4a;
+    --green-tint:#eafaf1;
   }
   *{box-sizing:border-box;}
-  html, body{max-width:100%; overflow-x:hidden;}
+  html{scroll-behavior:smooth;}
+  html,body{max-width:100%;overflow-x:hidden;}
   body{
-    margin:0; background:var(--white); color:var(--ink);
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
     font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
-    font-size:16px; line-height:1.6;
+    font-size:16px;
+    line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{
-    font-family:'Manrope','Inter',sans-serif; color:var(--blue-deep);
-    margin:0 0 .4em 0; font-weight:800; letter-spacing:-0.02em; line-height:1.2;
+  h1,h2,h3,h4{
+    font-family:'Manrope','Inter',sans-serif;
+    color:var(--blue-deep);
+    margin:0 0 .5em 0;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    line-height:1.2;
   }
+  a{ color:var(--blue); }
   .wrap{ max-width:880px; margin:0 auto; padding:0 20px; }
 
-  header.site-head{ padding:30px 0 18px; }
-  .brand{ display:flex; align-items:center; gap:12px; }
+  header.site-head{
+    padding:22px 0 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{ display:flex; align-items:center; gap:14px; }
   .brand-icon{
     flex:none; width:44px; height:44px; border-radius:12px;
     background:linear-gradient(145deg,var(--blue-bright),var(--blue-deep));
     display:flex; align-items:center; justify-content:center;
     color:#fff; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.2rem;
   }
-  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.35rem; font-weight:800; color:var(--blue-deep); letter-spacing:-0.01em; }
-  .brand-text .thin{
-    color:var(--ink-soft); font-weight:500; font-size:.85rem; display:block;
-    font-family:'Inter',sans-serif; letter-spacing:.01em; margin-top:4px;
+  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.25rem; font-weight:800; color:var(--blue-deep); }
+  .brand-text .thin{ color:var(--ink-soft); font-weight:500; font-size:.82rem; display:block; font-family:'Inter',sans-serif; margin-top:3px; }
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.88rem; font-weight:600; color:var(--blue);
+    text-decoration:none; white-space:nowrap; margin-top:14px;
   }
+  .back-link:hover{ color:var(--blue-deep); }
 
-  .variant-card{
-    margin-top:18px; border:1px solid var(--line); border-radius:var(--radius);
-    background:var(--blue-tint); padding:14px 18px; font-size:.92rem;
-  }
-  .variant-card b{ color:var(--blue-deep); }
-  .variant-grid{ display:flex; flex-wrap:wrap; gap:6px 22px; margin-top:8px; }
-  .variant-grid span{ white-space:nowrap; }
+  main{ padding:26px 0 70px; }
 
   nav.toc{ margin:22px 0 0; }
   .toc-label{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin:0 0 8px 0; }
@@ -65,57 +85,80 @@
   }
   .toc a:hover{ background:var(--blue-tint); color:var(--blue-deep); }
 
-  main{ padding:30px 0 60px; }
-
-  section.task{ margin-bottom:38px; scroll-margin-top:16px; }
-  .task-head{ padding-bottom:14px; border-bottom:1px solid var(--line); margin-bottom:18px; }
-  .task-tag{
-    display:inline-block; font-size:.78rem; font-weight:600; color:var(--blue);
-    background:var(--blue-tint); padding:4px 10px; border-radius:999px; margin-bottom:8px;
+  .task{ margin-bottom:44px; scroll-margin-top:16px; }
+  .task .eyebrow{
+    font-size:.78rem; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:.05em;
+    margin-bottom:6px;
   }
-  .task-head h2{ font-size:1.2rem; }
-  .given{ color:var(--ink-soft); font-size:.92rem; margin-top:4px; }
+  .task h2{ font-size:1.3rem; margin-bottom:14px; }
 
-  .qa-body{
-    padding:2px 0 4px 0; color:var(--ink); font-size:.95rem; line-height:1.85;
-  }
-  .qa-body .tag{ color:var(--blue-deep); font-weight:700; }
-  .qa-body .ans{
-    margin-top:10px; padding:10px 14px; background:var(--blue-tint); border-radius:8px;
-    color:var(--ink); font-weight:600;
-  }
-  .qa-body p{ margin:0 0 8px 0; }
-  .qa-body .eq{ display:block; margin:6px 0; font-family:'Manrope',sans-serif; font-weight:600; color:var(--blue-deep); overflow-x:auto; }
+  .task h4{ font-size:.98rem; margin:0 0 8px; color:var(--ink); }
 
-  .subtask{ margin-top:20px; padding-top:16px; border-top:1px dashed var(--line); }
+  .box{
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin:14px 0;
+    border:1px solid var(--line);
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .box-label{
+    font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
+    text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; display:block;
+  }
+  .def{ background:var(--blue-tint); border-color:var(--blue-tint-2); }
+  .def .box-label{ color:var(--blue-deep); }
+  .example{ background:var(--green-tint); border-color:#c9ecd8; }
+  .example .box-label{ color:var(--green); }
+  .note{ background:var(--amber-tint); border-color:#f3e0b3; }
+  .note .box-label{ color:var(--amber); }
+  .ans{ background:var(--blue-tint-2); border-color:var(--blue); border-width:1.5px; }
+  .ans .box-label{ color:var(--blue-deep); }
+  .ans p{ font-weight:700; font-size:1.02rem; }
+
+  .box p:last-child{ margin-bottom:0; }
+  .box p{ margin:0 0 8px; }
+
+  .subtask{ margin-top:18px; padding-top:16px; border-top:1px dashed var(--line); }
   .subtask:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
 
-  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:24px 0 40px; }
+  hr.sep{ border:none; border-top:1px solid var(--line); margin:34px 0; }
 
-  @media (max-width:600px){
-    .task-head h2{ font-size:1.05rem; }
+  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:24px 0 6px; }
+
+  mjx-container{
+    overflow-x:auto;
+    overflow-y:hidden;
+    max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  mjx-container[display="true"]{
+    display:block;
+    margin:6px 0 !important;
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header class="site-head">
+<header class="site-head">
+  <div class="wrap">
     <div class="brand">
       <div class="brand-icon">√</div>
-      <div class="brand-text">
-        Линейная и векторная алгебра
-        <span class="thin">Типовой расчёт — полное решение всех 6 заданий по своему варианту</span>
+      <div class="brand-text">Линейная и векторная алгебра
+        <span class="thin">Типовой расчёт · полное решение всех 6 заданий по варианту</span>
       </div>
     </div>
+    <a class="back-link" href="konspekt.html">&larr; К конспекту лекций</a>
 
-    <div class="variant-card">
-      <div><b>Вариант:</b> группа 761-101 (α=7, β=6, γ=1, δ=1), номер по списку n=3</div>
-      <div class="variant-grid">
-        <span>m = ⌊(n+δ)/2⌋+1 = ⌊(3+1)/2⌋+1 = 2+1 = <b>3</b></span>
-        <span>l = ⌊(α+β+γ+δ)/5⌋ = ⌊15/5⌋ = <b>3</b></span>
-        <span>(-1)ⁿ = (-1)³ = <b>-1</b></span>
-      </div>
+    <div class="box def" style="margin-top:18px;">
+      <span class="box-label">Вариант</span>
+      <p>Группа 761-101 ($\alpha=7,\ \beta=6,\ \gamma=1,\ \delta=1$), номер по списку $n=3$.</p>
+      <p>
+        $m=\left\lfloor\dfrac{n+\delta}{2}\right\rfloor+1=\left\lfloor\dfrac{3+1}{2}\right\rfloor+1=2+1=3$,&nbsp;&nbsp;
+        $l=\left\lfloor\dfrac{\alpha+\beta+\gamma+\delta}{5}\right\rfloor=\left\lfloor\dfrac{15}{5}\right\rfloor=3$,&nbsp;&nbsp;
+        $(-1)^n=(-1)^3=-1$
+      </p>
     </div>
 
     <nav class="toc">
@@ -129,216 +172,251 @@
         <li><a href="#task6">6. Геометрия треугольника ABC и пирамиды ABCD</a></li>
       </ul>
     </nav>
-  </header>
+  </div>
+</header>
 
-  <main>
+<main class="wrap">
 
-  <!-- ===================== TASK 1 ===================== -->
-  <section class="task" id="task1">
-    <div class="task-head">
-      <span class="task-tag">Задание 1</span>
-      <h2>Вычислить определитель 3-го порядка двумя способами</h2>
-      <div class="given">
-        При n=3, m=3, l=3: (-1)ⁿm=-3, m-4l=-9, m-2l=-3, m-3l=-6, (-1)ⁿ·2=-2, m-10=-7
-        <br>Δ = | -3 -9 2 ; -3 -6 5 ; -2 -3 -7 |
+  <!-- ===================== ЗАДАНИЕ 1 ===================== -->
+  <article class="task" id="task1">
+    <div class="eyebrow">Задание 1</div>
+    <h2>Вычислить определитель 3-го порядка двумя способами</h2>
+
+    <div class="box def">
+      <span class="box-label">Дано</span>
+      <p>При $n=3,\ m=3,\ l=3$: $(-1)^n m=-3$, $m-4l=-9$, $m-2l=-3$, $m-3l=-6$, $(-1)^n\cdot2=-2$, $m-10=-7$.</p>
+      $$\Delta=\begin{vmatrix}-3&-9&2\\-3&-6&5\\-2&-3&-7\end{vmatrix}$$
+    </div>
+
+    <div class="box example">
+      <span class="box-label">Решение</span>
+      <div class="subtask">
+        <h4>Способ 1 — разложение по первой строке</h4>
+        $$\Delta=-3\cdot[(-6)(-7)-5(-3)]-(-9)\cdot[(-3)(-7)-5(-2)]+2\cdot[(-3)(-3)-(-6)(-2)]$$
+        $$\Delta=-3\cdot(42+15)+9\cdot(21+10)+2\cdot(9-12)=-3\cdot57+9\cdot31+2\cdot(-3)$$
+        $$\Delta=-171+279-6=102$$
       </div>
-    </div>
-
-    <div class="qa-body">
-      <p><span class="tag">Способ 1 — разложение по первой строке.</span></p>
-      <span class="eq">Δ = -3·[(-6)(-7)-5(-3)] - (-9)·[(-3)(-7)-5(-2)] + 2·[(-3)(-3)-(-6)(-2)]</span>
-      <span class="eq">Δ = -3·(42+15) + 9·(21+10) + 2·(9-12) = -3·57 + 9·31 + 2·(-3)</span>
-      <span class="eq">Δ = -171 + 279 - 6 = 102</span>
-
-      <p style="margin-top:14px"><span class="tag">Способ 2 — правило треугольников (Саррюса).</span></p>
-      <span class="eq">Δ = a₁₁a₂₂a₃₃+a₁₂a₂₃a₃₁+a₁₃a₂₁a₃₂ − a₁₃a₂₂a₃₁ − a₁₁a₂₃a₃₂ − a₁₂a₂₁a₃₃</span>
-      <span class="eq">Δ = (-3)(-6)(-7) + (-9)(5)(-2) + (2)(-3)(-3) − (2)(-6)(-2) − (-3)(5)(-3) − (-9)(-3)(-7)</span>
-      <span class="eq">Δ = -126 + 90 + 18 − 24 − 45 + 189 = 102</span>
-
-      <div class="ans">Ответ: Δ = 102 (оба способа дают одинаковый результат)</div>
-    </div>
-  </section>
-
-  <!-- ===================== TASK 2 ===================== -->
-  <section class="task" id="task2">
-    <div class="task-head">
-      <span class="task-tag">Задание 2</span>
-      <h2>Решить систему уравнений по формулам Крамера</h2>
-      <div class="given">
-        При n=3, m=3, l=3, (-1)ⁿ=-1, (-1)ⁿ⁺¹=1:
-        <br>-4x - 6y = -2
-        <br>6x + 4y = 18
+      <div class="subtask">
+        <h4>Способ 2 — правило треугольников (Саррюса)</h4>
+        $$\Delta=a_{11}a_{22}a_{33}+a_{12}a_{23}a_{31}+a_{13}a_{21}a_{32}-a_{13}a_{22}a_{31}-a_{11}a_{23}a_{32}-a_{12}a_{21}a_{33}$$
+        $$\Delta=(-3)(-6)(-7)+(-9)(5)(-2)+(2)(-3)(-3)-(2)(-6)(-2)-(-3)(5)(-3)-(-9)(-3)(-7)$$
+        $$\Delta=-126+90+18-24-45+189=102$$
       </div>
+      <p>Оба способа дают одинаковый результат.</p>
     </div>
 
-    <div class="qa-body">
+    <div class="box ans">
+      <span class="box-label">Ответ</span>
+      <p>$\Delta=102$</p>
+    </div>
+  </article>
+
+  <!-- ===================== ЗАДАНИЕ 2 ===================== -->
+  <article class="task" id="task2">
+    <div class="eyebrow">Задание 2</div>
+    <h2>Решить систему уравнений по формулам Крамера</h2>
+
+    <div class="box def">
+      <span class="box-label">Дано</span>
+      <p>При $n=3,\ m=3,\ l=3$, $(-1)^n=-1$, $(-1)^{n+1}=1$:</p>
+      $$\begin{cases}-4x-6y=-2\\6x+4y=18\end{cases}$$
+    </div>
+
+    <div class="box example">
+      <span class="box-label">Решение</span>
       <p>Главный определитель системы:</p>
-      <span class="eq">D = | -4 -6 ; 6 4 | = (-4)(4) - (-6)(6) = -16 + 36 = 20</span>
-      <p>Определитель для x (столбец коэффициентов при x заменяем свободными членами):</p>
-      <span class="eq">Dₓ = | -2 -6 ; 18 4 | = (-2)(4) - (-6)(18) = -8 + 108 = 100</span>
-      <p>Определитель для y:</p>
-      <span class="eq">D_y = | -4 -2 ; 6 18 | = (-4)(18) - (-2)(6) = -72 + 12 = -60</span>
+      $$D=\begin{vmatrix}-4&-6\\6&4\end{vmatrix}=(-4)(4)-(-6)(6)=-16+36=20$$
+      <p>Определитель для $x$ (столбец коэффициентов при $x$ заменяем свободными членами):</p>
+      $$D_x=\begin{vmatrix}-2&-6\\18&4\end{vmatrix}=(-2)(4)-(-6)(18)=-8+108=100$$
+      <p>Определитель для $y$:</p>
+      $$D_y=\begin{vmatrix}-4&-2\\6&18\end{vmatrix}=(-4)(18)-(-2)(6)=-72+12=-60$$
       <p>По формулам Крамера:</p>
-      <span class="eq">x = Dₓ/D = 100/20 = 5,&nbsp;&nbsp; y = D_y/D = -60/20 = -3</span>
-      <p>Проверка: -4·5-6·(-3)=-20+18=-2 ✓;&nbsp; 6·5+4·(-3)=30-12=18 ✓</p>
-      <div class="ans">Ответ: x = 5, y = -3</div>
-    </div>
-  </section>
-
-  <!-- ===================== TASK 3 ===================== -->
-  <section class="task" id="task3">
-    <div class="task-head">
-      <span class="task-tag">Задание 3</span>
-      <h2>Решить систему уравнений (а — Крамер, б — метод Гаусса)</h2>
-      <div class="given">
-        При n=3, m=3, l=3:
-        <br>8x₁ + 5x₂ + x₃ = 6
-        <br>-3x₁ + 4x₂ + x₃ = -4
-        <br>-6x₁ - 9x₂ - 2x₃ = -3
-      </div>
+      $$x=\dfrac{D_x}{D}=\dfrac{100}{20}=5,\qquad y=\dfrac{D_y}{D}=\dfrac{-60}{20}=-3$$
+      <p>Проверка: $-4\cdot5-6\cdot(-3)=-20+18=-2$ ✓;&nbsp; $6\cdot5+4\cdot(-3)=30-12=18$ ✓.</p>
     </div>
 
-    <div class="qa-body">
+    <div class="box ans">
+      <span class="box-label">Ответ</span>
+      <p>$x=5,\ y=-3$</p>
+    </div>
+  </article>
+
+  <!-- ===================== ЗАДАНИЕ 3 ===================== -->
+  <article class="task" id="task3">
+    <div class="eyebrow">Задание 3</div>
+    <h2>Решить систему уравнений (а — Крамер, б — метод Гаусса)</h2>
+
+    <div class="box def">
+      <span class="box-label">Дано</span>
+      <p>При $n=3,\ m=3,\ l=3$:</p>
+      $$\begin{cases}8x_1+5x_2+x_3=6\\-3x_1+4x_2+x_3=-4\\-6x_1-9x_2-2x_3=-3\end{cases}$$
+    </div>
+
+    <div class="box example">
+      <span class="box-label">Решение</span>
+
       <div class="subtask">
-        <p><span class="tag">а) Метод Крамера.</span> Главный определитель:</p>
-        <span class="eq">D = | 8 5 1 ; -3 4 1 ; -6 -9 -2 | = 8(1)-5(12)+1(51) = 8-60+51 = -1</span>
-        <p>Заменяя поочерёдно столбцы свободными членами (6, -4, -3):</p>
-        <span class="eq">D₁ = | 6 5 1 ; -4 4 1 ; -3 -9 -2 | = 6(1)-5(11)+1(48) = 6-55+48 = -1</span>
-        <span class="eq">D₂ = | 8 6 1 ; -3 -4 1 ; -6 -3 -2 | = 8(11)-6(12)+1(-15) = 88-72-15 = 1</span>
-        <span class="eq">D₃ = | 8 5 6 ; -3 4 -4 ; -6 -9 -3 | = 8(-48)-5(-15)+6(51) = -384+75+306 = -3</span>
-        <span class="eq">x₁ = D₁/D = -1/-1 = 1,&nbsp;&nbsp; x₂ = D₂/D = 1/-1 = -1,&nbsp;&nbsp; x₃ = D₃/D = -3/-1 = 3</span>
+        <h4>а) Метод Крамера</h4>
+        <p>Главный определитель:</p>
+        $$D=\begin{vmatrix}8&5&1\\-3&4&1\\-6&-9&-2\end{vmatrix}=8(1)-5(12)+1(51)=8-60+51=-1$$
+        <p>Заменяя поочерёдно столбцы свободными членами $(6,-4,-3)$:</p>
+        $$D_1=\begin{vmatrix}6&5&1\\-4&4&1\\-3&-9&-2\end{vmatrix}=6(1)-5(11)+1(48)=6-55+48=-1$$
+        $$D_2=\begin{vmatrix}8&6&1\\-3&-4&1\\-6&-3&-2\end{vmatrix}=8(11)-6(12)+1(-15)=88-72-15=1$$
+        $$D_3=\begin{vmatrix}8&5&6\\-3&4&-4\\-6&-9&-3\end{vmatrix}=8(-48)-5(-15)+6(51)=-384+75+306=-3$$
+        $$x_1=\dfrac{D_1}{D}=\dfrac{-1}{-1}=1,\quad x_2=\dfrac{D_2}{D}=\dfrac{1}{-1}=-1,\quad x_3=\dfrac{D_3}{D}=\dfrac{-3}{-1}=3$$
       </div>
 
       <div class="subtask">
-        <p><span class="tag">б) Метод Гаусса.</span> Прямой ход: исключаем x₁ из 2-го и 3-го уравнений (прибавляем к ним 1-е, умноженное на 3/8 и 3/4 соответственно):</p>
-        <span class="eq">47x₂ + 11x₃ = -14&nbsp;&nbsp;(из 2-го уравнения, ×8)</span>
-        <span class="eq">21x₂ + 5x₃ = -6&nbsp;&nbsp;(из 3-го уравнения, ×(-4))</span>
-        <p>Исключаем x₂: из первого уравнения выражаем x₂=(-6-5x₃)/21 и подставляем во второе (либо умножаем строки на 21 и 47 и вычитаем):</p>
-        <span class="eq">47(-6-5x₃) + 21·11x₃ = -14·21&nbsp;&nbsp;⇒&nbsp;&nbsp; -282-235x₃+231x₃ = -294&nbsp;&nbsp;⇒&nbsp;&nbsp; -4x₃ = -12&nbsp;&nbsp;⇒&nbsp;&nbsp; x₃ = 3</span>
+        <h4>б) Метод Гаусса</h4>
+        <p>Прямой ход: исключаем $x_1$ из 2-го и 3-го уравнений (прибавляем к ним 1-е, умноженное на $3/8$ и $3/4$ соответственно):</p>
+        $$47x_2+11x_3=-14\quad\text{(из 2-го уравнения,}\times8\text{)}$$
+        $$21x_2+5x_3=-6\quad\text{(из 3-го уравнения,}\times(-4)\text{)}$$
+        <p>Исключаем $x_2$: из первого уравнения выражаем $x_2=(-6-5x_3)/21$ и подставляем во второе (либо умножаем строки на 21 и 47 и вычитаем):</p>
+        $$47(-6-5x_3)+21\cdot11x_3=-14\cdot21\ \Rightarrow\ -282-235x_3+231x_3=-294\ \Rightarrow\ -4x_3=-12\ \Rightarrow\ x_3=3$$
         <p>Обратный ход:</p>
-        <span class="eq">21x₂ + 5·3 = -6&nbsp;&nbsp;⇒&nbsp;&nbsp; x₂ = -1</span>
-        <span class="eq">8x₁ + 5·(-1) + 3 = 6&nbsp;&nbsp;⇒&nbsp;&nbsp; x₁ = 1</span>
+        $$21x_2+5\cdot3=-6\ \Rightarrow\ x_2=-1$$
+        $$8x_1+5\cdot(-1)+3=6\ \Rightarrow\ x_1=1$$
         <p>Результат совпадает с методом Крамера — проверка во все три исходных уравнения выполняется.</p>
       </div>
-
-      <div class="ans">Ответ: x₁ = 1, x₂ = -1, x₃ = 3</div>
-    </div>
-  </section>
-
-  <!-- ===================== TASK 4 ===================== -->
-  <section class="task" id="task4">
-    <div class="task-head">
-      <span class="task-tag">Задание 4</span>
-      <h2>Скалярное и векторное произведение по модулям и углу</h2>
-      <div class="given">
-        |a|=m+1=4, |b|=l+1=4. c=(m-5)a+(-1)ⁿb=-2a-b, d=(l+(-1)ⁿ+2)a+b=4a+b
-      </div>
     </div>
 
-    <div class="qa-body">
+    <div class="box ans">
+      <span class="box-label">Ответ</span>
+      <p>$x_1=1,\ x_2=-1,\ x_3=3$</p>
+    </div>
+  </article>
+
+  <!-- ===================== ЗАДАНИЕ 4 ===================== -->
+  <article class="task" id="task4">
+    <div class="eyebrow">Задание 4</div>
+    <h2>Скалярное и векторное произведение по модулям и углу</h2>
+
+    <div class="box def">
+      <span class="box-label">Дано</span>
+      <p>$|\vec a|=m+1=4$, $|\vec b|=l+1=4$.</p>
+      <p>$\vec c=(m-5)\vec a+(-1)^n\vec b=-2\vec a-\vec b$,&nbsp;&nbsp; $\vec d=(l+(-1)^n+2)\vec a+\vec b=4\vec a+\vec b$</p>
+    </div>
+
+    <div class="box example">
+      <span class="box-label">Решение</span>
+
       <div class="subtask">
-        <p><span class="tag">а) Скалярное произведение c·d</span>, если (a,^b)=π/3, значит a·b=|a||b|cos(π/3)=4·4·½=8:</p>
-        <span class="eq">c·d = (-2a-b)·(4a+b) = -8(a·a) -2(a·b) -4(a·b) - (b·b) = -8|a|² - 6(a·b) - |b|²</span>
-        <span class="eq">c·d = -8·16 - 6·8 - 16 = -128 - 48 - 16 = -192</span>
-        <div class="ans">Ответ: c·d = -192</div>
-      </div>
-
-      <div class="subtask">
-        <p><span class="tag">б) Модуль векторного произведения |c×d|</span>, если (a,^b)=π/2, значит a×a=0, b×b=0 и a·b не участвует:</p>
-        <span class="eq">c×d = (-2a-b)×(4a+b) = -2(a×b) - 4(b×a) = -2(a×b) + 4(a×b) = 2(a×b)</span>
-        <span class="eq">|c×d| = 2|a×b| = 2|a||b|sin(π/2) = 2·4·4·1 = 32</span>
-        <div class="ans">Ответ: |c×d| = 32</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== TASK 5 ===================== -->
-  <section class="task" id="task5">
-    <div class="task-head">
-      <span class="task-tag">Задание 5</span>
-      <h2>Векторы в координатах</h2>
-      <div class="given">
-        a=(m-4)i+((-1)ⁿ-l)j+3k = (-1,-4,3), b=(-1)ⁿl·i+(-1)ⁿj+(m-3)k = (-3,-1,0)
-      </div>
-    </div>
-
-    <div class="qa-body">
-      <div class="subtask">
-        <p><span class="tag">а) Скалярное и векторное произведение c и d.</span></p>
-        <span class="eq">c = (-1)ⁿ(l+1)a + (m-l)b = -4a + 0·b = -4a = (4, 16, -12)</span>
-        <span class="eq">d = b + (-1)ⁿ(m+1)a = b - 4a = (-3,-1,0) - (-4,-16,12) = (1, 15, -12)</span>
-        <span class="eq">c·d = 4·1 + 16·15 + (-12)(-12) = 4 + 240 + 144 = 388</span>
-        <span class="eq">c×d = | i j k ; 4 16 -12 ; 1 15 -12 | = (-192+180, -(-48+12), 60-16) = (-12, 36, 44)</span>
-        <div class="ans">Ответ: c·d = 388,&nbsp;&nbsp; c×d = (-12, 36, 44)</div>
+        <h4>а) Скалярное произведение $\vec c\cdot\vec d$</h4>
+        <p>Если $(\widehat{\vec a,\vec b})=\pi/3$, то $\vec a\cdot\vec b=|\vec a||\vec b|\cos(\pi/3)=4\cdot4\cdot\tfrac12=8$:</p>
+        $$\vec c\cdot\vec d=(-2\vec a-\vec b)\cdot(4\vec a+\vec b)=-8(\vec a\cdot\vec a)-2(\vec a\cdot\vec b)-4(\vec a\cdot\vec b)-(\vec b\cdot\vec b)=-8|\vec a|^2-6(\vec a\cdot\vec b)-|\vec b|^2$$
+        $$\vec c\cdot\vec d=-8\cdot16-6\cdot8-16=-128-48-16=-192$$
       </div>
 
       <div class="subtask">
-        <p><span class="tag">б) Длина и направляющие косинусы вектора c</span> = (4, 16, -12):</p>
-        <span class="eq">|c| = √(16+256+144) = √416 = 4√26 ≈ 20,40</span>
-        <span class="eq">cos α = 4/(4√26) = 1/√26 ≈ 0,196</span>
-        <span class="eq">cos β = 16/(4√26) = 4/√26 ≈ 0,785</span>
-        <span class="eq">cos γ = -12/(4√26) = -3/√26 ≈ -0,588</span>
-        <div class="ans">Ответ: |c| = 4√26 ≈ 20,40; cos α=1/√26, cos β=4/√26, cos γ=-3/√26</div>
+        <h4>б) Модуль векторного произведения $|\vec c\times\vec d|$</h4>
+        <p>Если $(\widehat{\vec a,\vec b})=\pi/2$, то $\vec a\times\vec a=\vec0$, $\vec b\times\vec b=\vec0$ и $\vec a\cdot\vec b$ не участвует:</p>
+        $$\vec c\times\vec d=(-2\vec a-\vec b)\times(4\vec a+\vec b)=-2(\vec a\times\vec b)-4(\vec b\times\vec a)=-2(\vec a\times\vec b)+4(\vec a\times\vec b)=2(\vec a\times\vec b)$$
+        $$|\vec c\times\vec d|=2|\vec a\times\vec b|=2|\vec a||\vec b|\sin(\pi/2)=2\cdot4\cdot4\cdot1=32$$
+      </div>
+    </div>
+
+    <div class="box ans">
+      <span class="box-label">Ответ</span>
+      <p>а) $\vec c\cdot\vec d=-192$&nbsp;&nbsp; б) $|\vec c\times\vec d|=32$</p>
+    </div>
+  </article>
+
+  <!-- ===================== ЗАДАНИЕ 5 ===================== -->
+  <article class="task" id="task5">
+    <div class="eyebrow">Задание 5</div>
+    <h2>Векторы в координатах</h2>
+
+    <div class="box def">
+      <span class="box-label">Дано</span>
+      <p>$\vec a=(m-4)\vec i+((-1)^n-l)\vec j+3\vec k=(-1,-4,3)$</p>
+      <p>$\vec b=(-1)^n l\cdot\vec i+(-1)^n\vec j+(m-3)\vec k=(-3,-1,0)$</p>
+    </div>
+
+    <div class="box example">
+      <span class="box-label">Решение</span>
+
+      <div class="subtask">
+        <h4>а) Скалярное и векторное произведение $\vec c$ и $\vec d$</h4>
+        $$\vec c=(-1)^n(l+1)\vec a+(m-l)\vec b=-4\vec a+0\cdot\vec b=-4\vec a=(4,16,-12)$$
+        $$\vec d=\vec b+(-1)^n(m+1)\vec a=\vec b-4\vec a=(-3,-1,0)-(-4,-16,12)=(1,15,-12)$$
+        $$\vec c\cdot\vec d=4\cdot1+16\cdot15+(-12)(-12)=4+240+144=388$$
+        $$\vec c\times\vec d=\begin{vmatrix}\vec i&\vec j&\vec k\\4&16&-12\\1&15&-12\end{vmatrix}=(-192+180,\ -(-48+12),\ 60-16)=(-12,36,44)$$
       </div>
 
       <div class="subtask">
-        <p><span class="tag">в) Смешанное произведение (c, d, e)</span>, где e = 3j+2k = (0, 3, 2):</p>
-        <span class="eq">d×e = | i j k ; 1 15 -12 ; 0 3 2 | = (30+36, -(2-0), 3-0) = (66, -2, 3)</span>
-        <span class="eq">(c,d,e) = c·(d×e) = 4·66 + 16·(-2) + (-12)·3 = 264 - 32 - 36 = 196</span>
-        <div class="ans">Ответ: (c, d, e) = 196</div>
+        <h4>б) Длина и направляющие косинусы вектора $\vec c=(4,16,-12)$</h4>
+        $$|\vec c|=\sqrt{16+256+144}=\sqrt{416}=4\sqrt{26}\approx20{,}40$$
+        $$\cos\alpha=\dfrac{4}{4\sqrt{26}}=\dfrac{1}{\sqrt{26}}\approx0{,}196,\quad \cos\beta=\dfrac{16}{4\sqrt{26}}=\dfrac{4}{\sqrt{26}}\approx0{,}785,\quad \cos\gamma=\dfrac{-12}{4\sqrt{26}}=\dfrac{-3}{\sqrt{26}}\approx-0{,}588$$
       </div>
-    </div>
-  </section>
 
-  <!-- ===================== TASK 6 ===================== -->
-  <section class="task" id="task6">
-    <div class="task-head">
-      <span class="task-tag">Задание 6</span>
-      <h2>Геометрия треугольника ABC и пирамиды ABCD</h2>
-      <div class="given">
-        A((-1)ⁿm,-l,0)=(-3,-3,0), B((-1)ⁿ2,3,m-4)=(-2,3,-1), C(m-2l,1,3)=(-3,1,3), D(0,(-1)ⁿ,2)=(0,-1,2)
+      <div class="subtask">
+        <h4>в) Смешанное произведение $(\vec c,\vec d,\vec e)$, где $\vec e=3\vec j+2\vec k=(0,3,2)$</h4>
+        $$\vec d\times\vec e=\begin{vmatrix}\vec i&\vec j&\vec k\\1&15&-12\\0&3&2\end{vmatrix}=(30+36,\ -(2-0),\ 3-0)=(66,-2,3)$$
+        $$(\vec c,\vec d,\vec e)=\vec c\cdot(\vec d\times\vec e)=4\cdot66+16\cdot(-2)+(-12)\cdot3=264-32-36=196$$
       </div>
     </div>
 
-    <div class="qa-body">
+    <div class="box ans">
+      <span class="box-label">Ответ</span>
+      <p>а) $\vec c\cdot\vec d=388$, $\vec c\times\vec d=(-12,36,44)$</p>
+      <p>б) $|\vec c|=4\sqrt{26}\approx20{,}40$; $\cos\alpha=\tfrac{1}{\sqrt{26}}$, $\cos\beta=\tfrac{4}{\sqrt{26}}$, $\cos\gamma=-\tfrac{3}{\sqrt{26}}$</p>
+      <p>в) $(\vec c,\vec d,\vec e)=196$</p>
+    </div>
+  </article>
+
+  <!-- ===================== ЗАДАНИЕ 6 ===================== -->
+  <article class="task" id="task6">
+    <div class="eyebrow">Задание 6</div>
+    <h2>Геометрия треугольника ABC и пирамиды ABCD</h2>
+
+    <div class="box def">
+      <span class="box-label">Дано</span>
+      <p>$A((-1)^nm,-l,0)=(-3,-3,0)$,&nbsp; $B((-1)^n2,3,m-4)=(-2,3,-1)$,</p>
+      <p>$C(m-2l,1,3)=(-3,1,3)$,&nbsp; $D(0,(-1)^n,2)=(0,-1,2)$</p>
+    </div>
+
+    <div class="box example">
+      <span class="box-label">Решение</span>
       <p>Вспомогательные векторы:</p>
-      <span class="eq">AB = B-A = (1, 6, -1),&nbsp;&nbsp; AC = C-A = (0, 4, 3),&nbsp;&nbsp; AD = D-A = (3, 2, 2)</span>
-      <span class="eq">BA = (-1,-6,1),&nbsp;&nbsp; BC = C-B = (-1,-2,4)</span>
+      $$\vec{AB}=B-A=(1,6,-1),\quad \vec{AC}=C-A=(0,4,3),\quad \vec{AD}=D-A=(3,2,2)$$
+      $$\vec{BA}=(-1,-6,1),\quad \vec{BC}=C-B=(-1,-2,4)$$
 
       <div class="subtask">
-        <p><span class="tag">а) cos ∠ABC</span> — угол при вершине B между BA и BC:</p>
-        <span class="eq">BA·BC = 1+12+4 = 17,&nbsp;&nbsp; |BA|=√38,&nbsp;&nbsp; |BC|=√21</span>
-        <span class="eq">cos ∠ABC = 17/√(38·21) = 17/√798 ≈ 0,602</span>
-        <div class="ans">Ответ: cos ∠ABC = 17/√798 ≈ 0,602</div>
+        <h4>а) $\cos\angle ABC$ — угол при вершине $B$ между $\vec{BA}$ и $\vec{BC}$</h4>
+        $$\vec{BA}\cdot\vec{BC}=1+12+4=17,\quad |\vec{BA}|=\sqrt{38},\quad |\vec{BC}|=\sqrt{21}$$
+        $$\cos\angle ABC=\dfrac{17}{\sqrt{38\cdot21}}=\dfrac{17}{\sqrt{798}}\approx0{,}602$$
       </div>
 
       <div class="subtask">
-        <p><span class="tag">б) Пр_AC AB</span> (проекция AB на направление AC):</p>
-        <span class="eq">AB·AC = 1·0+6·4+(-1)·3 = 21,&nbsp;&nbsp; |AC| = √(16+9) = 5</span>
-        <span class="eq">Пр_AC AB = (AB·AC)/|AC| = 21/5 = 4,2</span>
-        <div class="ans">Ответ: Пр_AC AB = 4,2</div>
+        <h4>б) $\text{Пр}_{\vec{AC}}\vec{AB}$ — проекция $\vec{AB}$ на направление $\vec{AC}$</h4>
+        $$\vec{AB}\cdot\vec{AC}=1\cdot0+6\cdot4+(-1)\cdot3=21,\quad |\vec{AC}|=\sqrt{16+9}=5$$
+        $$\text{Пр}_{\vec{AC}}\vec{AB}=\dfrac{\vec{AB}\cdot\vec{AC}}{|\vec{AC}|}=\dfrac{21}{5}=4{,}2$$
       </div>
 
       <div class="subtask">
-        <p><span class="tag">в) S△ABC</span> — площадь треугольника через векторное произведение:</p>
-        <span class="eq">AB×AC = | i j k ; 1 6 -1 ; 0 4 3 | = (18+4, -(3-0), 4-0) = (22, -3, 4)</span>
-        <span class="eq">|AB×AC| = √(484+9+16) = √509 ≈ 22,56</span>
-        <span class="eq">S△ABC = ½|AB×AC| = √509/2 ≈ 11,28</span>
-        <div class="ans">Ответ: S△ABC = √509/2 ≈ 11,28</div>
+        <h4>в) $S_{\triangle ABC}$ — площадь треугольника через векторное произведение</h4>
+        $$\vec{AB}\times\vec{AC}=\begin{vmatrix}\vec i&\vec j&\vec k\\1&6&-1\\0&4&3\end{vmatrix}=(18+4,\ -(3-0),\ 4-0)=(22,-3,4)$$
+        $$|\vec{AB}\times\vec{AC}|=\sqrt{484+9+16}=\sqrt{509}\approx22{,}56$$
+        $$S_{\triangle ABC}=\tfrac12|\vec{AB}\times\vec{AC}|=\dfrac{\sqrt{509}}{2}\approx11{,}28$$
       </div>
 
       <div class="subtask">
-        <p><span class="tag">г) Объём пирамиды ABCD</span> через смешанное произведение:</p>
-        <span class="eq">(AB×AC)·AD = 22·3 + (-3)·2 + 4·2 = 66 - 6 + 8 = 68</span>
-        <span class="eq">V = ⅙|(AB×AC)·AD| = 68/6 = 34/3 ≈ 11,33</span>
-        <div class="ans">Ответ: V = 34/3 ≈ 11,33</div>
+        <h4>г) Объём пирамиды $ABCD$ через смешанное произведение</h4>
+        $$(\vec{AB}\times\vec{AC})\cdot\vec{AD}=22\cdot3+(-3)\cdot2+4\cdot2=66-6+8=68$$
+        $$V=\tfrac16|(\vec{AB}\times\vec{AC})\cdot\vec{AD}|=\dfrac{68}{6}=\dfrac{34}{3}\approx11{,}33$$
       </div>
     </div>
-  </section>
 
-  </main>
+    <div class="box ans">
+      <span class="box-label">Ответ</span>
+      <p>а) $\cos\angle ABC=17/\sqrt{798}\approx0{,}602$&nbsp;&nbsp; б) $\text{Пр}_{\vec{AC}}\vec{AB}=4{,}2$</p>
+      <p>в) $S_{\triangle ABC}=\sqrt{509}/2\approx11{,}28$&nbsp;&nbsp; г) $V=34/3\approx11{,}33$</p>
+    </div>
+  </article>
 
-  <footer>Типовой расчёт «Линейная и векторная алгебра» — вариант m=3, l=3, n=3 (группа 761-101)</footer>
-</div>
+</main>
+
+<footer class="wrap">Типовой расчёт «Линейная и векторная алгебра» — вариант $m=3,\ l=3,\ n=3$ (группа 761-101)</footer>
+
 </body>
 </html>
