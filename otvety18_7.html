@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ответы и решения — практические занятия по высшей математике</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff;
+    --ink:#1b2333;
+    --ink-soft:#5b6577;
+    --blue-deep:#123a8c;
+    --blue:#2458d6;
+    --blue-bright:#3d6fef;
+    --blue-tint:#eef3ff;
+    --blue-tint-2:#e2ebff;
+    --line:#dde5f5;
+    --radius:10px;
+    --amber:#b4720a;
+    --amber-tint:#fff6e6;
+    --green:#187a4a;
+    --green-tint:#eafaf1;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{max-width:100%;overflow-x:hidden;}
+  body{
+    margin:0; background:var(--white); color:var(--ink);
+    font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+    font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust:100%; text-size-adjust:100%;
+  }
+  h1,h2,h3,h4{
+    font-family:'Manrope','Inter',sans-serif; color:var(--blue-deep);
+    margin:0 0 .5em 0; font-weight:800; letter-spacing:-0.02em; line-height:1.2;
+  }
+  a{ color:var(--blue); }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 20px; }
+
+  header.site-head{ padding:22px 0 16px; border-bottom:1px solid var(--line); }
+  .brand{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .brand-left{ display:flex; align-items:center; gap:12px; min-width:0; }
+  .brand-icon{
+    flex:none; width:40px; height:40px; border-radius:11px;
+    background:linear-gradient(145deg,var(--blue-bright),var(--blue-deep));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.1rem;
+  }
+  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.2rem; font-weight:800; color:var(--blue-deep); min-width:0; }
+  .brand-text .thin{
+    color:var(--ink-soft); font-weight:500; font-size:.8rem; display:block;
+    font-family:'Inter',sans-serif; letter-spacing:.01em; margin-top:4px; line-height:1.45;
+  }
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.88rem; font-weight:600; color:var(--blue);
+    text-decoration:none; white-space:nowrap; flex:none;
+  }
+  .back-link:hover{ color:var(--blue-deep); }
+
+  main{ padding:30px 0 70px; }
+
+  /* ---------- topic picker (landing grid) ---------- */
+  #picker .lede{ color:var(--ink-soft); max-width:60ch; margin-bottom:22px; }
+  .topic-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
+  .topic-card{
+    text-align:left; border:1px solid var(--line); background:var(--white);
+    border-radius:var(--radius); padding:16px 16px 14px; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, transform .15s ease;
+    font-family:inherit;
+  }
+  .topic-card:hover{ border-color:var(--blue); background:var(--blue-tint); transform:translateY(-1px); }
+  .topic-num{
+    display:inline-block; font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
+    color:var(--blue); background:var(--blue-tint-2); padding:2px 8px; border-radius:20px;
+    margin-bottom:8px; letter-spacing:.03em;
+  }
+  .topic-card h3{ font-size:1rem; margin-bottom:4px; color:var(--ink); }
+  .topic-card p{ margin:0; font-size:.85rem; color:var(--ink-soft); line-height:1.45; }
+
+  /* ---------- lesson (conspect) view ---------- */
+  #conspect{ display:none; }
+  #conspect.active{ display:block; }
+  #picker.hidden{ display:none; }
+
+  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:22px; flex-wrap:wrap; }
+  .to-list{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.88rem; font-weight:600; color:var(--blue);
+    background:none; border:none; cursor:pointer; padding:6px 0; font-family:inherit;
+  }
+  .to-list:hover{ color:var(--blue-deep); }
+  .topic-jump{
+    font-size:.85rem; color:var(--ink-soft); border:1px solid var(--line); border-radius:8px;
+    padding:6px 10px; background:var(--white); font-family:inherit; cursor:pointer; max-width:100%;
+  }
+
+  .ktopic{ display:none; animation:fadeIn .35s ease both; }
+  .ktopic.active{ display:block; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .ktopic .eyebrow{
+    font-size:.78rem; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:.05em;
+    margin-bottom:6px;
+  }
+  .ktopic h2{ font-size:1.45rem; margin-bottom:4px; }
+  .ktopic .plan{
+    color:var(--ink-soft); font-size:.92rem; margin:10px 0 26px;
+    border-left:3px solid var(--blue-tint-2); padding-left:12px;
+  }
+  .ktopic .plan ol{ margin:6px 0 0; padding-left:18px; }
+
+  .ktopic h3{ font-size:1.08rem; margin-top:32px; margin-bottom:6px; }
+  .block-note{ color:var(--ink-soft); font-size:.85rem; margin:0 0 12px; }
+
+  details.qa{
+    border:1px solid var(--line); border-radius:var(--radius); margin-bottom:8px;
+    background:var(--white); overflow:hidden;
+  }
+  details.qa[open]{ border-color:var(--blue-tint-2); }
+  details.qa summary{
+    list-style:none; cursor:pointer; padding:12px 16px; font-weight:600; color:var(--ink);
+    font-size:.95rem; line-height:1.55;
+  }
+  details.qa summary::-webkit-details-marker{ display:none; }
+  details.qa .num{ color:var(--blue); font-weight:700; margin-right:4px; }
+  .qa-body{
+    padding:0 16px 14px 16px; color:var(--ink-soft); font-size:.93rem; line-height:1.7;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+  }
+  .qa-body .tag{ color:var(--blue-deep); font-weight:700; }
+  .qa-body .ans{
+    display:block; margin-top:8px; padding:8px 10px; border-radius:8px;
+    background:var(--green-tint); color:var(--ink); border-left:3px solid var(--green);
+  }
+  .qa-body .ans .tag{ color:var(--green); }
+
+  /* ---- Inline matrix / determinant / fraction / root ---- */
+  .mx{ display:inline-flex; align-items:stretch; vertical-align:middle; margin:0 3px; font-variant-numeric:tabular-nums; }
+  .mx-b{ width:6px; flex:none; }
+  .mx-mat .mx-l{ border:1.6px solid var(--ink); border-right:none; border-radius:3px 0 0 3px; }
+  .mx-mat .mx-r{ border:1.6px solid var(--ink); border-left:none; border-radius:0 3px 3px 0; }
+  .mx-det .mx-l{ border-left:1.6px solid var(--ink); }
+  .mx-det .mx-r{ border-right:1.6px solid var(--ink); }
+  .mx-body{ display:flex; flex-direction:column; justify-content:center; gap:3px; padding:3px 7px; }
+  .mx-row{ display:flex; gap:10px; justify-content:center; }
+  .mx-cell{ min-width:13px; text-align:center; }
+
+  .fr{ display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 3px; font-size:.94em; line-height:1.15; }
+  .fr-num{ padding:0 3px 1px; border-bottom:1.4px solid var(--ink); }
+  .fr-den{ padding:1px 3px 0; }
+  .sqrt{ display:inline-flex; align-items:flex-start; vertical-align:middle; margin:0 1px; }
+  .sqrt-sign{ font-size:1.05em; line-height:1; margin-right:1px; transform:translateY(1px); }
+  .sqrt-body{ border-top:1.4px solid var(--ink); padding:0 3px; }
+
+  .box{ border-radius:var(--radius); padding:14px 16px; margin:22px 0 14px; border:1px solid var(--line); }
+  .box-label{
+    font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
+    text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; display:block;
+  }
+  .note{ background:var(--amber-tint); border-color:#f3e0b3; }
+  .note .box-label{ color:var(--amber); }
+  .box p:last-child{ margin-bottom:0; }
+  .box p{ margin:0 0 8px; }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:24px 0 40px; }
+
+  @media (max-width:600px){
+    .wrap{ padding:0 16px; }
+    .ktopic h2{ font-size:1.22rem; }
+    .mx-row{ gap:6px; }
+    .mx-cell{ min-width:10px; }
+    .mx,.fr{ font-size:.92em; }
+  }
+</style>
+</head>
+<body>
+<header class="site-head">
+    <div class="wrap brand">
+      <div class="brand-left">
+        <div class="brand-icon">√</div>
+        <div class="brand-text">
+          Ответы и решения
+          <span class="thin">Поурочные разработки практических занятий по высшей математике — линейная алгебра, векторная алгебра, аналитическая геометрия, предел функции, дифференциальное исчисление</span>
+        </div>
+      </div>
+      <a class="back-link" href="index.html">&larr; Вернуться на сайт</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section id="picker">
+      <p class="lede">Полные разработки всех 7 практических занятий по высшей математике: опрос, тестовый контроль, самостоятельная работа и домашнее задание к каждому занятию, с решением и ответом на каждое задание. Выберите занятие.</p>
+
+      <div class="topic-grid">
+        <button class="topic-card" data-goto="lesson1">
+          <span class="topic-num">Занятие 1</span>
+          <h3>Матрицы и действия над ними. Определители. Обратная матрица. Ранг матрицы</h3>
+          <p>Раздел 1. Линейная алгебра — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson2">
+          <span class="topic-num">Занятие 2</span>
+          <h3>Матричные уравнения. Системы линейных алгебраических уравнений</h3>
+          <p>Раздел 1. Линейная алгебра — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson3">
+          <span class="topic-num">Занятие 3</span>
+          <h3>Векторы. Линейные операции. Скалярное произведение и его приложения</h3>
+          <p>Раздел 2. Векторная алгебра с приложениями — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson4">
+          <span class="topic-num">Занятие 4</span>
+          <h3>Векторное и смешанное произведения векторов и их приложения</h3>
+          <p>Раздел 2. Векторная алгебра с приложениями — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson5">
+          <span class="topic-num">Занятие 5</span>
+          <h3>Прямая на плоскости. Плоскость и прямая в пространстве. Кривые и поверхности второго порядка</h3>
+          <p>Раздел 3. Аналитическая геометрия — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson6">
+          <span class="topic-num">Занятие 6</span>
+          <h3>Предел функции. Раскрытие неопределённостей. Замечательные пределы. Непрерывность</h3>
+          <p>Раздел 4. Предел функции — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson7">
+          <span class="topic-num">Занятие 7</span>
+          <h3>Производная и её приложения. Исследование функции</h3>
+          <p>Раздел 5. Дифференциальное исчисление — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+      </div>
+    </section>
+
+    <section id="conspect">
+      <div class="topbar">
+        <button class="to-list" id="toList">&larr; К списку занятий</button>
+        <select class="topic-jump" id="topicJump">
+          <option value="lesson1">Занятие 1. Матрицы и действия над ними. Определители. Обратная матрица. Ранг матрицы</option>
+          <option value="lesson2">Занятие 2. Матричные уравнения. Системы линейных алгебраических уравнений</option>
+          <option value="lesson3">Занятие 3. Векторы. Линейные операции. Скалярное произведение и его приложения</option>
+          <option value="lesson4">Занятие 4. Векторное и смешанное произведения векторов и их приложения</option>
+          <option value="lesson5">Занятие 5. Прямая на плоскости. Плоскость и прямая в пространстве. Кривые и поверхности второго порядка</option>
+          <option value="lesson6">Занятие 6. Предел функции. Раскрытие неопределённостей. Замечательные пределы. Непрерывность</option>
+          <option value="lesson7">Занятие 7. Производная и её приложения. Исследование функции</option>
+        </select>
+      </div>
+
+      <article class="ktopic active" id="lesson1">
+        <div class="eyebrow">Занятие 1 · Раздел 1. Линейная алгебра</div>
+        <h2>Матрицы и действия над ними. Определители. Обратная матрица. Ранг матрицы</h2>
+        <div class="plan">План занятия:
+          <ol>
+            <li>Опрос. Актуализация опорных знаний</li>
+            <li>Тестовый контроль</li>
+            <li>Самостоятельная работа</li>
+            <li>Домашнее задание</li>
+          </ol>
+        </div>
+
+  <h3 id="lesson1-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+    <details class="qa">
+<summary>Что называется матрицей размера m × n?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Прямоугольная таблица чисел (элементов), расположенных в m строках и n столбцах.</div>
+</details>
+<details class="qa">
+<summary>При каком условии определена сумма матриц? произведение матриц?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Сумма — только для матриц одинакового размера (складываются поэлементно). Произведение AB определено, когда число столбцов A равно числу строк B; тогда AB имеет размер (строки A) × (столбцы B).</div>
+</details>
+<details class="qa">
+<summary>Верно ли, что AB = BA для любых квадратных матриц?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Неверно: умножение матриц в общем случае некоммутативно, AB ≠ BA.</div>
+</details>
+<details class="qa">
+<summary>Для каких матриц определён определитель?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Только для квадратных матриц (число строк равно числу столбцов).</div>
+</details>
+<details class="qa">
+<summary>Чем алгебраическое дополнение отличается от минора?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Алгебраическое дополнение — это минор со знаком: Aij = (−1)^(i+j) · Mij.</div>
+</details>
+<details class="qa">
+<summary>Какая матрица называется невырожденной?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Квадратная матрица, определитель которой не равен нулю (det A ≠ 0); только для таких матриц существует обратная.</div>
+</details>
+
+  <h3 id="lesson1-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+    <details class="qa">
+<summary><span class="num">1.1.</span> Даны A=(3 −2; 1 4) и B=(−1 5; 2 0). Чему равна A + B?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Складываем поэлементно: (3−1, −2+5; 1+2, 4+0) = (2 3; 3 4).</div>
+<div class="ans"><span class="tag">Ответ:</span> (2 3; 3 4)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.2.</span> Матрица A имеет размер 3×4, матрица B — размер 4×2. Каков размер произведения AB?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Число столбцов A (4) равно числу строк B (4) — умножение определено; размер результата (строки A)×(столбцы B).</div>
+<div class="ans"><span class="tag">Ответ:</span> 3×2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.3.</span> Даны A=(1 2; 3 4), B=(0 −1; 1 2). Найти AB.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> c11=1·0+2·1=2; c12=1·(−1)+2·2=3; c21=3·0+4·1=4; c22=3·(−1)+4·2=5.</div>
+<div class="ans"><span class="tag">Ответ:</span> (2 3; 4 5)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.4.</span> Для A=(2 0; −1 3) найти A².</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> c11=2·2+0·(−1)=4; c12=2·0+0·3=0; c21=−1·2+3·(−1)=−5; c22=−1·0+3·3=9.</div>
+<div class="ans"><span class="tag">Ответ:</span> (4 0; −5 9)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.5.</span> Вычислить определитель |5 −3; 2 4|.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 5·4 − (−3)·2 = 20+6 = 26.</div>
+<div class="ans"><span class="tag">Ответ:</span> 26</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.6.</span> Найти корень уравнения |x 4; 3 −2| = 0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> x·(−2) − 4·3 = −2x−12 = 0 → x=−6.</div>
+<div class="ans"><span class="tag">Ответ:</span> x=−6</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.7.</span> Вычислить |2 0 0; −1 3 0; 4 5 −2|.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Матрица нижнетреугольная — определитель равен произведению диагональных элементов: 2·3·(−2) = −12.</div>
+<div class="ans"><span class="tag">Ответ:</span> −12</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.8.</span> Чему равно алгебраическое дополнение A23 элемента определителя третьего порядка?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Aij=(−1)^(i+j)·Mij, при i=2, j=3: (−1)^5·M23 = −M23.</div>
+<div class="ans"><span class="tag">Ответ:</span> −M23</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.9.</span> Обратная матрица A⁻¹ существует тогда и только тогда, когда…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> По определению обратная матрица существует ровно тогда, когда det A ≠ 0.</div>
+<div class="ans"><span class="tag">Ответ:</span> det A ≠ 0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.10.</span> Найти ранг матрицы (1 2; 2 4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Вторая строка = 2×первая, строки пропорциональны — после приведения остаётся одна ненулевая строка.</div>
+<div class="ans"><span class="tag">Ответ:</span> 1</div>
+</div>
+</details>
+
+  <h3 id="lesson1-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
+    <details class="qa">
+<summary><span class="num">1.11.</span> Найти сумму A+B, если A=(−3 −4; 0 −1; −1 −2), B=(−3 4; −3 2; −4 −4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Складываем поэлементно построчно: (−3−3, −4+4; 0−3, −1+2; −1−4, −2−4).</div>
+<div class="ans"><span class="tag">Ответ:</span> (−6 0; −3 1; −5 −6)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.12.</span> Вычислить 2A−3B, A=(1 −1 0; −3 −2 4), B=(−1 −2 3; 2 0 4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 2A=(2 −2 0; −6 −4 8). 3B=(−3 −6 9; 6 0 12). 2A−3B=(2−(−3) −2−(−6) 0−9; −6−6 −4−0 8−12).</div>
+<div class="ans"><span class="tag">Ответ:</span> (5 4 −9; −12 −4 −4)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.13.</span> Найти AB, A=(1 2; 3 −1), B=(2 0; −1 4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> c11=1·2+2·(−1)=0; c12=1·0+2·4=8; c21=3·2+(−1)·(−1)=7; c22=3·0+(−1)·4=−4.</div>
+<div class="ans"><span class="tag">Ответ:</span> (0 8; 7 −4)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.14.</span> Вычислить A², A=(1 −2; 3 0).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> c11=1·1+(−2)·3=−5; c12=1·(−2)+(−2)·0=−2; c21=3·1+0·3=3; c22=3·(−2)+0·0=−6.</div>
+<div class="ans"><span class="tag">Ответ:</span> (−5 −2; 3 −6)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.15.</span> Найти A^T, A=(1 −2 3; 0 4 5).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Строки становятся столбцами.</div>
+<div class="ans"><span class="tag">Ответ:</span> (1 0; −2 4; 3 5)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.16.</span> Вычислить |4 7; −2 3|.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 4·3 − 7·(−2) = 12+14=26.</div>
+<div class="ans"><span class="tag">Ответ:</span> 26</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.17.</span> Вычислить |1 2 3; 0 −1 4; 2 1 5|.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> По правилу треугольников: 1·(−1)·5 + 2·4·2 + 3·0·1 − 3·(−1)·2 − 1·4·1 − 2·0·5 = −5+16+0+6−4−0.</div>
+<div class="ans"><span class="tag">Ответ:</span> 13</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.18.</span> Вычислить |3 −1 2; 0 4 0; 1 5 −2| разложением по второй строке.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> В строке только a22=4 ненулевой: Δ=4·(+1)·|3 2; 1 −2| = 4·(−6−2)=4·(−8).</div>
+<div class="ans"><span class="tag">Ответ:</span> −32</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.19.</span> При каком λ определитель |λ 2; 8 λ| равен нулю?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> λ²−16=0 → λ=±4.</div>
+<div class="ans"><span class="tag">Ответ:</span> λ₁=−4, λ₂=4</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.20.</span> Найти A⁻¹, A=(4 3; 3 2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> det A=4·2−3·3=−1. A⁻¹=(1/−1)·(2 −3; −3 4).</div>
+<div class="ans"><span class="tag">Ответ:</span> det A=−1; A⁻¹=(−2 3; 3 −4)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.21.</span> Найти A⁻¹, A=(1 2 3; 0 1 4; 5 6 0).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> det A = 1·(1·0−4·6) − 2·(0·0−4·5) + 3·(0·6−1·5) = −24+40−15=1. Составляя алгебраические дополнения и присоединённую матрицу, получаем обратную.</div>
+<div class="ans"><span class="tag">Ответ:</span> det A=1; A⁻¹=(−24 18 5; 20 −15 −4; −5 4 1)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">1.22.</span> Найти ранг матрицы (1 −1 2 0; 2 1 −1 3; 3 0 1 3).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> R2−2R1=(0 3 −5 3); R3−3R1=(0 3 −5 3) — совпадает с новой R2, значит R3−R2(нов.)=0. Остаются 2 ненулевые строки.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2</div>
+</div>
+</details>
+
+  <div class="box note" id="lesson1-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 1: раздел 1 «Действия над матрицами» — задачи 1–20; раздел 2 «Определители» — задачи 33–50; раздел 3 «Обратные матрицы и ранг» — задачи 56–70.</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson2">
+  <div class="eyebrow">Занятие 2 · Раздел 1. Линейная алгебра</div>
+  <h2>Матричные уравнения. Системы линейных алгебраических уравнений</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
+  </div>
+
+  <h3 id="lesson2-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+    <details class="qa">
+<summary>Как найти обратную матрицу второго порядка?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Для A=(a b; c d) при ad−bc≠0: A⁻¹ = 1/(ad−bc) · (d −b; −c a).</div>
+</details>
+<details class="qa">
+<summary>Как записать систему в матричной форме?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> AX=B, где A — матрица коэффициентов, X — столбец неизвестных, B — столбец свободных членов.</div>
+</details>
+<details class="qa">
+<summary>Какая система называется совместной? определённой?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Совместная — имеющая хотя бы одно решение; определённая — имеющая ровно одно решение.</div>
+</details>
+<details class="qa">
+<summary>При каком условии применимо правило Крамера?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Число уравнений равно числу неизвестных, и главный определитель Δ=det A ≠ 0.</div>
+</details>
+<details class="qa">
+<summary>Что такое расширенная матрица системы?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Матрица A, дополненная столбцом свободных членов B: (A | B).</div>
+</details>
+<details class="qa">
+<summary>Может ли однородная система быть несовместной?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Нет — однородная система AX=O всегда совместна: нулевое решение существует всегда.</div>
+</details>
+
+  <h3 id="lesson2-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+    <details class="qa">
+<summary><span class="num">2.1.</span> Каково решение AX=B при det A ≠ 0?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Умножаем обе части слева на A⁻¹.</div>
+<div class="ans"><span class="tag">Ответ:</span> X=A⁻¹B</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.2.</span> Каково решение XA=B при det A ≠ 0?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Неизвестная стоит слева от A — умножаем справа на A⁻¹.</div>
+<div class="ans"><span class="tag">Ответ:</span> X=BA⁻¹</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.3.</span> Если главный определитель системы n уравнений с n неизвестными отличен от нуля, то система…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> По правилу Крамера при Δ≠0 решение существует и единственно.</div>
+<div class="ans"><span class="tag">Ответ:</span> имеет единственное решение</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.4.</span> По правилу Крамера неизвестная x2 находится по формуле…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> x_k = Δ_k/Δ.</div>
+<div class="ans"><span class="tag">Ответ:</span> x2=Δ2/Δ</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.5.</span> Для системы 3x+2y=7, x−y=−1 найти x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Из второго x=y−1. Подставляем: 3(y−1)+2y=7 → 5y=10 → y=2, x=1.</div>
+<div class="ans"><span class="tag">Ответ:</span> x=1</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.6.</span> Согласно теореме Кронекера — Капелли система совместна тогда и только тогда, когда…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Теорема: rang A = rang Ā.</div>
+<div class="ans"><span class="tag">Ответ:</span> rang A = rang Ā</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.7.</span> Система из 4 уравнений с 4 неизвестными совместна, rang A=rang Ā=2. Сколько свободных неизвестных?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Число свободных неизвестных = n−r = 4−2.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.8.</span> Если Δ=0, а Δ1≠0, то система…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Классический признак несовместности по правилу Крамера.</div>
+<div class="ans"><span class="tag">Ответ:</span> несовместна</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.9.</span> Однородная система линейных уравнений…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> У однородной системы всегда есть нулевое решение.</div>
+<div class="ans"><span class="tag">Ответ:</span> всегда совместна</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.10.</span> Однородная система 3×3 имеет ненулевое решение тогда и только тогда, когда…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Для квадратной матрицы это равносильно det A=0.</div>
+<div class="ans"><span class="tag">Ответ:</span> det A=0</div>
+</div>
+</details>
+
+  <h3 id="lesson2-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
+    <details class="qa">
+<summary><span class="num">2.11.</span> Решить AX=B, A=(1 2; 3 5), B=(3 5; 5 9).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> det A=1·5−2·3=−1. A⁻¹=(−5 2; 3 −1). X=A⁻¹B: строка1: −5·3+2·5=−5; −5·5+2·9=−7. строка2: 3·3−1·5=4; 3·5−1·9=6.</div>
+<div class="ans"><span class="tag">Ответ:</span> X=(−5 −7; 4 6)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.12.</span> Решить XA=B, A=(2 1; 3 2), B=(4 3; 1 2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> det A=1, A⁻¹=(2 −1; −3 2). X=BA⁻¹: строка1: 4·2+3·(−3)=−1; 4·(−1)+3·2=2. строка2: 1·2+2·(−3)=−4; 1·(−1)+2·2=3.</div>
+<div class="ans"><span class="tag">Ответ:</span> X=(−1 2; −4 3)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.13.</span> Решить по правилу Крамера: x+2y=5, 3x−y=1.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Δ=1·(−1)−2·3=−7. Δ1=|5 2; 1 −1|=−7. Δ2=|1 5; 3 1|=−14.</div>
+<div class="ans"><span class="tag">Ответ:</span> x=1, y=2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.14.</span> Решить по правилу Крамера: x+y+z=6, x−y+2z=5, 2x+y−z=1.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Δ=7. Заменяя поочерёдно столбцы на B, получаем Δ1=7, Δ2=14, Δ3=21.</div>
+<div class="ans"><span class="tag">Ответ:</span> x=1, y=2, z=3</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.15.</span> Решить матричным методом: 2x+y=5, x+3y=10.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> A=(2 1; 1 3), det A=5, A⁻¹=(1/5)(3 −1; −1 2). X=A⁻¹(5;10)=(1/5)(15−10; −5+20).</div>
+<div class="ans"><span class="tag">Ответ:</span> x=1, y=3</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.16.</span> Решить методом Гаусса: x+y+z=2, 2x−y+3z=13, x+2y−z=−6.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> R2−2R1: (0 −3 1 | 9). R3−R1: (0 1 −2 | −8). R2+3·R3: (0 0 −5 | −15) → z=3. Из R3: y=−8+2·3=−2. Из R1: x=2−y−z=1.</div>
+<div class="ans"><span class="tag">Ответ:</span> (x;y;z)=(1; −2; 3)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.17.</span> Исследовать на совместность: x+2y=3, 2x+4y=6.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Второе уравнение = 2×первое: rang A=rang Ā=1&lt;2 — совместна и неопределённа.</div>
+<div class="ans"><span class="tag">Ответ:</span> x=3−2y, y — свободная неизвестная</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.18.</span> Исследовать на совместность: x−y=1, 2x−2y=5.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Коэффициенты пропорциональны (×2), но 2·1=2≠5 — правые части непропорциональны: rang A=1, rang Ā=2.</div>
+<div class="ans"><span class="tag">Ответ:</span> система несовместна</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.19.</span> Найти фундаментальную систему решений: x1+x2−x3=0, 2x1−x2+x3=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Складывая уравнения: 3x1=0→x1=0, тогда x2=x3.</div>
+<div class="ans"><span class="tag">Ответ:</span> e1=(0; 1; 1), X=C·e1</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.20.</span> Найти фундаментальную систему решений: x1+2x2−x3+x4=0, 2x1+4x2−x3+3x4=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Приведение к ступенчатому виду даёт ранг=2, свободных неизвестных n−r=2 (x2, x4).</div>
+<div class="ans"><span class="tag">Ответ:</span> e1=(−2;1;0;0), e2=(−2;0;−1;1)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.21.</span> При каких λ система λx+y=0, x+λy=0 имеет ненулевое решение?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Ненулевое решение существует при det(λ 1; 1 λ)=λ²−1=0.</div>
+<div class="ans"><span class="tag">Ответ:</span> λ=±1</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">2.22.</span> Записать систему задания 2.16 в матричной форме AX=B и указать размеры A, X, B.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Коэффициенты и свободные члены дают A=(1 1 1; 2 −1 3; 1 2 −1), X=(x;y;z), B=(2;13;−6).</div>
+<div class="ans"><span class="tag">Ответ:</span> A — 3×3, X — 3×1, B — 3×1</div>
+</div>
+</details>
+
+  <div class="box note" id="lesson2-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 1: раздел 4 «Матричные уравнения» — задачи 76–85; раздел 5 «Системы линейных алгебраических уравнений» — задачи 86–109; подготовиться к рубежному контролю по линейной алгебре.</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson3">
+  <div class="eyebrow">Занятие 3 · Раздел 2. Векторная алгебра с приложениями</div>
+  <h2>Векторы. Линейные операции. Скалярное произведение и его приложения</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
+  </div>
+
+  <h3 id="lesson3-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+    <details class="qa">
+<summary>Как найти координаты вектора по координатам его начала и конца?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Если A(x1;y1;z1), B(x2;y2;z2), то вектор AB = (x2−x1; y2−y1; z2−z1).</div>
+</details>
+<details class="qa">
+<summary>Чему равна длина вектора в координатной форме?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> |a| = √(ax²+ay²+az²).</div>
+</details>
+<details class="qa">
+<summary>Какой вектор называется ортом?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Единичный вектор направления: a⁰ = a/|a|, |a⁰|=1.</div>
+</details>
+<details class="qa">
+<summary>Каково условие коллинеарности двух векторов?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Координаты пропорциональны: ax/bx = ay/by = az/bz (a=λb).</div>
+</details>
+<details class="qa">
+<summary>Что называется скалярным произведением? Число это или вектор?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> (a,b)=|a||b|cosφ=ax·bx+ay·by+az·bz — это число (скаляр).</div>
+</details>
+<details class="qa">
+<summary>Каково условие перпендикулярности двух ненулевых векторов?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> a⊥b ⇔ (a,b)=0.</div>
+</details>
+
+  <h3 id="lesson3-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+    <details class="qa">
+<summary><span class="num">3.1.</span> Даны A(2;−1;3), B(−1;4;5). Найти координаты вектора AB.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> AB = B−A = (−1−2; 4−(−1); 5−3).</div>
+<div class="ans"><span class="tag">Ответ:</span> (−3;5;2)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.2.</span> Найти длину вектора a=(2;−3;6).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> |a|=√(4+9+36)=√49.</div>
+<div class="ans"><span class="tag">Ответ:</span> 7</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.3.</span> Даны a=(1;−2;0), b=(0;3;−1). Найти 2a+3b.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 2a=(2;−4;0), 3b=(0;9;−3), сумма=(2;5;−3).</div>
+<div class="ans"><span class="tag">Ответ:</span> (2;5;−3)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.4.</span> При каком m векторы (m;3;−2) и (4;−6;4) коллинеарны?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> m/4 = 3/−6 = −2/4 = −0,5 → m=−2.</div>
+<div class="ans"><span class="tag">Ответ:</span> m=−2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.5.</span> Найти орт вектора a=(6;−3;2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> |a|=√(36+9+4)=7. a⁰=(6/7;−3/7;2/7).</div>
+<div class="ans"><span class="tag">Ответ:</span> (6/7; −3/7; 2/7)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.6.</span> Найти середину отрезка A(−1;3), B(5;−7).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Среднее арифметическое координат концов: ((−1+5)/2;(3−7)/2).</div>
+<div class="ans"><span class="tag">Ответ:</span> (2;−2)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.7.</span> Найти (a,b), a=(2;−1;3), b=(1;4;−2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 2·1+(−1)·4+3·(−2)=2−4−6.</div>
+<div class="ans"><span class="tag">Ответ:</span> −8</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.8.</span> Ненулевые векторы перпендикулярны тогда и только тогда, когда…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Условие ортогональности — равенство нулю скалярного произведения.</div>
+<div class="ans"><span class="tag">Ответ:</span> (a,b)=0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.9.</span> Чему равно скалярное произведение (a,a)?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (a,a)=|a|²·cos0.</div>
+<div class="ans"><span class="tag">Ответ:</span> |a|²</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.10.</span> Найти угол между векторами (1;1;0) и (0;1;1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (a,b)=1, |a|=|b|=√2, cosφ=1/2.</div>
+<div class="ans"><span class="tag">Ответ:</span> 60°</div>
+</div>
+</details>
+
+  <h3 id="lesson3-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
+    <details class="qa">
+<summary><span class="num">3.11.</span> Даны A(−2;3;1), B(4;−1;5). Найти координаты и длину вектора AB.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> AB=(4−(−2); −1−3; 5−1)=(6;−4;4). |AB|=√(36+16+16)=√68.</div>
+<div class="ans"><span class="tag">Ответ:</span> AB=(6;−4;4), |AB|=2√17</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.12.</span> Найти длину и орт вектора a=(3;−4;12).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> |a|=√(9+16+144)=√169=13.</div>
+<div class="ans"><span class="tag">Ответ:</span> |a|=13, a⁰=(3/13; −4/13; 12/13)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.13.</span> Даны a=(2;−1;3), b=(−1;4;0). Найти 3a−2b.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 3a=(6;−3;9). 2b=(−2;8;0). 3a−2b=(8;−11;9).</div>
+<div class="ans"><span class="tag">Ответ:</span> (8;−11;9)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.14.</span> При каком m векторы (m;−4;6) и (3;−2;3) коллинеарны?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> −4/−2=2 и 6/3=2, значит m/3=2.</div>
+<div class="ans"><span class="tag">Ответ:</span> m=6</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.15.</span> Разложить c=(5;2;7) по a=(1;1;2), b=(2;−1;1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> c=xa+yb: x+2y=5, x−y=2, 2x+y=7. Из второго x=2+y, подставляя: 3y=3→y=1, x=3; проверка в третьем: 6+1=7 ✓.</div>
+<div class="ans"><span class="tag">Ответ:</span> c=3a+b</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.16.</span> Найти середину отрезка A(3;−5;2), B(−1;7;4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> ((3−1)/2; (−5+7)/2; (2+4)/2).</div>
+<div class="ans"><span class="tag">Ответ:</span> (1;1;3)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.17.</span> Найти точку пересечения медиан треугольника A(1;2), B(4;−1), C(1;5).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Среднее координат вершин: ((1+4+1)/3; (2−1+5)/3).</div>
+<div class="ans"><span class="tag">Ответ:</span> (2;2)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.18.</span> Найти (a,b), a=(1;−2;3), b=(4;0;−1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 1·4+(−2)·0+3·(−1)=4+0−3.</div>
+<div class="ans"><span class="tag">Ответ:</span> 1</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.19.</span> Найти угол между a=(1;2;2), b=(2;1;−2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (a,b)=2+2−4=0 — векторы перпендикулярны.</div>
+<div class="ans"><span class="tag">Ответ:</span> φ=90°</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.20.</span> При каком λ (λ;3;−2) и (4;−1;λ) перпендикулярны?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (a,b)=4λ−3−2λ=2λ−3=0.</div>
+<div class="ans"><span class="tag">Ответ:</span> λ=1,5</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.21.</span> Найти проекцию a=(2;3;−1) на b=(1;−2;2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (a,b)=2−6−2=−6, |b|=√(1+4+4)=3, пр=−6/3.</div>
+<div class="ans"><span class="tag">Ответ:</span> −2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">3.22.</span> Сила F=(3;−2;1) перемещает точку из A(1;−1;2) в B(4;1;0). Найти работу.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> s=B−A=(3;2;−2). A=(F,s)=3·3+(−2)·2+1·(−2)=9−4−2.</div>
+<div class="ans"><span class="tag">Ответ:</span> A=3</div>
+</div>
+</details>
+
+  <div class="box note" id="lesson3-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 2: § 7 «Линейные операции над векторами», § 8 «Скалярное произведение», § 11 «Прямоугольные координаты на плоскости».</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson4">
+  <div class="eyebrow">Занятие 4 · Раздел 2. Векторная алгебра с приложениями</div>
+  <h2>Векторное и смешанное произведения векторов и их приложения</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
+  </div>
+
+  <h3 id="lesson4-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+    <details class="qa">
+<summary>Что является результатом векторного умножения?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Вектор, перпендикулярный обоим векторам-сомножителям и образующий с ними правую тройку.</div>
+</details>
+<details class="qa">
+<summary>Каков геометрический смысл модуля векторного произведения?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Численно равен площади параллелограмма, построенного на этих векторах.</div>
+</details>
+<details class="qa">
+<summary>Чему равно [a,a]?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Нулевой вектор: [a,a]=0.</div>
+</details>
+<details class="qa">
+<summary>Что называется смешанным произведением трёх векторов?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Число (a,b,c)=([a,b],c) — скалярное произведение векторного произведения первых двух векторов на третий.</div>
+</details>
+<details class="qa">
+<summary>Каково условие компланарности трёх векторов?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> (a,b,c)=0.</div>
+</details>
+<details class="qa">
+<summary>Как найти объём тетраэдра по трём векторам?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> V = (1/6)·|(a,b,c)|.</div>
+</details>
+
+  <h3 id="lesson4-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+    <details class="qa">
+<summary><span class="num">4.1.</span> Найти [a,b], a=(1;2;3), b=(2;−1;1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> i(2·1−3·(−1))=5; −j(1·1−3·2)=5; k(1·(−1)−2·2)=−5.</div>
+<div class="ans"><span class="tag">Ответ:</span> (5;5;−5)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.2.</span> Модуль векторного произведения численно равен…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> |[a,b]|=|a||b|sinφ — площадь параллелограмма.</div>
+<div class="ans"><span class="tag">Ответ:</span> площади параллелограмма, построенного на векторах</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.3.</span> Чему равно [a,a]?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> sin0=0.</div>
+<div class="ans"><span class="tag">Ответ:</span> 0 (нулевой вектор)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.4.</span> Ненулевые векторы коллинеарны тогда и только тогда, когда…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Синус угла между коллинеарными векторами равен нулю.</div>
+<div class="ans"><span class="tag">Ответ:</span> [a,b]=0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.5.</span> Найти площадь треугольника на векторах (3;0;0) и (0;4;0).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> [a,b]=(0;0;12), |·|=12 — площадь параллелограмма; площадь треугольника вдвое меньше.</div>
+<div class="ans"><span class="tag">Ответ:</span> 6</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.6.</span> |a|=2, |b|=5, угол между ними 30°. Найти |[a,b]|.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> |[a,b]|=2·5·sin30°=10·0,5.</div>
+<div class="ans"><span class="tag">Ответ:</span> 5</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.7.</span> Вычислить (1;2;3),(2;−1;1),(0;1;−2) — смешанное произведение.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> det=1·(2−1)−2·(−4−0)+3·(2−0)=1+8+6.</div>
+<div class="ans"><span class="tag">Ответ:</span> 15</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.8.</span> Три вектора компланарны тогда и только тогда, когда их смешанное произведение…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Компланарность равносильна нулевому объёму параллелепипеда.</div>
+<div class="ans"><span class="tag">Ответ:</span> равно нулю</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.9.</span> Смешанное произведение трёх векторов равно 18. Найти объём тетраэдра.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> V=(1/6)·|18|.</div>
+<div class="ans"><span class="tag">Ответ:</span> 3</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.10.</span> Чему равно [i,j]?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> По определению базисных ортов правой тройки.</div>
+<div class="ans"><span class="tag">Ответ:</span> k</div>
+</div>
+</details>
+
+  <h3 id="lesson4-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
+    <details class="qa">
+<summary><span class="num">4.11.</span> Найти [a,b], a=(2;3;−1), b=(1;−2;4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> i(3·4−(−1)·(−2))=10; −j(2·4−(−1)·1)=−9; k(2·(−2)−3·1)=−7.</div>
+<div class="ans"><span class="tag">Ответ:</span> (10;−9;−7)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.12.</span> Найти [a,b], a=(1;0;−2), b=(3;1;0).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> i(0·0−(−2)·1)=2; −j(1·0−(−2)·3)=−6; k(1·1−0·3)=1.</div>
+<div class="ans"><span class="tag">Ответ:</span> (2;−6;1)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.13.</span> Найти площадь параллелограмма на (1;2;2) и (2;1;−2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> [a,b]=(2·(−2)−2·1; −(1·(−2)−2·2); 1·1−2·2)=(−6;6;−3). |·|=√(36+36+9)=9.</div>
+<div class="ans"><span class="tag">Ответ:</span> S=9</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.14.</span> Найти площадь треугольника A(1;1;1), B(2;3;4), C(4;3;2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> AB=(1;2;3), AC=(3;2;1). [AB,AC]=(−4;8;−4). |·|=√96=4√6, S=половина.</div>
+<div class="ans"><span class="tag">Ответ:</span> S=2√6</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.15.</span> Найти площадь треугольника A(1;2), B(4;6), C(5;2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> AB=(3;4;0), AC=(4;0;0). [AB,AC]=(0;0;−16). |·|=16.</div>
+<div class="ans"><span class="tag">Ответ:</span> S=8</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.16.</span> Найти единичный вектор, перпендикулярный (1;2;2) и (2;1;−2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> [a,b]=(−6;6;−3), |·|=9.</div>
+<div class="ans"><span class="tag">Ответ:</span> e=(−2/3; 2/3; −1/3) (или противоположный)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.17.</span> Вычислить (1;−1;2),(2;1;−1),(3;0;1) и сделать вывод.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> det=1·(1−0)+1·(2+3)+2·(0−3)=1+5−6.</div>
+<div class="ans"><span class="tag">Ответ:</span> (a,b,c)=0 — векторы компланарны</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.18.</span> Найти объём параллелепипеда на (1;2;3),(2;−1;1),(0;1;−2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Смешанное произведение этих же векторов вычислено выше (см. 4.7).</div>
+<div class="ans"><span class="tag">Ответ:</span> V=15</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.19.</span> Найти объём тетраэдра A(1;1;1), B(2;3;4), C(4;3;2), D(2;1;3).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> AB=(1;2;3), AC=(3;2;1), AD=(1;0;2). (AB,AC,AD)=1·(4−0)−2·(6−1)+3·(0−2)=4−10−6=−12.</div>
+<div class="ans"><span class="tag">Ответ:</span> V=|−12|/6=2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.20.</span> При каком λ (2;1;λ),(1;−1;2),(3;0;1) компланарны?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> det=2·(−1−0)−1·(1−6)+λ·(0+3)=−2+5+3λ=3+3λ=0.</div>
+<div class="ans"><span class="tag">Ответ:</span> λ=−1</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.21.</span> Найти момент силы F=(2;1;−1) в точке A(1;0;2) относительно начала координат.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> OA=(1;0;2). M=[OA,F]=(0·(−1)−2·1; −(1·(−1)−2·2); 1·1−0·2).</div>
+<div class="ans"><span class="tag">Ответ:</span> M=(−2;5;1)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">4.22.</span> Найти высоту параллелепипеда (a=(1;2;3), b=(2;−1;1), c=(0;1;−2)) на грань, построенную на a и b.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> S=|[a,b]|=|(5;5;−5)|=5√3 (см. 4.1). V=15 (см. 4.18). h=V/S=15/(5√3).</div>
+<div class="ans"><span class="tag">Ответ:</span> h=√3</div>
+</div>
+</details>
+
+  <div class="box note" id="lesson4-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 2: § 9 «Векторное произведение», § 10 «Смешанное произведение», § 12 «Приложения и комбинированные задачи»; подготовиться к типовому варианту контрольной работы по векторной алгебре.</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson5">
+  <div class="eyebrow">Занятие 5 · Раздел 3. Аналитическая геометрия</div>
+  <h2>Прямая на плоскости. Плоскость и прямая в пространстве. Кривые и поверхности второго порядка</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
+  </div>
+
+  <h3 id="lesson5-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+    <details class="qa">
+<summary>Какой вид имеет общее уравнение прямой на плоскости? Что такое нормальный вектор?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Ax+By+C=0; нормальный вектор n=(A;B) перпендикулярен прямой.</div>
+</details>
+<details class="qa">
+<summary>Как связаны угловые коэффициенты параллельных и перпендикулярных прямых?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Параллельны при k1=k2; перпендикулярны при k1·k2=−1.</div>
+</details>
+<details class="qa">
+<summary>Какой вид имеет общее уравнение плоскости?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Ax+By+Cz+D=0, нормаль n=(A;B;C).</div>
+</details>
+<details class="qa">
+<summary>Что называется направляющим вектором прямой в пространстве?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Вектор s=(m;p;q), параллельный прямой и задающий её направление.</div>
+</details>
+<details class="qa">
+<summary>Как связаны полуоси эллипса и его фокусное расстояние?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> c²=a²−b², где c — половина межфокусного расстояния, a,b — полуоси (a&gt;b).</div>
+</details>
+<details class="qa">
+<summary>Что такое асимптоты гиперболы?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Прямые y=±(b/a)x, к которым неограниченно приближаются, но которых не пересекают ветви гиперболы.</div>
+</details>
+
+  <h3 id="lesson5-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+    <details class="qa">
+<summary><span class="num">5.1.</span> Найти угловой коэффициент прямой 3x−2y+6=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> y=(3/2)x+3.</div>
+<div class="ans"><span class="tag">Ответ:</span> k=3/2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.2.</span> Прямые y=2x+1 и y=2x−5…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Одинаковый угловой коэффициент, разные свободные члены — не совпадают.</div>
+<div class="ans"><span class="tag">Ответ:</span> параллельны</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.3.</span> Найти расстояние от начала координат до прямой 3x+4y−10=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> d=|3·0+4·0−10|/√(9+16)=10/5.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.4.</span> Найти нормальный вектор плоскости 2x−3y+z−5=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Нормаль составлена из коэффициентов при x, y, z.</div>
+<div class="ans"><span class="tag">Ответ:</span> (2;−3;1)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.5.</span> Найти расстояние от M(1;1;1) до плоскости 2x−2y+z−6=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> d=|2−2+1−6|/√(4+4+1)=5/3.</div>
+<div class="ans"><span class="tag">Ответ:</span> 5/3</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.6.</span> Найти направляющий вектор прямой (x−1)/2=(y+3)/−1=z/4.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Знаменатели канонических уравнений — координаты направляющего вектора.</div>
+<div class="ans"><span class="tag">Ответ:</span> (2;−1;4)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.7.</span> Прямая перпендикулярна плоскости тогда и только тогда, когда…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Направляющий вектор прямой коллинеарен нормали плоскости.</div>
+<div class="ans"><span class="tag">Ответ:</span> векторы n и s коллинеарны</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.8.</span> Написать уравнение окружности с центром C(3;−2) и радиусом 5.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (x−x0)²+(y−y0)²=R².</div>
+<div class="ans"><span class="tag">Ответ:</span> (x−3)²+(y+2)²=25</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.9.</span> Найти эксцентриситет эллипса x²/25+y²/9=1.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> a=5, b=3, c=√(25−9)=4, ε=c/a.</div>
+<div class="ans"><span class="tag">Ответ:</span> 0,8</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.10.</span> Что задаёт в пространстве уравнение x²+y²=4?</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Уравнение без z — окружность в каждой горизонтальной плоскости, то есть поверхность вращения вдоль оси Oz.</div>
+<div class="ans"><span class="tag">Ответ:</span> круговой цилиндр</div>
+</div>
+</details>
+
+  <h3 id="lesson5-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
+    <details class="qa">
+<summary><span class="num">5.11.</span> Составить уравнение прямой через A(−1;4), B(3;0).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> k=(0−4)/(3+1)=−1. y−4=−1(x+1).</div>
+<div class="ans"><span class="tag">Ответ:</span> x+y−3=0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.12.</span> Найти расстояние от M(−2;3) до прямой 5x−12y+2=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> d=|5·(−2)−12·3+2|/√(25+144)=|−44|/13.</div>
+<div class="ans"><span class="tag">Ответ:</span> d=44/13</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.13.</span> Составить уравнение прямой через M(1;−2) параллельно 2x+3y−1=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Параллельная прямая: 2x+3y+C=0. Подставим точку: 2−6+C=0 → C=4.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2x+3y+4=0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.14.</span> Составить уравнение прямой через M(1;−2) перпендикулярно 2x+3y−1=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> k исходной=−2/3, перпендикулярной k=3/2. y+2=1,5(x−1).</div>
+<div class="ans"><span class="tag">Ответ:</span> 3x−2y−7=0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.15.</span> Найти точку пересечения прямых 3x−y−7=0 и x+2y−7=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Из первой y=3x−7. Подставляем: x+2(3x−7)−7=0 → 7x=21.</div>
+<div class="ans"><span class="tag">Ответ:</span> (3;2)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.16.</span> Составить уравнение плоскости через M(−1;2;0) перпендикулярно n=(2;−1;3).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 2(x+1)−1(y−2)+3(z−0)=0.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2x−y+3z+4=0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.17.</span> Составить уравнение плоскости через A(2;0;0), B(0;−3;0), C(0;0;4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Уравнение в отрезках: x/2+y/(−3)+z/4=1, умножая на 12.</div>
+<div class="ans"><span class="tag">Ответ:</span> 6x−4y+3z−12=0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.18.</span> Найти расстояние от M(3;1;−2) до плоскости 2x−y+2z−7=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> d=|6−1−4−7|/√(4+1+4)=|−6|/3.</div>
+<div class="ans"><span class="tag">Ответ:</span> d=2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.19.</span> Составить канонические уравнения прямой через A(2;−1;3), B(4;3;−1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> s=B−A=(2;4;−4), сокращая на 2: (1;2;−2).</div>
+<div class="ans"><span class="tag">Ответ:</span> (x−2)/1=(y+1)/2=(z−3)/−2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.20.</span> Найти точку пересечения прямой (x−1)/2=(y+1)/−1=z/3 с плоскостью x+2y−z+4=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> x=1+2t, y=−1−t, z=3t. Подставляя: (1+2t)+2(−1−t)−3t+4=3−3t=0 → t=1.</div>
+<div class="ans"><span class="tag">Ответ:</span> (3;−2;3)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.21.</span> Найти центр и радиус окружности x²+y²+4x−6y−3=0.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (x+2)²−4+(y−3)²−9−3=0 → (x+2)²+(y−3)²=16.</div>
+<div class="ans"><span class="tag">Ответ:</span> центр (−2;3), R=4</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">5.22.</span> Привести 4x²+9y²−8x+36y+4=0 к каноническому виду.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 4(x−1)²−4+9(y+2)²−36+4=0 → 4(x−1)²+9(y+2)²=36 → делим на 36.</div>
+<div class="ans"><span class="tag">Ответ:</span> эллипс, центр (1;−2), a=3, b=2</div>
+</div>
+</details>
+
+  <div class="box note" id="lesson5-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 3: § 7 «Прямая на плоскости», § 8 «Плоскость в пространстве», § 9 «Прямая в пространстве», § 11 «Кривые второго порядка», § 12 «Поверхности второго порядка».</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson6">
+  <div class="eyebrow">Занятие 6 · Раздел 4. Предел функции</div>
+  <h2>Предел функции. Раскрытие неопределённостей. Замечательные пределы. Непрерывность</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
+  </div>
+
+  <h3 id="lesson6-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+    <details class="qa">
+<summary>Какие ограничения накладывают дробь, корень чётной степени, логарифм?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Знаменатель дроби ≠ 0; подкоренное выражение корня чётной степени ≥ 0; аргумент логарифма &gt; 0.</div>
+</details>
+<details class="qa">
+<summary>Что означает запись lim(x→a) f(x)=A?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Значения f(x) неограниченно приближаются к числу A, когда x приближается к a.</div>
+</details>
+<details class="qa">
+<summary>Какие выражения называются неопределённостями?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Выражения вида 0/0, ∞/∞, ∞−∞, 1^∞ и т.п., значение которых нельзя определить прямой подстановкой.</div>
+</details>
+<details class="qa">
+<summary>Сформулируйте первый и второй замечательные пределы.</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Первый: lim(x→0) sinx/x = 1. Второй: lim(x→∞) (1+1/x)^x = e.</div>
+</details>
+<details class="qa">
+<summary>Какая функция называется непрерывной в точке?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Функция, у которой односторонние пределы в точке равны друг другу и значению функции в этой точке.</div>
+</details>
+<details class="qa">
+<summary>Как найти вертикальную асимптоту графика?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Прямая x=a — вертикальная асимптота, если хотя бы один из односторонних пределов функции при x→a бесконечен.</div>
+</details>
+
+  <h3 id="lesson6-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+    <details class="qa">
+<summary><span class="num">6.1.</span> Найти область определения y=√(x−2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Подкоренное выражение ≥0: x−2≥0.</div>
+<div class="ans"><span class="tag">Ответ:</span> x≥2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.2.</span> Вычислить lim(x→2) (x²−4)/(x−2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (x−2)(x+2)/(x−2)=x+2 → при x=2.</div>
+<div class="ans"><span class="tag">Ответ:</span> 4</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.3.</span> Вычислить lim(x→∞) (2x²+3)/(x²−1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Степени числителя и знаменателя равны — предел равен отношению старших коэффициентов.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.4.</span> Вычислить lim(x→∞) (3x+1)/(x²+2).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Степень числителя меньше степени знаменателя.</div>
+<div class="ans"><span class="tag">Ответ:</span> 0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.5.</span> Вычислить lim(x→0) sin(7x)/x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> lim (sin7x)/(7x)·7 = 1·7.</div>
+<div class="ans"><span class="tag">Ответ:</span> 7</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.6.</span> Вычислить lim(x→0) (1−cos2x)/x².</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 1−cos(2x)~(2x)²/2=2x² при x→0.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.7.</span> Вычислить lim(x→∞) (1+1/x)^{3x}.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> ((1+1/x)^x)³ → e³.</div>
+<div class="ans"><span class="tag">Ответ:</span> e³</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.8.</span> При x→0 бесконечно малая 1−cosx эквивалентна…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> По таблице эквивалентных бесконечно малых.</div>
+<div class="ans"><span class="tag">Ответ:</span> x²/2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.9.</span> Точка x=2 для y=(x²−4)/(x−2) является точкой…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Предел существует и равен 4, но функция в точке не определена.</div>
+<div class="ans"><span class="tag">Ответ:</span> устранимого разрыва</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.10.</span> Найти горизонтальную асимптоту графика y=(2x+1)/(x−1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> lim(x→∞) (2x+1)/(x−1)=2.</div>
+<div class="ans"><span class="tag">Ответ:</span> y=2</div>
+</div>
+</details>
+
+  <h3 id="lesson6-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
+    <details class="qa">
+<summary><span class="num">6.11.</span> Найти область определения y=(x+1)/(x²−9).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Знаменатель не равен нулю: x²≠9.</div>
+<div class="ans"><span class="tag">Ответ:</span> D(y)=(−∞;−3)∪(−3;3)∪(3;+∞)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.12.</span> Найти область определения y=ln(x−4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Аргумент логарифма положителен: x−4&gt;0.</div>
+<div class="ans"><span class="tag">Ответ:</span> D(y)=(4;+∞)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.13.</span> Вычислить lim(x→3) (x²−9)/(x²−5x+6).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> =(x−3)(x+3)/((x−2)(x−3)) = (x+3)/(x−2) при x=3.</div>
+<div class="ans"><span class="tag">Ответ:</span> 6</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.14.</span> Вычислить lim(x→∞) (4x³−x+2)/(2x³+5x²).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Одинаковая старшая степень (3) — отношение коэффициентов.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.15.</span> Вычислить lim(x→1) (x²−1)/(x²+3x−4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> =(x−1)(x+1)/((x−1)(x+4)) = (x+1)/(x+4) при x=1.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2/5</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.16.</span> Вычислить lim(x→4) (√x−2)/(x−4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Умножаем на сопряжённое: (√x−2)(√x+2)=x−4 → 1/(√x+2) при x=4.</div>
+<div class="ans"><span class="tag">Ответ:</span> 1/4</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.17.</span> Вычислить lim(x→+∞) (√(x²+5x)−x).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Умножаем на сопряжённое: 5x/(√(x²+5x)+x) → при x→∞.</div>
+<div class="ans"><span class="tag">Ответ:</span> 5/2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.18.</span> Вычислить lim(x→0) tg(4x)/(2x).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> tg4x~4x при x→0.</div>
+<div class="ans"><span class="tag">Ответ:</span> 2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.19.</span> Вычислить lim(x→0) (1−cos6x)/x².</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 1−cos6x ~ (6x)²/2 = 18x².</div>
+<div class="ans"><span class="tag">Ответ:</span> 18</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.20.</span> Вычислить lim(x→∞) ((x+2)/(x−1))^x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (x+2)/(x−1)=1+3/(x−1). По второму замечательному пределу: exp(lim x·3/(x−1))=exp(3).</div>
+<div class="ans"><span class="tag">Ответ:</span> e³</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.21.</span> Вычислить lim(x→0) (e^{3x}−1)/sin2x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> e^{3x}−1~3x, sin2x~2x.</div>
+<div class="ans"><span class="tag">Ответ:</span> 3/2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">6.22.</span> Найти точки разрыва y=(x+1)/((x−2)(x+5)), определить тип и указать вертикальные асимптоты.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> В x=2 и x=−5 знаменатель равен нулю, а числитель нет — односторонние пределы бесконечны.</div>
+<div class="ans"><span class="tag">Ответ:</span> x=2 и x=−5 — разрывы второго рода, они же вертикальные асимптоты</div>
+</div>
+</details>
+
+  <div class="box note" id="lesson6-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 4: § 11 «Область определения и непрерывность функции», § 12 «Вычисление пределов. Раскрытие неопределённостей», § 13 «Первый и второй замечательные пределы».</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson7">
+  <div class="eyebrow">Занятие 7 · Раздел 5. Дифференциальное исчисление функции одной переменной с приложениями</div>
+  <h2>Производная и её приложения. Исследование функции</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
+  </div>
+
+  <h3 id="lesson7-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+    <details class="qa">
+<summary>Что называется производной функции в точке?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Предел отношения приращения функции к приращению аргумента при стремлении последнего к нулю: f'(x0)=lim(Δx→0) [f(x0+Δx)−f(x0)]/Δx.</div>
+</details>
+<details class="qa">
+<summary>В чём состоит геометрический смысл производной?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> f'(x0) равна угловому коэффициенту касательной к графику функции в точке x0.</div>
+</details>
+<details class="qa">
+<summary>Как дифференцируется произведение и частное?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> (uv)'=u'v+uv'; (u/v)'=(u'v−uv')/v².</div>
+</details>
+<details class="qa">
+<summary>В каких случаях применимо правило Лопиталя?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Для неопределённостей вида 0/0 и ∞/∞, если предел отношения производных существует.</div>
+</details>
+<details class="qa">
+<summary>Сформулируйте достаточное условие экстремума по первой производной.</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> Смена знака производной с «+» на «−» при переходе через критическую точку даёт максимум, с «−» на «+» — минимум.</div>
+</details>
+<details class="qa">
+<summary>Что показывает знак второй производной?</summary>
+<div class="qa-body"><span class="tag">Ответ.</span> При y''&gt;0 график выпуклый вниз, при y''&lt;0 — выпуклый вверх; смена знака — точка перегиба.</div>
+</details>
+
+  <h3 id="lesson7-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+    <details class="qa">
+<summary><span class="num">7.1.</span> Найти производную y=x⁵.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (x^n)'=n·x^(n−1): 5x⁴.</div>
+<div class="ans"><span class="tag">Ответ:</span> 5x⁴</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.2.</span> Найти производную y=ln x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Табличная производная.</div>
+<div class="ans"><span class="tag">Ответ:</span> 1/x</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.3.</span> Найти производную y=e^{3x}.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> По правилу цепочки: e^{3x}·3.</div>
+<div class="ans"><span class="tag">Ответ:</span> 3e^{3x}</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.4.</span> Найти производную y=(2x+1)⁵.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 5(2x+1)⁴·(2x+1)'=5(2x+1)⁴·2.</div>
+<div class="ans"><span class="tag">Ответ:</span> 10(2x+1)⁴</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.5.</span> Найти производную y=x·cos x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (uv)'=u'v+uv': 1·cosx + x·(−sinx).</div>
+<div class="ans"><span class="tag">Ответ:</span> cos x − x sin x</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.6.</span> Геометрический смысл производной f'(x0)…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> f'(x0) равна тангенсу угла наклона касательной.</div>
+<div class="ans"><span class="tag">Ответ:</span> угловому коэффициенту касательной</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.7.</span> Найти уравнение касательной к y=x² в точке x0=1.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> f(1)=1, f'(x)=2x, f'(1)=2. y=1+2(x−1).</div>
+<div class="ans"><span class="tag">Ответ:</span> y=2x−1</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.8.</span> Если y'&gt;0 на интервале, то функция на нём…</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Положительная производная означает возрастание.</div>
+<div class="ans"><span class="tag">Ответ:</span> возрастает</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.9.</span> Найти точку максимума функции y=x³−3x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> y'=3x²−3=3(x−1)(x+1); знак меняется с «+» на «−» при x=−1.</div>
+<div class="ans"><span class="tag">Ответ:</span> x=−1</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.10.</span> Найти наклонную асимптоту графика y=x²/(x−1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> k=lim x²/(x(x−1))=1, b=lim(x²/(x−1)−x)=lim x/(x−1)=1.</div>
+<div class="ans"><span class="tag">Ответ:</span> y=x+1</div>
+</div>
+</details>
+
+  <h3 id="lesson7-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
+    <details class="qa">
+<summary><span class="num">7.11.</span> Найти производную y=4x³−5x²+2x−9.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Дифференцируем почленно.</div>
+<div class="ans"><span class="tag">Ответ:</span> y'=12x²−10x+2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.12.</span> Найти производную y=x³·ln x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (uv)'=u'v+uv': 3x²lnx + x³·(1/x).</div>
+<div class="ans"><span class="tag">Ответ:</span> y'=3x²ln x + x²</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.13.</span> Найти производную y=(3x−2)/(x+4).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (u/v)': [3(x+4)−(3x−2)·1]/(x+4)².</div>
+<div class="ans"><span class="tag">Ответ:</span> y'=14/(x+4)²</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.14.</span> Найти производную y=ln(x²+1).</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (ln u)'=u'/u: 2x/(x²+1).</div>
+<div class="ans"><span class="tag">Ответ:</span> y'=2x/(x²+1)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.15.</span> Найти производную y=e^{−2x}cos3x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> (uv)': −2e^{−2x}cos3x + e^{−2x}·(−3sin3x).</div>
+<div class="ans"><span class="tag">Ответ:</span> y'=−e^{−2x}(2cos3x+3sin3x)</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.16.</span> Найти y' для неявной функции x²+y²=25.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> 2x+2yy'=0.</div>
+<div class="ans"><span class="tag">Ответ:</span> y'=−x/y</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.17.</span> Найти y'', если y=x³−4x²+5x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> y'=3x²−8x+5, затем ещё раз дифференцируем.</div>
+<div class="ans"><span class="tag">Ответ:</span> y'=3x²−8x+5, y''=6x−8</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.18.</span> Составить уравнение касательной к y=x²−3x+2 в точке x0=2.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> f(2)=0, f'(x)=2x−3, f'(2)=1. y=0+1(x−2).</div>
+<div class="ans"><span class="tag">Ответ:</span> y=x−2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.19.</span> Точка движется по s(t)=2t³−5t²+3t. Найти скорость и ускорение при t=1.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> v(t)=6t²−10t+3, v(1)=−1. a(t)=12t−10, a(1)=2.</div>
+<div class="ans"><span class="tag">Ответ:</span> v(1)=−1, a(1)=2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.20.</span> Вычислить по правилу Лопиталя lim(x→0) (1−cosx)/x².</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> Первая производная даёт sinx/2x (снова 0/0), вторая — cosx/2.</div>
+<div class="ans"><span class="tag">Ответ:</span> 1/2</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.21.</span> Найти промежутки монотонности и экстремумы y=x³−6x²+9x.</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> y'=3(x−1)(x−3). Возрастает на (−∞;1) и (3;+∞), убывает на (1;3).</div>
+<div class="ans"><span class="tag">Ответ:</span> y_max=y(1)=4, y_min=y(3)=0</div>
+</div>
+</details>
+<details class="qa">
+<summary><span class="num">7.22.</span> Найти наибольшее и наименьшее значения y=x³−3x² на [−1;4].</summary>
+<div class="qa-body">
+<div><span class="tag">Решение.</span> y'=3x(x−2), критические точки x=0,2. y(−1)=−4, y(0)=0, y(2)=−4, y(4)=16.</div>
+<div class="ans"><span class="tag">Ответ:</span> наибольшее 16 (x=4), наименьшее −4 (x=−1 и x=2)</div>
+</div>
+</details>
+
+  <div class="box note" id="lesson7-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 4: § 14 «Дифференцирование функции одной переменной», § 15 «Приложения производной», § 16 «Исследование функций и построение графиков», § 17 «Задачи на наибольшее и наименьшее значения»; подготовиться к итоговой контрольной работе.</p>
+  </div>
+</article>
+
+    </section>
+  </main>
+
+  <footer>Полные решения ко всем 7 занятиям сборника (7 × 90 мин).</footer>
+
+<script>
+  // ---- Список занятий / просмотр занятия ----
+  var picker = document.getElementById('picker');
+  var conspect = document.getElementById('conspect');
+  var topics = Array.prototype.slice.call(document.querySelectorAll('.ktopic'));
+  var jump = document.getElementById('topicJump');
+
+  function openTopic(id){
+    topics.forEach(function(t){ t.classList.toggle('active', t.id === id); });
+    picker.classList.add('hidden');
+    conspect.classList.add('active');
+    jump.value = id;
+    window.scrollTo({ top: 0 });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-goto]')).forEach(function(btn){
+    btn.addEventListener('click', function(){ openTopic(btn.dataset.goto); });
+  });
+
+  document.getElementById('toList').addEventListener('click', function(){
+    conspect.classList.remove('active');
+    picker.classList.remove('hidden');
+    window.scrollTo({ top: 0 });
+  });
+
+  jump.addEventListener('change', function(){ openTopic(jump.value); });
+
+  // ---- Автоматическое отображение матриц, дробей и корней как уравнений ----
+  function buildMatrix(rows, isDet){
+    var wrap = document.createElement('span');
+    wrap.className = 'mx ' + (isDet ? 'mx-det' : 'mx-mat');
+    var left = document.createElement('span'); left.className = 'mx-b mx-l';
+    var body = document.createElement('span'); body.className = 'mx-body';
+    rows.forEach(function(row){
+      var rowEl = document.createElement('span'); rowEl.className = 'mx-row';
+      row.forEach(function(cell){
+        var c = document.createElement('span'); c.className = 'mx-cell'; c.textContent = cell;
+        rowEl.appendChild(c);
+      });
+      body.appendChild(rowEl);
+    });
+    var right = document.createElement('span'); right.className = 'mx-b mx-r';
+    wrap.appendChild(left); wrap.appendChild(body); wrap.appendChild(right);
+    return wrap;
+  }
+
+  function buildMatrixFromInner(inner, isDet){
+    var rowsRaw = inner.split(';').map(function(s){ return s.trim(); });
+    var hasSpace = rowsRaw.some(function(r){ return /\s/.test(r); });
+    if(!hasSpace) return null;
+    var rows = rowsRaw.map(function(r){ return r.split(/\s+/).filter(Boolean); });
+    return buildMatrix(rows, isDet);
+  }
+
+  function buildSqrt(inner){
+    var wrap = document.createElement('span'); wrap.className = 'sqrt';
+    var sign = document.createElement('span'); sign.className = 'sqrt-sign'; sign.textContent = '\u221A';
+    var body = document.createElement('span'); body.className = 'sqrt-body'; body.textContent = inner;
+    wrap.appendChild(sign); wrap.appendChild(body);
+    return wrap;
+  }
+
+  function renderMathPiece(str){
+    var sq = /^\u221A\(([^()]*)\)$/.exec(str);
+    if(sq) return buildSqrt(sq[1]);
+    return document.createTextNode(str);
+  }
+
+  function buildFraction(numText, denText){
+    var wrap = document.createElement('span'); wrap.className = 'fr';
+    var num = document.createElement('span'); num.className = 'fr-num';
+    num.appendChild(renderMathPiece(numText));
+    var den = document.createElement('span'); den.className = 'fr-den';
+    den.appendChild(renderMathPiece(denText));
+    wrap.appendChild(num); wrap.appendChild(den);
+    return wrap;
+  }
+
+  var TOKEN = '(?:\\|[^|]*\\|)|(?:\\([^()]*\\))|(?:[^\\s()\\/;|.=]+(?:\\([^()]*\\))?)';
+  var MX_RE = new RegExp(
+    '\\(([^()|]*;[^()|]*)\\)' +               // 1: матрица в скобках
+    '|\\|([^|()]*;[^|()]*)\\|' +               // 2: определитель в модулях
+    '|\u221A\\(([^()]*)\\)' +                  // 3: одиночный корень
+    '|((?:' + TOKEN + '))\\/((?:' + TOKEN + '))', // 4,5: дробь
+    'g'
+  );
+
+  function processTextNode(node){
+    var text = node.nodeValue;
+    MX_RE.lastIndex = 0;
+    var m, lastIndex = 0, frag = null, piece;
+    while((m = MX_RE.exec(text))){
+      piece = null;
+      if(m[1] !== undefined) piece = buildMatrixFromInner(m[1], false);
+      else if(m[2] !== undefined) piece = buildMatrixFromInner(m[2], true);
+      else if(m[3] !== undefined) piece = buildSqrt(m[3]);
+      else if(m[4] !== undefined) piece = buildFraction(m[4], m[5]);
+      if(!piece) continue;
+      if(!frag) frag = document.createDocumentFragment();
+      frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
+      frag.appendChild(piece);
+      lastIndex = m.index + m[0].length;
+    }
+    if(frag){
+      frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+      node.parentNode.replaceChild(frag, node);
+    }
+  }
+
+  function wrapMatrices(){
+    var walker = document.createTreeWalker(document.querySelector('main'), NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    var n;
+    while((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(processTextNode);
+  }
+
+  wrapMatrices();
+</script>
+
+</body>
+</html>
