@@ -19,9 +19,14 @@
     --blue-tint-2:#e2ebff;
     --line:#dde5f5;
     --radius:10px;
+    --amber:#b4720a;
+    --amber-tint:#fff6e6;
+    --green:#187a4a;
+    --green-tint:#eafaf1;
   }
   *{box-sizing:border-box;}
-  html, body{max-width:100%; overflow-x:hidden;}
+  html{scroll-behavior:smooth;}
+  html,body{max-width:100%;overflow-x:hidden;}
   body{
     margin:0; background:var(--white); color:var(--ink);
     font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
@@ -29,67 +34,88 @@
     -webkit-font-smoothing:antialiased;
     -webkit-text-size-adjust:100%; text-size-adjust:100%;
   }
-  h1,h2,h3{
+  h1,h2,h3,h4{
     font-family:'Manrope','Inter',sans-serif; color:var(--blue-deep);
-    margin:0 0 .4em 0; font-weight:800; letter-spacing:-0.02em; line-height:1.2;
+    margin:0 0 .5em 0; font-weight:800; letter-spacing:-0.02em; line-height:1.2;
   }
   a{ color:var(--blue); }
   .wrap{ max-width:880px; margin:0 auto; padding:0 20px; }
 
-  header.site-head{ padding:30px 0 18px; }
-  .brand{ display:flex; align-items:center; gap:12px; }
+  header.site-head{ padding:22px 0 16px; border-bottom:1px solid var(--line); }
+  .brand{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .brand-left{ display:flex; align-items:center; gap:12px; min-width:0; }
   .brand-icon{
-    flex:none; width:44px; height:44px; border-radius:12px;
+    flex:none; width:40px; height:40px; border-radius:11px;
     background:linear-gradient(145deg,var(--blue-bright),var(--blue-deep));
     display:flex; align-items:center; justify-content:center;
-    color:#fff; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.2rem;
+    color:#fff; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.1rem;
   }
-  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.35rem; font-weight:800; color:var(--blue-deep); letter-spacing:-0.01em; }
+  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.2rem; font-weight:800; color:var(--blue-deep); min-width:0; }
   .brand-text .thin{
-    color:var(--ink-soft); font-weight:500; font-size:.85rem; display:block;
-    font-family:'Inter',sans-serif; letter-spacing:.01em; margin-top:4px;
+    color:var(--ink-soft); font-weight:500; font-size:.8rem; display:block;
+    font-family:'Inter',sans-serif; letter-spacing:.01em; margin-top:4px; line-height:1.45;
+  }
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.88rem; font-weight:600; color:var(--blue);
+    text-decoration:none; white-space:nowrap; flex:none;
+  }
+  .back-link:hover{ color:var(--blue-deep); }
+
+  main{ padding:30px 0 70px; }
+
+  /* ---------- topic picker (landing grid) ---------- */
+  #picker .lede{ color:var(--ink-soft); max-width:60ch; margin-bottom:22px; }
+  .topic-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
+  .topic-card{
+    text-align:left; border:1px solid var(--line); background:var(--white);
+    border-radius:var(--radius); padding:16px 16px 14px; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, transform .15s ease;
+    font-family:inherit;
+  }
+  .topic-card:hover{ border-color:var(--blue); background:var(--blue-tint); transform:translateY(-1px); }
+  .topic-num{
+    display:inline-block; font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
+    color:var(--blue); background:var(--blue-tint-2); padding:2px 8px; border-radius:20px;
+    margin-bottom:8px; letter-spacing:.03em;
+  }
+  .topic-card h3{ font-size:1rem; margin-bottom:4px; color:var(--ink); }
+  .topic-card p{ margin:0; font-size:.85rem; color:var(--ink-soft); line-height:1.45; }
+
+  /* ---------- lesson (conspect) view ---------- */
+  #conspect{ display:none; }
+  #conspect.active{ display:block; }
+  #picker.hidden{ display:none; }
+
+  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:22px; flex-wrap:wrap; }
+  .to-list{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.88rem; font-weight:600; color:var(--blue);
+    background:none; border:none; cursor:pointer; padding:6px 0; font-family:inherit;
+  }
+  .to-list:hover{ color:var(--blue-deep); }
+  .topic-jump{
+    font-size:.85rem; color:var(--ink-soft); border:1px solid var(--line); border-radius:8px;
+    padding:6px 10px; background:var(--white); font-family:inherit; cursor:pointer; max-width:100%;
   }
 
-  /* ---- Accordion lesson navigation ---- */
-  nav.tabs{ margin-top:22px; }
-  .tabs-label{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin:0 0 8px 0; }
-  .lesson-nav{ list-style:none; margin:0; padding:0; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
-  .lesson-item + .lesson-item{ border-top:1px solid var(--line); }
-  .lesson-item .lesson-btn{
-    width:100%; appearance:none; background:var(--white); border:none; text-align:left; cursor:pointer;
-    font:inherit; font-size:.94rem; color:var(--ink); padding:12px 14px; display:flex; align-items:center; gap:8px;
-  }
-  .lesson-item .lesson-btn .chev{ flex:none; color:var(--ink-soft); font-size:.75rem; width:12px; }
-  .lesson-item.open .lesson-btn .chev{ color:var(--blue); }
-  .lesson-item .lesson-btn:hover{ background:var(--blue-tint); }
-  .lesson-item.active .lesson-btn{ color:var(--blue-deep); font-weight:700; background:var(--blue-tint); }
-  .subitems{ list-style:none; margin:0; padding:0 0 8px 0; display:none; }
-  .lesson-item.open .subitems{ display:block; }
-  .subitems li a{
-    display:block; padding:7px 14px 7px 34px; font-size:.86rem; color:var(--ink-soft);
-    text-decoration:none; border-left:2px solid transparent;
-  }
-  .subitems li a:hover{ color:var(--blue-deep); background:var(--blue-tint); }
-  .subitems li a.active{ color:var(--blue-deep); font-weight:600; border-left-color:var(--blue); }
+  .ktopic{ display:none; animation:fadeIn .35s ease both; }
+  .ktopic.active{ display:block; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
 
-  main{ padding:30px 0 60px; }
-  .panel{ display:none; }
-  .panel.active{ display:block; }
-
-  .lesson-head{ padding-bottom:18px; border-bottom:1px solid var(--line); margin-bottom:22px; }
-  .razdel-tag{
-    display:inline-block; font-size:.78rem; font-weight:600; color:var(--blue);
-    background:var(--blue-tint); padding:4px 10px; border-radius:999px; margin-bottom:10px;
+  .ktopic .eyebrow{
+    font-size:.78rem; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:.05em;
+    margin-bottom:6px;
   }
-  .lesson-head h2{ font-size:1.3rem; }
-
-  .block{ margin-bottom:30px; scroll-margin-top:16px; }
-  .block-title{
-    display:flex; align-items:center; gap:8px; font-family:'Manrope',sans-serif;
-    font-weight:800; color:var(--blue-deep); font-size:1.02rem; margin-bottom:4px;
+  .ktopic h2{ font-size:1.45rem; margin-bottom:4px; }
+  .ktopic .plan{
+    color:var(--ink-soft); font-size:.92rem; margin:10px 0 26px;
+    border-left:3px solid var(--blue-tint-2); padding-left:12px;
   }
-  .block-title .dot{ width:8px; height:8px; border-radius:50%; background:var(--blue-bright); flex:none; }
-  .block-note{ color:var(--ink-soft); font-size:.85rem; margin:0 0 12px 16px; }
+  .ktopic .plan ol{ margin:6px 0 0; padding-left:18px; }
+
+  .ktopic h3{ font-size:1.08rem; margin-top:32px; margin-bottom:6px; }
+  .block-note{ color:var(--ink-soft); font-size:.85rem; margin:0 0 12px; }
 
   details.qa{
     border:1px solid var(--line); border-radius:var(--radius); margin-bottom:8px;
@@ -98,17 +124,22 @@
   details.qa[open]{ border-color:var(--blue-tint-2); }
   details.qa summary{
     list-style:none; cursor:pointer; padding:12px 16px; font-weight:600; color:var(--ink);
-    font-size:.96rem; line-height:1.55;
+    font-size:.95rem; line-height:1.55;
   }
   details.qa summary::-webkit-details-marker{ display:none; }
   details.qa .num{ color:var(--blue); font-weight:700; margin-right:4px; }
   .qa-body{
-    padding:0 16px 14px 16px; color:var(--ink-soft); font-size:.94rem; line-height:1.75;
+    padding:0 16px 14px 16px; color:var(--ink-soft); font-size:.93rem; line-height:1.7;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
   }
   .qa-body .tag{ color:var(--blue-deep); font-weight:700; }
-  .qa-body .ans{ margin-top:6px; color:var(--ink); }
+  .qa-body .ans{
+    display:block; margin-top:8px; padding:8px 10px; border-radius:8px;
+    background:var(--green-tint); color:var(--ink); border-left:3px solid var(--green);
+  }
+  .qa-body .ans .tag{ color:var(--green); }
 
-  /* ---- Inline matrix / determinant equations ---- */
+  /* ---- Inline matrix / determinant / fraction / root ---- */
   .mx{ display:inline-flex; align-items:stretch; vertical-align:middle; margin:0 3px; font-variant-numeric:tabular-nums; }
   .mx-b{ width:6px; flex:none; }
   .mx-mat .mx-l{ border:1.6px solid var(--ink); border-right:none; border-radius:3px 0 0 3px; }
@@ -126,111 +157,113 @@
   .sqrt-sign{ font-size:1.05em; line-height:1; margin-right:1px; transform:translateY(1px); }
   .sqrt-body{ border-top:1.4px solid var(--ink); padding:0 3px; }
 
-  .homework{
-    border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px;
-    background:var(--blue-tint); color:var(--ink); font-size:.94rem; line-height:1.6;
+  .box{ border-radius:var(--radius); padding:14px 16px; margin:22px 0 14px; border:1px solid var(--line); }
+  .box-label{
+    font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
+    text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; display:block;
   }
+  .note{ background:var(--amber-tint); border-color:#f3e0b3; }
+  .note .box-label{ color:var(--amber); }
+  .box p:last-child{ margin-bottom:0; }
+  .box p{ margin:0 0 8px; }
 
   footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:24px 0 40px; }
 
   @media (max-width:600px){
-    .lesson-head h2{ font-size:1.12rem; }
+    .wrap{ padding:0 16px; }
+    .ktopic h2{ font-size:1.22rem; }
+    .mx-row{ gap:6px; }
+    .mx-cell{ min-width:10px; }
+    .mx,.fr{ font-size:.92em; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <header class="site-head">
-    <div class="brand">
-      <div class="brand-icon">√</div>
-      <div class="brand-text">
-        Ответы и решения
-        <span class="thin">Поурочные разработки практических занятий по высшей математике — линейная алгебра, векторная алгебра, аналитическая геометрия, предел функции, дифференциальное исчисление</span>
+<header class="site-head">
+    <div class="wrap brand">
+      <div class="brand-left">
+        <div class="brand-icon">√</div>
+        <div class="brand-text">
+          Ответы и решения
+          <span class="thin">Поурочные разработки практических занятий по высшей математике — линейная алгебра, векторная алгебра, аналитическая геометрия, предел функции, дифференциальное исчисление</span>
+        </div>
       </div>
+      <a class="back-link" href="index.html">&larr; Вернуться на сайт</a>
     </div>
-
-    <nav class="tabs">
-      <div class="tabs-label">Главы</div>
-      <ul class="lesson-nav" id="lessonNav">
-      <li class="lesson-item open active" data-lesson="lesson1">
-        <button class="lesson-btn" data-target="lesson1"><span class="chev">▸</span>Занятие 1. Матрицы и действия над ними. Определители. Обратная матрица. Ранг матрицы</button>
-        <ul class="subitems">
-          <li><a href="#lesson1-survey" data-target="lesson1">Опрос</a></li>
-          <li><a href="#lesson1-test" data-target="lesson1">Тестовый контроль</a></li>
-          <li><a href="#lesson1-work" data-target="lesson1">Самостоятельная работа</a></li>
-          <li><a href="#lesson1-hw" data-target="lesson1">Домашнее задание</a></li>
-        </ul>
-      </li>
-      <li class="lesson-item" data-lesson="lesson2">
-        <button class="lesson-btn" data-target="lesson2"><span class="chev">▸</span>Занятие 2. Матричные уравнения. Системы линейных алгебраических уравнений</button>
-        <ul class="subitems">
-          <li><a href="#lesson2-survey" data-target="lesson2">Опрос</a></li>
-          <li><a href="#lesson2-test" data-target="lesson2">Тестовый контроль</a></li>
-          <li><a href="#lesson2-work" data-target="lesson2">Самостоятельная работа</a></li>
-          <li><a href="#lesson2-hw" data-target="lesson2">Домашнее задание</a></li>
-        </ul>
-      </li>
-      <li class="lesson-item" data-lesson="lesson3">
-        <button class="lesson-btn" data-target="lesson3"><span class="chev">▸</span>Занятие 3. Векторы. Линейные операции. Скалярное произведение и его приложения</button>
-        <ul class="subitems">
-          <li><a href="#lesson3-survey" data-target="lesson3">Опрос</a></li>
-          <li><a href="#lesson3-test" data-target="lesson3">Тестовый контроль</a></li>
-          <li><a href="#lesson3-work" data-target="lesson3">Самостоятельная работа</a></li>
-          <li><a href="#lesson3-hw" data-target="lesson3">Домашнее задание</a></li>
-        </ul>
-      </li>
-      <li class="lesson-item" data-lesson="lesson4">
-        <button class="lesson-btn" data-target="lesson4"><span class="chev">▸</span>Занятие 4. Векторное и смешанное произведения векторов и их приложения</button>
-        <ul class="subitems">
-          <li><a href="#lesson4-survey" data-target="lesson4">Опрос</a></li>
-          <li><a href="#lesson4-test" data-target="lesson4">Тестовый контроль</a></li>
-          <li><a href="#lesson4-work" data-target="lesson4">Самостоятельная работа</a></li>
-          <li><a href="#lesson4-hw" data-target="lesson4">Домашнее задание</a></li>
-        </ul>
-      </li>
-      <li class="lesson-item" data-lesson="lesson5">
-        <button class="lesson-btn" data-target="lesson5"><span class="chev">▸</span>Занятие 5. Прямая на плоскости. Плоскость и прямая в пространстве. Кривые и поверхности второго порядка</button>
-        <ul class="subitems">
-          <li><a href="#lesson5-survey" data-target="lesson5">Опрос</a></li>
-          <li><a href="#lesson5-test" data-target="lesson5">Тестовый контроль</a></li>
-          <li><a href="#lesson5-work" data-target="lesson5">Самостоятельная работа</a></li>
-          <li><a href="#lesson5-hw" data-target="lesson5">Домашнее задание</a></li>
-        </ul>
-      </li>
-      <li class="lesson-item" data-lesson="lesson6">
-        <button class="lesson-btn" data-target="lesson6"><span class="chev">▸</span>Занятие 6. Предел функции. Раскрытие неопределённостей. Замечательные пределы. Непрерывность</button>
-        <ul class="subitems">
-          <li><a href="#lesson6-survey" data-target="lesson6">Опрос</a></li>
-          <li><a href="#lesson6-test" data-target="lesson6">Тестовый контроль</a></li>
-          <li><a href="#lesson6-work" data-target="lesson6">Самостоятельная работа</a></li>
-          <li><a href="#lesson6-hw" data-target="lesson6">Домашнее задание</a></li>
-        </ul>
-      </li>
-      <li class="lesson-item" data-lesson="lesson7">
-        <button class="lesson-btn" data-target="lesson7"><span class="chev">▸</span>Занятие 7. Производная и её приложения. Исследование функции</button>
-        <ul class="subitems">
-          <li><a href="#lesson7-survey" data-target="lesson7">Опрос</a></li>
-          <li><a href="#lesson7-test" data-target="lesson7">Тестовый контроль</a></li>
-          <li><a href="#lesson7-work" data-target="lesson7">Самостоятельная работа</a></li>
-          <li><a href="#lesson7-hw" data-target="lesson7">Домашнее задание</a></li>
-        </ul>
-      </li>
-      </ul>
-    </nav>
   </header>
 
-  <main>
-    
-<section class="panel active" id="lesson1">
-  <div class="lesson-head">
-    <span class="razdel-tag">Раздел 1. Линейная алгебра</span>
-    <h2>Занятие 1. Матрицы и действия над ними. Определители. Обратная матрица. Ранг матрицы</h2>
-  </div>
+  <main class="wrap">
 
-  <div class="block" id="lesson1-survey">
-    <div class="block-title"><span class="dot"></span>Организационный момент. Актуализация опорных знаний</div>
-    <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+    <section id="picker">
+      <p class="lede">Полные разработки всех 7 практических занятий по высшей математике: опрос, тестовый контроль, самостоятельная работа и домашнее задание к каждому занятию, с решением и ответом на каждое задание. Выберите занятие.</p>
+
+      <div class="topic-grid">
+        <button class="topic-card" data-goto="lesson1">
+          <span class="topic-num">Занятие 1</span>
+          <h3>Матрицы и действия над ними. Определители. Обратная матрица. Ранг матрицы</h3>
+          <p>Раздел 1. Линейная алгебра — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson2">
+          <span class="topic-num">Занятие 2</span>
+          <h3>Матричные уравнения. Системы линейных алгебраических уравнений</h3>
+          <p>Раздел 1. Линейная алгебра — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson3">
+          <span class="topic-num">Занятие 3</span>
+          <h3>Векторы. Линейные операции. Скалярное произведение и его приложения</h3>
+          <p>Раздел 2. Векторная алгебра с приложениями — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson4">
+          <span class="topic-num">Занятие 4</span>
+          <h3>Векторное и смешанное произведения векторов и их приложения</h3>
+          <p>Раздел 2. Векторная алгебра с приложениями — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson5">
+          <span class="topic-num">Занятие 5</span>
+          <h3>Прямая на плоскости. Плоскость и прямая в пространстве. Кривые и поверхности второго порядка</h3>
+          <p>Раздел 3. Аналитическая геометрия — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson6">
+          <span class="topic-num">Занятие 6</span>
+          <h3>Предел функции. Раскрытие неопределённостей. Замечательные пределы. Непрерывность</h3>
+          <p>Раздел 4. Предел функции — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+        <button class="topic-card" data-goto="lesson7">
+          <span class="topic-num">Занятие 7</span>
+          <h3>Производная и её приложения. Исследование функции</h3>
+          <p>Раздел 5. Дифференциальное исчисление — опрос, тестовый контроль, самостоятельная работа, домашнее задание.</p>
+        </button>
+      </div>
+    </section>
+
+    <section id="conspect">
+      <div class="topbar">
+        <button class="to-list" id="toList">&larr; К списку занятий</button>
+        <select class="topic-jump" id="topicJump">
+          <option value="lesson1">Занятие 1. Матрицы и действия над ними. Определители. Обратная матрица. Ранг матрицы</option>
+          <option value="lesson2">Занятие 2. Матричные уравнения. Системы линейных алгебраических уравнений</option>
+          <option value="lesson3">Занятие 3. Векторы. Линейные операции. Скалярное произведение и его приложения</option>
+          <option value="lesson4">Занятие 4. Векторное и смешанное произведения векторов и их приложения</option>
+          <option value="lesson5">Занятие 5. Прямая на плоскости. Плоскость и прямая в пространстве. Кривые и поверхности второго порядка</option>
+          <option value="lesson6">Занятие 6. Предел функции. Раскрытие неопределённостей. Замечательные пределы. Непрерывность</option>
+          <option value="lesson7">Занятие 7. Производная и её приложения. Исследование функции</option>
+        </select>
+      </div>
+
+      <article class="ktopic active" id="lesson1">
+        <div class="eyebrow">Занятие 1 · Раздел 1. Линейная алгебра</div>
+        <h2>Матрицы и действия над ними. Определители. Обратная матрица. Ранг матрицы</h2>
+        <div class="plan">План занятия:
+          <ol>
+            <li>Опрос. Актуализация опорных знаний</li>
+            <li>Тестовый контроль</li>
+            <li>Самостоятельная работа</li>
+            <li>Домашнее задание</li>
+          </ol>
+        </div>
+
+  <h3 id="lesson1-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
     <details class="qa">
 <summary>Что называется матрицей размера m × n?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Прямоугольная таблица чисел (элементов), расположенных в m строках и n столбцах.</div>
@@ -255,11 +288,9 @@
 <summary>Какая матрица называется невырожденной?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Квадратная матрица, определитель которой не равен нулю (det A ≠ 0); только для таких матриц существует обратная.</div>
 </details>
-  </div>
 
-  <div class="block" id="lesson1-test">
-    <div class="block-title"><span class="dot"></span>Тестовый контроль</div>
-    <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+  <h3 id="lesson1-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
     <details class="qa">
 <summary><span class="num">1.1.</span> Даны A=(3 −2; 1 4) и B=(−1 5; 2 0). Чему равна A + B?</summary>
 <div class="qa-body">
@@ -330,11 +361,9 @@
 <div class="ans"><span class="tag">Ответ:</span> 1</div>
 </div>
 </details>
-  </div>
 
-  <div class="block" id="lesson1-work">
-    <div class="block-title"><span class="dot"></span>Самостоятельная работа</div>
-    <p class="block-note">12 классических заданий — 20 мин.</p>
+  <h3 id="lesson1-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
     <details class="qa">
 <summary><span class="num">1.11.</span> Найти сумму A+B, если A=(−3 −4; 0 −1; −1 −2), B=(−3 4; −3 2; −4 −4).</summary>
 <div class="qa-body">
@@ -419,23 +448,27 @@
 <div class="ans"><span class="tag">Ответ:</span> 2</div>
 </div>
 </details>
+
+  <div class="box note" id="lesson1-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 1: раздел 1 «Действия над матрицами» — задачи 1–20; раздел 2 «Определители» — задачи 33–50; раздел 3 «Обратные матрицы и ранг» — задачи 56–70.</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson2">
+  <div class="eyebrow">Занятие 2 · Раздел 1. Линейная алгебра</div>
+  <h2>Матричные уравнения. Системы линейных алгебраических уравнений</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
   </div>
 
-  <div class="block" id="lesson1-hw">
-    <div class="block-title"><span class="dot"></span>Подведение итогов. Домашнее задание</div>
-    <div class="homework">Сборник задач, часть 1: раздел 1 «Действия над матрицами» — задачи 1–20; раздел 2 «Определители» — задачи 33–50; раздел 3 «Обратные матрицы и ранг» — задачи 56–70.</div>
-  </div>
-</section>
-
-<section class="panel" id="lesson2">
-  <div class="lesson-head">
-    <span class="razdel-tag">Раздел 1. Линейная алгебра</span>
-    <h2>Занятие 2. Матричные уравнения. Системы линейных алгебраических уравнений</h2>
-  </div>
-
-  <div class="block" id="lesson2-survey">
-    <div class="block-title"><span class="dot"></span>Организационный момент. Актуализация опорных знаний</div>
-    <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+  <h3 id="lesson2-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
     <details class="qa">
 <summary>Как найти обратную матрицу второго порядка?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Для A=(a b; c d) при ad−bc≠0: A⁻¹ = 1/(ad−bc) · (d −b; −c a).</div>
@@ -460,11 +493,9 @@
 <summary>Может ли однородная система быть несовместной?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Нет — однородная система AX=O всегда совместна: нулевое решение существует всегда.</div>
 </details>
-  </div>
 
-  <div class="block" id="lesson2-test">
-    <div class="block-title"><span class="dot"></span>Тестовый контроль</div>
-    <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+  <h3 id="lesson2-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
     <details class="qa">
 <summary><span class="num">2.1.</span> Каково решение AX=B при det A ≠ 0?</summary>
 <div class="qa-body">
@@ -535,11 +566,9 @@
 <div class="ans"><span class="tag">Ответ:</span> det A=0</div>
 </div>
 </details>
-  </div>
 
-  <div class="block" id="lesson2-work">
-    <div class="block-title"><span class="dot"></span>Самостоятельная работа</div>
-    <p class="block-note">12 классических заданий — 20 мин.</p>
+  <h3 id="lesson2-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
     <details class="qa">
 <summary><span class="num">2.11.</span> Решить AX=B, A=(1 2; 3 5), B=(3 5; 5 9).</summary>
 <div class="qa-body">
@@ -624,23 +653,27 @@
 <div class="ans"><span class="tag">Ответ:</span> A — 3×3, X — 3×1, B — 3×1</div>
 </div>
 </details>
+
+  <div class="box note" id="lesson2-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 1: раздел 4 «Матричные уравнения» — задачи 76–85; раздел 5 «Системы линейных алгебраических уравнений» — задачи 86–109; подготовиться к рубежному контролю по линейной алгебре.</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson3">
+  <div class="eyebrow">Занятие 3 · Раздел 2. Векторная алгебра с приложениями</div>
+  <h2>Векторы. Линейные операции. Скалярное произведение и его приложения</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
   </div>
 
-  <div class="block" id="lesson2-hw">
-    <div class="block-title"><span class="dot"></span>Подведение итогов. Домашнее задание</div>
-    <div class="homework">Сборник задач, часть 1: раздел 4 «Матричные уравнения» — задачи 76–85; раздел 5 «Системы линейных алгебраических уравнений» — задачи 86–109; подготовиться к рубежному контролю по линейной алгебре.</div>
-  </div>
-</section>
-
-<section class="panel" id="lesson3">
-  <div class="lesson-head">
-    <span class="razdel-tag">Раздел 2. Векторная алгебра с приложениями</span>
-    <h2>Занятие 3. Векторы. Линейные операции. Скалярное произведение и его приложения</h2>
-  </div>
-
-  <div class="block" id="lesson3-survey">
-    <div class="block-title"><span class="dot"></span>Организационный момент. Актуализация опорных знаний</div>
-    <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+  <h3 id="lesson3-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
     <details class="qa">
 <summary>Как найти координаты вектора по координатам его начала и конца?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Если A(x1;y1;z1), B(x2;y2;z2), то вектор AB = (x2−x1; y2−y1; z2−z1).</div>
@@ -665,11 +698,9 @@
 <summary>Каково условие перпендикулярности двух ненулевых векторов?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> a⊥b ⇔ (a,b)=0.</div>
 </details>
-  </div>
 
-  <div class="block" id="lesson3-test">
-    <div class="block-title"><span class="dot"></span>Тестовый контроль</div>
-    <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+  <h3 id="lesson3-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
     <details class="qa">
 <summary><span class="num">3.1.</span> Даны A(2;−1;3), B(−1;4;5). Найти координаты вектора AB.</summary>
 <div class="qa-body">
@@ -740,11 +771,9 @@
 <div class="ans"><span class="tag">Ответ:</span> 60°</div>
 </div>
 </details>
-  </div>
 
-  <div class="block" id="lesson3-work">
-    <div class="block-title"><span class="dot"></span>Самостоятельная работа</div>
-    <p class="block-note">12 классических заданий — 20 мин.</p>
+  <h3 id="lesson3-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
     <details class="qa">
 <summary><span class="num">3.11.</span> Даны A(−2;3;1), B(4;−1;5). Найти координаты и длину вектора AB.</summary>
 <div class="qa-body">
@@ -829,23 +858,27 @@
 <div class="ans"><span class="tag">Ответ:</span> A=3</div>
 </div>
 </details>
+
+  <div class="box note" id="lesson3-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 2: § 7 «Линейные операции над векторами», § 8 «Скалярное произведение», § 11 «Прямоугольные координаты на плоскости».</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson4">
+  <div class="eyebrow">Занятие 4 · Раздел 2. Векторная алгебра с приложениями</div>
+  <h2>Векторное и смешанное произведения векторов и их приложения</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
   </div>
 
-  <div class="block" id="lesson3-hw">
-    <div class="block-title"><span class="dot"></span>Подведение итогов. Домашнее задание</div>
-    <div class="homework">Сборник задач, часть 2: § 7 «Линейные операции над векторами», § 8 «Скалярное произведение», § 11 «Прямоугольные координаты на плоскости».</div>
-  </div>
-</section>
-
-<section class="panel" id="lesson4">
-  <div class="lesson-head">
-    <span class="razdel-tag">Раздел 2. Векторная алгебра с приложениями</span>
-    <h2>Занятие 4. Векторное и смешанное произведения векторов и их приложения</h2>
-  </div>
-
-  <div class="block" id="lesson4-survey">
-    <div class="block-title"><span class="dot"></span>Организационный момент. Актуализация опорных знаний</div>
-    <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+  <h3 id="lesson4-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
     <details class="qa">
 <summary>Что является результатом векторного умножения?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Вектор, перпендикулярный обоим векторам-сомножителям и образующий с ними правую тройку.</div>
@@ -870,11 +903,9 @@
 <summary>Как найти объём тетраэдра по трём векторам?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> V = (1/6)·|(a,b,c)|.</div>
 </details>
-  </div>
 
-  <div class="block" id="lesson4-test">
-    <div class="block-title"><span class="dot"></span>Тестовый контроль</div>
-    <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+  <h3 id="lesson4-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
     <details class="qa">
 <summary><span class="num">4.1.</span> Найти [a,b], a=(1;2;3), b=(2;−1;1).</summary>
 <div class="qa-body">
@@ -945,11 +976,9 @@
 <div class="ans"><span class="tag">Ответ:</span> k</div>
 </div>
 </details>
-  </div>
 
-  <div class="block" id="lesson4-work">
-    <div class="block-title"><span class="dot"></span>Самостоятельная работа</div>
-    <p class="block-note">12 классических заданий — 20 мин.</p>
+  <h3 id="lesson4-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
     <details class="qa">
 <summary><span class="num">4.11.</span> Найти [a,b], a=(2;3;−1), b=(1;−2;4).</summary>
 <div class="qa-body">
@@ -1034,23 +1063,27 @@
 <div class="ans"><span class="tag">Ответ:</span> h=√3</div>
 </div>
 </details>
+
+  <div class="box note" id="lesson4-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 2: § 9 «Векторное произведение», § 10 «Смешанное произведение», § 12 «Приложения и комбинированные задачи»; подготовиться к типовому варианту контрольной работы по векторной алгебре.</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson5">
+  <div class="eyebrow">Занятие 5 · Раздел 3. Аналитическая геометрия</div>
+  <h2>Прямая на плоскости. Плоскость и прямая в пространстве. Кривые и поверхности второго порядка</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
   </div>
 
-  <div class="block" id="lesson4-hw">
-    <div class="block-title"><span class="dot"></span>Подведение итогов. Домашнее задание</div>
-    <div class="homework">Сборник задач, часть 2: § 9 «Векторное произведение», § 10 «Смешанное произведение», § 12 «Приложения и комбинированные задачи»; подготовиться к типовому варианту контрольной работы по векторной алгебре.</div>
-  </div>
-</section>
-
-<section class="panel" id="lesson5">
-  <div class="lesson-head">
-    <span class="razdel-tag">Раздел 3. Аналитическая геометрия</span>
-    <h2>Занятие 5. Прямая на плоскости. Плоскость и прямая в пространстве. Кривые и поверхности второго порядка</h2>
-  </div>
-
-  <div class="block" id="lesson5-survey">
-    <div class="block-title"><span class="dot"></span>Организационный момент. Актуализация опорных знаний</div>
-    <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+  <h3 id="lesson5-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
     <details class="qa">
 <summary>Какой вид имеет общее уравнение прямой на плоскости? Что такое нормальный вектор?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Ax+By+C=0; нормальный вектор n=(A;B) перпендикулярен прямой.</div>
@@ -1075,11 +1108,9 @@
 <summary>Что такое асимптоты гиперболы?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Прямые y=±(b/a)x, к которым неограниченно приближаются, но которых не пересекают ветви гиперболы.</div>
 </details>
-  </div>
 
-  <div class="block" id="lesson5-test">
-    <div class="block-title"><span class="dot"></span>Тестовый контроль</div>
-    <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+  <h3 id="lesson5-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
     <details class="qa">
 <summary><span class="num">5.1.</span> Найти угловой коэффициент прямой 3x−2y+6=0.</summary>
 <div class="qa-body">
@@ -1150,11 +1181,9 @@
 <div class="ans"><span class="tag">Ответ:</span> круговой цилиндр</div>
 </div>
 </details>
-  </div>
 
-  <div class="block" id="lesson5-work">
-    <div class="block-title"><span class="dot"></span>Самостоятельная работа</div>
-    <p class="block-note">12 классических заданий — 20 мин.</p>
+  <h3 id="lesson5-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
     <details class="qa">
 <summary><span class="num">5.11.</span> Составить уравнение прямой через A(−1;4), B(3;0).</summary>
 <div class="qa-body">
@@ -1239,23 +1268,27 @@
 <div class="ans"><span class="tag">Ответ:</span> эллипс, центр (1;−2), a=3, b=2</div>
 </div>
 </details>
+
+  <div class="box note" id="lesson5-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 3: § 7 «Прямая на плоскости», § 8 «Плоскость в пространстве», § 9 «Прямая в пространстве», § 11 «Кривые второго порядка», § 12 «Поверхности второго порядка».</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson6">
+  <div class="eyebrow">Занятие 6 · Раздел 4. Предел функции</div>
+  <h2>Предел функции. Раскрытие неопределённостей. Замечательные пределы. Непрерывность</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
   </div>
 
-  <div class="block" id="lesson5-hw">
-    <div class="block-title"><span class="dot"></span>Подведение итогов. Домашнее задание</div>
-    <div class="homework">Сборник задач, часть 3: § 7 «Прямая на плоскости», § 8 «Плоскость в пространстве», § 9 «Прямая в пространстве», § 11 «Кривые второго порядка», § 12 «Поверхности второго порядка».</div>
-  </div>
-</section>
-
-<section class="panel" id="lesson6">
-  <div class="lesson-head">
-    <span class="razdel-tag">Раздел 4. Предел функции</span>
-    <h2>Занятие 6. Предел функции. Раскрытие неопределённостей. Замечательные пределы. Непрерывность</h2>
-  </div>
-
-  <div class="block" id="lesson6-survey">
-    <div class="block-title"><span class="dot"></span>Организационный момент. Актуализация опорных знаний</div>
-    <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+  <h3 id="lesson6-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
     <details class="qa">
 <summary>Какие ограничения накладывают дробь, корень чётной степени, логарифм?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Знаменатель дроби ≠ 0; подкоренное выражение корня чётной степени ≥ 0; аргумент логарифма &gt; 0.</div>
@@ -1280,11 +1313,9 @@
 <summary>Как найти вертикальную асимптоту графика?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Прямая x=a — вертикальная асимптота, если хотя бы один из односторонних пределов функции при x→a бесконечен.</div>
 </details>
-  </div>
 
-  <div class="block" id="lesson6-test">
-    <div class="block-title"><span class="dot"></span>Тестовый контроль</div>
-    <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+  <h3 id="lesson6-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
     <details class="qa">
 <summary><span class="num">6.1.</span> Найти область определения y=√(x−2).</summary>
 <div class="qa-body">
@@ -1355,11 +1386,9 @@
 <div class="ans"><span class="tag">Ответ:</span> y=2</div>
 </div>
 </details>
-  </div>
 
-  <div class="block" id="lesson6-work">
-    <div class="block-title"><span class="dot"></span>Самостоятельная работа</div>
-    <p class="block-note">12 классических заданий — 20 мин.</p>
+  <h3 id="lesson6-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
     <details class="qa">
 <summary><span class="num">6.11.</span> Найти область определения y=(x+1)/(x²−9).</summary>
 <div class="qa-body">
@@ -1444,23 +1473,27 @@
 <div class="ans"><span class="tag">Ответ:</span> x=2 и x=−5 — разрывы второго рода, они же вертикальные асимптоты</div>
 </div>
 </details>
+
+  <div class="box note" id="lesson6-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 4: § 11 «Область определения и непрерывность функции», § 12 «Вычисление пределов. Раскрытие неопределённостей», § 13 «Первый и второй замечательные пределы».</p>
+  </div>
+</article>
+
+<article class="ktopic" id="lesson7">
+  <div class="eyebrow">Занятие 7 · Раздел 5. Дифференциальное исчисление функции одной переменной с приложениями</div>
+  <h2>Производная и её приложения. Исследование функции</h2>
+  <div class="plan">План занятия:
+    <ol>
+      <li>Опрос. Актуализация опорных знаний</li>
+      <li>Тестовый контроль</li>
+      <li>Самостоятельная работа</li>
+      <li>Домашнее задание</li>
+    </ol>
   </div>
 
-  <div class="block" id="lesson6-hw">
-    <div class="block-title"><span class="dot"></span>Подведение итогов. Домашнее задание</div>
-    <div class="homework">Сборник задач, часть 4: § 11 «Область определения и непрерывность функции», § 12 «Вычисление пределов. Раскрытие неопределённостей», § 13 «Первый и второй замечательные пределы».</div>
-  </div>
-</section>
-
-<section class="panel" id="lesson7">
-  <div class="lesson-head">
-    <span class="razdel-tag">Раздел 5. Дифференциальное исчисление функции одной переменной с приложениями</span>
-    <h2>Занятие 7. Производная и её приложения. Исследование функции</h2>
-  </div>
-
-  <div class="block" id="lesson7-survey">
-    <div class="block-title"><span class="dot"></span>Организационный момент. Актуализация опорных знаний</div>
-    <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
+  <h3 id="lesson7-survey">Организационный момент. Актуализация опорных знаний</h3>
+  <p class="block-note">Устный фронтальный опрос — 5 мин.</p>
     <details class="qa">
 <summary>Что называется производной функции в точке?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> Предел отношения приращения функции к приращению аргумента при стремлении последнего к нулю: f'(x0)=lim(Δx→0) [f(x0+Δx)−f(x0)]/Δx.</div>
@@ -1485,11 +1518,9 @@
 <summary>Что показывает знак второй производной?</summary>
 <div class="qa-body"><span class="tag">Ответ.</span> При y''&gt;0 график выпуклый вниз, при y''&lt;0 — выпуклый вверх; смена знака — точка перегиба.</div>
 </details>
-  </div>
 
-  <div class="block" id="lesson7-test">
-    <div class="block-title"><span class="dot"></span>Тестовый контроль</div>
-    <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
+  <h3 id="lesson7-test">Тестовый контроль</h3>
+  <p class="block-note">10 заданий с выбором одного верного ответа — 15 мин.</p>
     <details class="qa">
 <summary><span class="num">7.1.</span> Найти производную y=x⁵.</summary>
 <div class="qa-body">
@@ -1560,11 +1591,9 @@
 <div class="ans"><span class="tag">Ответ:</span> y=x+1</div>
 </div>
 </details>
-  </div>
 
-  <div class="block" id="lesson7-work">
-    <div class="block-title"><span class="dot"></span>Самостоятельная работа</div>
-    <p class="block-note">12 классических заданий — 20 мин.</p>
+  <h3 id="lesson7-work">Самостоятельная работа</h3>
+  <p class="block-note">12 классических заданий — 20 мин.</p>
     <details class="qa">
 <summary><span class="num">7.11.</span> Найти производную y=4x³−5x²+2x−9.</summary>
 <div class="qa-body">
@@ -1649,54 +1678,44 @@
 <div class="ans"><span class="tag">Ответ:</span> наибольшее 16 (x=4), наименьшее −4 (x=−1 и x=2)</div>
 </div>
 </details>
-  </div>
 
-  <div class="block" id="lesson7-hw">
-    <div class="block-title"><span class="dot"></span>Подведение итогов. Домашнее задание</div>
-    <div class="homework">Сборник задач, часть 4: § 14 «Дифференцирование функции одной переменной», § 15 «Приложения производной», § 16 «Исследование функций и построение графиков», § 17 «Задачи на наибольшее и наименьшее значения»; подготовиться к итоговой контрольной работе.</div>
+  <div class="box note" id="lesson7-hw">
+    <span class="box-label">Домашнее задание</span>
+    <p>Сборник задач, часть 4: § 14 «Дифференцирование функции одной переменной», § 15 «Приложения производной», § 16 «Исследование функций и построение графиков», § 17 «Задачи на наибольшее и наименьшее значения»; подготовиться к итоговой контрольной работе.</p>
   </div>
-</section>
+</article>
+
+    </section>
   </main>
 
   <footer>Полные решения ко всем 7 занятиям сборника (7 × 90 мин).</footer>
-</div>
 
 <script>
-  // ---- Панели занятий + аккордеон-навигация ----
-  var lessonItems = Array.prototype.slice.call(document.querySelectorAll('.lesson-item'));
-  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  // ---- Список занятий / просмотр занятия ----
+  var picker = document.getElementById('picker');
+  var conspect = document.getElementById('conspect');
+  var topics = Array.prototype.slice.call(document.querySelectorAll('.ktopic'));
+  var jump = document.getElementById('topicJump');
 
-  function showLesson(lid){
-    panels.forEach(function(p){ p.classList.toggle('active', p.id === lid); });
-    lessonItems.forEach(function(li){ li.classList.toggle('active', li.dataset.lesson === lid); });
+  function openTopic(id){
+    topics.forEach(function(t){ t.classList.toggle('active', t.id === id); });
+    picker.classList.add('hidden');
+    conspect.classList.add('active');
+    jump.value = id;
+    window.scrollTo({ top: 0 });
   }
 
-  function setActiveLink(link){
-    document.querySelectorAll('.subitems a').forEach(function(a){ a.classList.remove('active'); });
-    if(link) link.classList.add('active');
-  }
-
-  lessonItems.forEach(function(li){
-    var btn = li.querySelector('.lesson-btn');
-    btn.addEventListener('click', function(){
-      var wasOpen = li.classList.contains('open');
-      lessonItems.forEach(function(other){ other.classList.remove('open'); });
-      if(!wasOpen) li.classList.add('open');
-      showLesson(btn.dataset.target);
-      setActiveLink(null);
-      window.scrollTo({ top: 0 });
-    });
-
-    li.querySelectorAll('.subitems a').forEach(function(link){
-      link.addEventListener('click', function(e){
-        e.preventDefault();
-        showLesson(link.dataset.target);
-        setActiveLink(link);
-        var target = document.querySelector(link.getAttribute('href'));
-        if(target) target.scrollIntoView({ block: 'start' });
-      });
-    });
+  Array.prototype.slice.call(document.querySelectorAll('[data-goto]')).forEach(function(btn){
+    btn.addEventListener('click', function(){ openTopic(btn.dataset.goto); });
   });
+
+  document.getElementById('toList').addEventListener('click', function(){
+    conspect.classList.remove('active');
+    picker.classList.remove('hidden');
+    window.scrollTo({ top: 0 });
+  });
+
+  jump.addEventListener('change', function(){ openTopic(jump.value); });
 
   // ---- Автоматическое отображение матриц, дробей и корней как уравнений ----
   function buildMatrix(rows, isDet){
