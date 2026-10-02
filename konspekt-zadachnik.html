@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Конспекты к сборнику задач · Высшая математика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff;
+    --ink:#1b2333;
+    --ink-soft:#5b6577;
+    --blue-deep:#123a8c;
+    --blue:#2458d6;
+    --blue-bright:#3d6fef;
+    --blue-tint:#eef3ff;
+    --blue-tint-2:#e2ebff;
+    --line:#dde5f5;
+    --radius:10px;
+    --amber:#b4720a;
+    --amber-tint:#fff6e6;
+    --green:#187a4a;
+    --green-tint:#eafaf1;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{max-width:100%;overflow-x:hidden;}
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
+    font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Manrope','Inter',sans-serif;
+    color:var(--blue-deep);
+    margin:0 0 .5em 0;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    line-height:1.2;
+  }
+  a{ color:var(--blue); }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 20px; }
+
+  header.site-head{
+    padding:22px 0 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.25rem; font-weight:800; color:var(--blue-deep); }
+  .brand-text .thin{ color:var(--ink-soft); font-weight:500; font-size:.82rem; display:block; font-family:'Inter',sans-serif; margin-top:3px; }
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.88rem; font-weight:600; color:var(--blue);
+    text-decoration:none; white-space:nowrap;
+  }
+  .back-link:hover{ color:var(--blue-deep); }
+
+  main{ padding:30px 0 70px; }
+
+  /* ---------- topic picker (landing grid) ---------- */
+  #picker .lede{ color:var(--ink-soft); max-width:60ch; margin-bottom:22px; }
+  .topic-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:12px;
+  }
+  .topic-card{
+    text-align:left;
+    border:1px solid var(--line);
+    background:var(--white);
+    border-radius:var(--radius);
+    padding:16px 16px 14px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, transform .15s ease;
+    font-family:inherit;
+  }
+  .topic-card:hover{ border-color:var(--blue); background:var(--blue-tint); transform:translateY(-1px); }
+  .topic-num{
+    display:inline-block;
+    font-family:'Manrope',sans-serif;
+    font-weight:800;
+    font-size:.72rem;
+    color:var(--blue);
+    background:var(--blue-tint-2);
+    padding:2px 8px;
+    border-radius:20px;
+    margin-bottom:8px;
+    letter-spacing:.03em;
+  }
+  .topic-card h3{ font-size:1rem; margin-bottom:4px; color:var(--ink); }
+  .topic-card p{ margin:0; font-size:.85rem; color:var(--ink-soft); line-height:1.45; }
+
+  /* ---------- conspect view ---------- */
+  #conspect{ display:none; }
+  #conspect.active{ display:block; }
+  #picker.hidden{ display:none; }
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-bottom:22px; flex-wrap:wrap;
+  }
+  .to-list{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.88rem; font-weight:600; color:var(--blue);
+    background:none; border:none; cursor:pointer; padding:6px 0; font-family:inherit;
+  }
+  .to-list:hover{ color:var(--blue-deep); }
+  .topic-jump{
+    font-size:.85rem; color:var(--ink-soft); border:1px solid var(--line); border-radius:8px;
+    padding:6px 10px; background:var(--white); font-family:inherit; cursor:pointer;
+  }
+
+  .ktopic{ display:none; animation:fadeIn .35s ease both; }
+  .ktopic.active{ display:block; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .ktopic .eyebrow{
+    font-size:.78rem; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:.05em;
+    margin-bottom:6px;
+  }
+  .ktopic h2{ font-size:1.6rem; margin-bottom:4px; }
+  .ktopic .plan{
+    color:var(--ink-soft); font-size:.92rem; margin:10px 0 26px;
+    border-left:3px solid var(--blue-tint-2); padding-left:12px;
+  }
+  .ktopic .plan ol{ margin:6px 0 0; padding-left:18px; }
+
+  .ktopic h3{ font-size:1.12rem; margin-top:34px; margin-bottom:10px; }
+  .ktopic p{ margin:0 0 14px; }
+
+  .box{
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin:14px 0;
+    border:1px solid var(--line);
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .box-label{
+    font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
+    text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; display:block;
+  }
+  .def{ background:var(--blue-tint); border-color:var(--blue-tint-2); }
+  .def .box-label{ color:var(--blue-deep); }
+  .thm{ background:var(--blue-tint); border-color:var(--blue-tint-2); }
+  .thm .box-label{ color:var(--blue-deep); }
+  .example{ background:var(--green-tint); border-color:#c9ecd8; }
+  .example .box-label{ color:var(--green); }
+  .note{ background:var(--amber-tint); border-color:#f3e0b3; }
+  .note .box-label{ color:var(--amber); }
+  .summary{ background:#f4f6fb; border-color:var(--line); }
+  .summary .box-label{ color:var(--ink-soft); }
+  .summary ul{ margin:4px 0 0; padding-left:18px; }
+  .summary li{ margin-bottom:5px; }
+
+  .box p:last-child{ margin-bottom:0; }
+  .box p{ margin:0 0 8px; }
+
+  mjx-container{
+    overflow-x:auto;
+    overflow-y:hidden;
+    max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  mjx-container[display="true"]{
+    display:block;
+    margin:6px 0 !important;
+  }
+
+  hr.sep{ border:none; border-top:1px solid var(--line); margin:34px 0; }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:24px 0 6px; }
+
+  @media (max-width:600px){
+    .topic-grid{ grid-template-columns:1fr; }
+    .ktopic h2{ font-size:1.35rem; }
+  }
+  .box ul{margin:4px 0 0;padding-left:18px;}
+  .box li{margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap brand">
+    <div class="brand-text">Конспекты к задачнику
+      <span class="thin">Высшая математика · сборник задач</span>
+    </div>
+    <a class="back-link" href="index.html">&larr; Вернуться на сайт</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="picker">
+    <p class="lede">Краткие конспекты по всем темам сборника задач: основные определения, формулы и правила. Выберите тему.</p>
+    <div class="topic-grid">
+      <button class="topic-card" data-goto="t1">
+        <span class="topic-num">Часть 1</span>
+        <h3>Матрицы и определители</h3>
+        <p>Действия над матрицами, Определители.</p>
+      </button>
+      <button class="topic-card" data-goto="t2">
+        <span class="topic-num">Часть 1</span>
+        <h3>Обратная матрица, ранг, матричные уравнения</h3>
+        <p>Обратные матрицы и ранг, Матричные уравнения.</p>
+      </button>
+      <button class="topic-card" data-goto="t3">
+        <span class="topic-num">Часть 1</span>
+        <h3>Системы линейных уравнений</h3>
+        <p>Системы линейных уравнений.</p>
+      </button>
+      <button class="topic-card" data-goto="t4">
+        <span class="topic-num">Часть 2</span>
+        <h3>Векторная алгебра</h3>
+        <p>Координаты, длина, скалярное произведение, Векторное и смешанное произведения.</p>
+      </button>
+      <button class="topic-card" data-goto="t5">
+        <span class="topic-num">Часть 3</span>
+        <h3>Прямая на плоскости и кривые 2-го порядка</h3>
+        <p>Прямая на плоскости, Кривые второго порядка.</p>
+      </button>
+      <button class="topic-card" data-goto="t6">
+        <span class="topic-num">Часть 3</span>
+        <h3>Плоскость и прямая в пространстве</h3>
+        <p>Плоскость и прямая в пространстве.</p>
+      </button>
+      <button class="topic-card" data-goto="t7">
+        <span class="topic-num">Часть 4</span>
+        <h3>Пределы и непрерывность</h3>
+        <p>Пределы и замечательные пределы, Непрерывность, разрывы, асимптоты.</p>
+      </button>
+      <button class="topic-card" data-goto="t8">
+        <span class="topic-num">Часть 4</span>
+        <h3>Производная и исследование функции</h3>
+        <p>Производная и правила дифференцирования, Исследование функции.</p>
+      </button>
+      <button class="topic-card" data-goto="t9">
+        <span class="topic-num">Часть 5</span>
+        <h3>Неопределённый интеграл</h3>
+        <p>Первообразная и таблица интегралов, Непосредственное интегрирование, Замена переменной, Интегрирование по частям, Рациональные дроби и тригонометрия.</p>
+      </button>
+      <button class="topic-card" data-goto="t10">
+        <span class="topic-num">Часть 5</span>
+        <h3>Определённый и несобственные интегралы</h3>
+        <p>Определённый интеграл: свойства и вычисление, Приложения определённого интеграла, Несобственные интегралы.</p>
+      </button>
+      <button class="topic-card" data-goto="t11">
+        <span class="topic-num">Часть 5</span>
+        <h3>Дифференциальные уравнения</h3>
+        <p>ДУ: основные понятия, разделяющиеся переменные, Линейные ДУ первого порядка, ДУ высших порядков и приложения.</p>
+      </button>
+      <button class="topic-card" data-goto="t12">
+        <span class="topic-num">Часть 5</span>
+        <h3>Комплексные числа и вычеты</h3>
+        <p>Комплексные числа, Интегралы от ФКП и вычеты.</p>
+      </button>
+      <button class="topic-card" data-goto="t13">
+        <span class="topic-num">Часть 5</span>
+        <h3>Функции нескольких переменных</h3>
+        <p>Частные производные, Градиент и производная по направлению, Экстремумы, касательная плоскость.</p>
+      </button>
+      <button class="topic-card" data-goto="t14">
+        <span class="topic-num">Часть 5</span>
+        <h3>Кратные и криволинейные интегралы</h3>
+        <p>Двойной и тройной интегралы, Криволинейные интегралы, формула Грина.</p>
+      </button>
+      <button class="topic-card" data-goto="t15">
+        <span class="topic-num">Часть 5</span>
+        <h3>Поверхностные интегралы и теория поля</h3>
+        <p>Поверхностные интегралы, теория поля.</p>
+      </button>
+      <button class="topic-card" data-goto="t16">
+        <span class="topic-num">Часть 5</span>
+        <h3>Числовые и степенные ряды, ряды Фурье</h3>
+        <p>Числовые ряды и признаки сходимости, Степенные ряды, Ряды Маклорена и Фурье.</p>
+      </button>
+      <button class="topic-card" data-goto="t17">
+        <span class="topic-num">Часть 5</span>
+        <h3>Теория вероятностей и статистика</h3>
+        <p>Определение вероятности, Алгебра событий, теоремы сложения и умножения, Случайные величины и законы распределения, Элементы математической статистики.</p>
+      </button>
+    </div>
+  </section>
+
+  <section id="conspect">
+    <div class="topbar">
+      <button class="to-list" id="toList">&larr; К списку тем</button>
+      <select class="topic-jump" id="topicJump">
+        <option value="t1">1. Матрицы и определители</option>
+        <option value="t2">2. Обратная матрица, ранг, матричные уравнения</option>
+        <option value="t3">3. Системы линейных уравнений</option>
+        <option value="t4">4. Векторная алгебра</option>
+        <option value="t5">5. Прямая на плоскости и кривые 2-го порядка</option>
+        <option value="t6">6. Плоскость и прямая в пространстве</option>
+        <option value="t7">7. Пределы и непрерывность</option>
+        <option value="t8">8. Производная и исследование функции</option>
+        <option value="t9">9. Неопределённый интеграл</option>
+        <option value="t10">10. Определённый и несобственные интегралы</option>
+        <option value="t11">11. Дифференциальные уравнения</option>
+        <option value="t12">12. Комплексные числа и вычеты</option>
+        <option value="t13">13. Функции нескольких переменных</option>
+        <option value="t14">14. Кратные и криволинейные интегралы</option>
+        <option value="t15">15. Поверхностные интегралы и теория поля</option>
+        <option value="t16">16. Числовые и степенные ряды, ряды Фурье</option>
+        <option value="t17">17. Теория вероятностей и статистика</option>
+      </select>
+    </div>
+
+    <article class="ktopic" id="t1">
+      <div class="eyebrow">Часть 1 · Линейная алгебра</div>
+      <h2>Матрицы и определители</h2>
+      <div class="plan">План:<ol><li>Действия над матрицами</li><li>Определители</li></ol></div>
+      <h3>I. Действия над матрицами</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>A±B — поэлементно, размеры должны совпадать. λA — умножить каждый элемент.</li>
+<li>AB: (m×n)·(n×k) = m×k, cᵢⱼ = Σ aᵢₖ·bₖⱼ (строка на столбец). Обычно AB ≠ BA.</li>
+<li>Aᵀ — строки и столбцы меняются местами.</li></ul>
+      </div>
+
+      <h3>II. Определители</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>2×2: ad − bc. 3×3: правило треугольников (Саррюса).</li>
+<li>Разложение по строке: Σ aᵢⱼ·(−1)ⁱ⁺ʲ·Mᵢⱼ.</li>
+<li>Две равные строки → 0; перестановка строк меняет знак; det(AB) = detA·detB.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t2">
+      <div class="eyebrow">Часть 1 · Линейная алгебра</div>
+      <h2>Обратная матрица, ранг, матричные уравнения</h2>
+      <div class="plan">План:<ol><li>Обратные матрицы и ранг</li><li>Матричные уравнения</li></ol></div>
+      <h3>III. Обратные матрицы и ранг</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>A⁻¹ = (1/detA)·(Aᵢⱼ)ᵀ, где Aᵢⱼ — алгебраические дополнения. Существует, если detA ≠ 0.</li>
+<li>2×2: A⁻¹ = 1/(ad−bc)·[d −b; −c a]. Проверка: A·A⁻¹ = E.</li>
+<li>Ранг — наибольший порядок ненулевого минора. Находят приведением к ступенчатому виду.</li></ul>
+      </div>
+
+      <h3>IV. Матричные уравнения</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>AX = B → X = A⁻¹B. XA = B → X = BA⁻¹. AXB = C → X = A⁻¹CB⁻¹.</li>
+<li>Порядок множителей менять нельзя: обратную пишут с той стороны, где стоит A.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t3">
+      <div class="eyebrow">Часть 1 · Линейная алгебра</div>
+      <h2>Системы линейных уравнений</h2>
+      <div class="plan">План:<ol><li>Системы линейных уравнений</li></ol></div>
+      <h3>V. Системы линейных уравнений</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Крамер (Δ ≠ 0): xᵢ = Δᵢ/Δ. Матричный способ: X = A⁻¹B. Метод Гаусса — приведение к ступенчатому виду.</li>
+<li>Кронекер–Капелли: rang A ≠ rang Ã — несовместна; rang A = rang Ã = n — одно решение; &lt; n — бесконечно много.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t4">
+      <div class="eyebrow">Часть 2 · Векторная алгебра</div>
+      <h2>Векторная алгебра</h2>
+      <div class="plan">План:<ol><li>Координаты, длина, скалярное произведение</li><li>Векторное и смешанное произведения</li></ol></div>
+      <h3>Координаты, длина, скалярное произведение</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>AB = (x₂−x₁; y₂−y₁; z₂−z₁). |a| = √(x²+y²+z²).</li>
+<li>a·b = x₁x₂+y₁y₂+z₁z₂ = |a||b|cosφ. Перпендикулярны ⇔ a·b = 0.</li>
+<li>Проекция: пр_b a = (a·b)/|b|. Коллинеарны ⇔ координаты пропорциональны.</li></ul>
+      </div>
+
+      <h3>Векторное и смешанное произведения</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>a×b = определитель с строками (i j k; x₁ y₁ z₁; x₂ y₂ z₂), |a×b| = |a||b|sinφ.</li>
+<li>Площадь параллелограмма = |a×b|, треугольника = ½|a×b|.</li>
+<li>(a,b,c) = det 3×3. Объём параллелепипеда = |(a,b,c)|, пирамиды = 1/6 |(a,b,c)|. Компланарны ⇔ (a,b,c) = 0.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t5">
+      <div class="eyebrow">Часть 3 · Аналитическая геометрия</div>
+      <h2>Прямая на плоскости и кривые 2-го порядка</h2>
+      <div class="plan">План:<ol><li>Прямая на плоскости</li><li>Кривые второго порядка</li></ol></div>
+      <h3>Прямая на плоскости</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>y = kx+b; y−y₀ = k(x−x₀); общее Ax+By+C = 0, нормаль n = (A;B).</li>
+<li>Через две точки: (x−x₁)/(x₂−x₁) = (y−y₁)/(y₂−y₁).</li>
+<li>Параллельны: k₁ = k₂; перпендикулярны: k₁k₂ = −1. Угол: tgφ = |(k₂−k₁)/(1+k₁k₂)|.</li>
+<li>Расстояние от точки до прямой: d = |Ax₀+By₀+C|/√(A²+B²).</li></ul>
+      </div>
+
+      <h3>Кривые второго порядка</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Окружность: (x−a)²+(y−b)² = R².</li>
+<li>Эллипс: x²/a²+y²/b² = 1, c² = a²−b², e = c/a &lt; 1.</li>
+<li>Гипербола: x²/a²−y²/b² = 1, c² = a²+b², асимптоты y = ±(b/a)x.</li>
+<li>Парабола: y² = 2px, фокус (p/2; 0), директриса x = −p/2.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t6">
+      <div class="eyebrow">Часть 3 · Аналитическая геометрия</div>
+      <h2>Плоскость и прямая в пространстве</h2>
+      <div class="plan">План:<ol><li>Плоскость и прямая в пространстве</li></ol></div>
+      <h3>Плоскость и прямая в пространстве</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Плоскость: Ax+By+Cz+D = 0, n = (A;B;C). Расстояние от точки: |Ax₀+By₀+Cz₀+D|/√(A²+B²+C²).</li>
+<li>Плоскости параллельны, если n коллинеарны; перпендикулярны, если n₁·n₂ = 0.</li>
+<li>Прямая: (x−x₀)/m = (y−y₀)/n = (z−z₀)/p, s = (m;n;p). Угол с плоскостью: sinφ = |s·n|/(|s||n|).</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t7">
+      <div class="eyebrow">Часть 4 · Пределы и производные</div>
+      <h2>Пределы и непрерывность</h2>
+      <div class="plan">План:<ol><li>Пределы и замечательные пределы</li><li>Непрерывность, разрывы, асимптоты</li></ol></div>
+      <h3>Пределы и замечательные пределы</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>sin x/x → 1; (1+1/x)ˣ → e; (eˣ−1)/x → 1; ln(1+x)/x → 1; (1−cos x)/x² → ½.</li>
+<li>0/0 — сократить или Лопиталь; ∞/∞ — делить на старшую степень; ∞−∞ — домножить на сопряжённое; 1^∞ — через e.</li>
+<li>При x→0: sin x ~ tg x ~ arcsin x ~ x.</li></ul>
+      </div>
+
+      <h3>Непрерывность, разрывы, асимптоты</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Непрерывна в x₀, если lim слева = lim справа = f(x₀).</li>
+<li>Разрыв I рода: односторонние пределы конечны (равны — устранимый, не равны — скачок). II рода: хотя бы один бесконечен или не существует.</li>
+<li>Асимптоты: вертикальная x = a; наклонная y = kx+b, k = lim f/x, b = lim (f−kx).</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t8">
+      <div class="eyebrow">Часть 4 · Пределы и производные</div>
+      <h2>Производная и исследование функции</h2>
+      <div class="plan">План:<ol><li>Производная и правила дифференцирования</li><li>Исследование функции</li></ol></div>
+      <h3>Производная и правила дифференцирования</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>(xⁿ)′ = nxⁿ⁻¹; (sin x)′ = cos x; (cos x)′ = −sin x; (tg x)′ = 1/cos²x; (eˣ)′ = eˣ; (aˣ)′ = aˣ·ln a; (ln x)′ = 1/x; (arctg x)′ = 1/(1+x²); (arcsin x)′ = 1/√(1−x²).</li>
+<li>(uv)′ = u′v+uv′; (u/v)′ = (u′v−uv′)/v²; сложная: f(g)′ = f′(g)·g′. Параметрическая: y′ₓ = y′ₜ/x′ₜ.</li>
+<li>Касательная: y−y₀ = f′(x₀)(x−x₀). Дифференциал: dy = f′dx.</li></ul>
+      </div>
+
+      <h3>Исследование функции</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>f′ = 0 — критические точки; f′ &gt; 0 — возрастает. Смена знака f′ с + на − даёт максимум, с − на + даёт минимум.</li>
+<li>f″ &gt; 0 — выпукла вниз; f″ = 0 с сменой знака — перегиб.</li>
+<li>Наибольшее и наименьшее на [a;b]: сравнить значения в критических точках и на концах.</li>
+<li>Лопиталь: lim f/g = lim f′/g′.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t9">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Неопределённый интеграл</h2>
+      <div class="plan">План:<ol><li>Первообразная и таблица интегралов</li><li>Непосредственное интегрирование</li><li>Замена переменной</li><li>Интегрирование по частям</li><li>Рациональные дроби и тригонометрия</li></ol></div>
+      <h3>§1. Первообразная и таблица интегралов</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>F′ = f ⇒ ∫f dx = F+C. (∫f dx)′ = f; ∫f′dx = f+C.</li>
+<li>∫xⁿdx = xⁿ⁺¹/(n+1)+C (n ≠ −1); ∫dx/x = ln|x|; ∫eˣ = eˣ; ∫aˣ = aˣ/ln a; ∫sin x = −cos x; ∫cos x = sin x.</li>
+<li>∫dx/cos²x = tg x; ∫dx/sin²x = −ctg x; ∫dx/(1+x²) = arctg x; ∫dx/√(1−x²) = arcsin x; ∫dx/(x²−a²) = (1/2a)·ln|(x−a)/(x+a)|.</li></ul>
+      </div>
+
+      <h3>§2. Непосредственное интегрирование</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Линейность: ∫(af+bg) = a∫f+b∫g. Дробь делят почленно, скобки раскрывают.</li>
+<li>∫f(ax+b)dx = (1/a)·F(ax+b)+C.</li></ul>
+      </div>
+
+      <h3>§3. Замена переменной</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>∫f(φ(x))φ′(x)dx = ∫f(t)dt, t = φ(x). Это «подведение под знак дифференциала».</li>
+<li>В конце вернуться к x.</li></ul>
+      </div>
+
+      <h3>§4. Интегрирование по частям</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>∫u dv = uv − ∫v du.</li>
+<li>За u берут: логарифм, обратные тригонометрические, многочлен. За dv: eˣ, sin x, cos x.</li></ul>
+      </div>
+
+      <h3>§5. Рациональные дроби и тригонометрия</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Неправильную дробь делят с остатком. Правильную раскладывают: A/(x−a) + (Bx+C)/(x²+px+q).</li>
+<li>sin²x = (1−cos2x)/2; cos²x = (1+cos2x)/2. Универсальная замена t = tg(x/2). При нечётной степени sin или cos заменяют другую функцию.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t10">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Определённый и несобственные интегралы</h2>
+      <div class="plan">План:<ol><li>Определённый интеграл: свойства и вычисление</li><li>Приложения определённого интеграла</li><li>Несобственные интегралы</li></ol></div>
+      <h3>§6–7. Определённый интеграл: свойства и вычисление</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Ньютон–Лейбниц: ∫ₐᵇ f dx = F(b)−F(a).</li>
+<li>∫ₐᵇ = −∫ᵇₐ; ∫ₐᵇ = ∫ₐᶜ+∫ᶜᵇ. Чётная на [−a;a]: 2∫₀ᵃ; нечётная: 0.</li>
+<li>При замене меняют пределы. Среднее значение: f_ср = 1/(b−a)·∫ₐᵇ f dx.</li></ul>
+      </div>
+
+      <h3>§8. Приложения определённого интеграла</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Площадь: S = ∫ₐᵇ (f₂−f₁)dx. Объём вращения вокруг Ox: V = π∫ f²dx.</li>
+<li>Длина дуги: L = ∫√(1+y′²)dx. Путь: s = ∫v dt. Работа: A = ∫F dx.</li></ul>
+      </div>
+
+      <h3>§9. Несобственные интегралы</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>∫ₐ^∞ f dx = lim ∫ₐᵇ f dx при b→∞. Сходится, если предел конечен.</li>
+<li>∫₁^∞ dx/xᵖ сходится при p &gt; 1; ∫₀¹ dx/xᵖ сходится при p &lt; 1.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t11">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Дифференциальные уравнения</h2>
+      <div class="plan">План:<ol><li>ДУ: основные понятия, разделяющиеся переменные</li><li>Линейные ДУ первого порядка</li><li>ДУ высших порядков и приложения</li></ol></div>
+      <h3>§10–11. ДУ: основные понятия, разделяющиеся переменные</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Порядок — старшая производная. Общее решение содержит констант столько, каков порядок. Частное находят из начальных условий (задача Коши).</li>
+<li>y′ = f(x)g(y) ⇒ dy/g(y) = f(x)dx, затем интегрировать. Не потерять решения g(y) = 0.</li>
+<li>Однородное y′ = f(y/x): замена z = y/x.</li></ul>
+      </div>
+
+      <h3>§12. Линейные ДУ первого порядка</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>y′+p(x)y = q(x): подстановка y = u·v. Сначала v из v′+pv = 0, затем u из u′v = q.</li>
+<li>Бернулли: y′+py = qyⁿ — та же подстановка.</li></ul>
+      </div>
+
+      <h3>§13–14. ДУ высших порядков и приложения</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>y″ = f(x) — интегрировать дважды. Линейное y″+py′+qy = 0: характеристическое уравнение k²+pk+q = 0.</li>
+<li>k₁ ≠ k₂: y = C₁e^(k₁x)+C₂e^(k₂x). k₁ = k₂: y = (C₁+C₂x)e^(kx). k = α±βi: y = e^(αx)(C₁cosβx+C₂sinβx).</li>
+<li>Неоднородное: y = y_одн + y_частное. Рост и распад: dN/dt = kN ⇒ N = N₀e^(kt).</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t12">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Комплексные числа и вычеты</h2>
+      <div class="plan">План:<ol><li>Комплексные числа</li><li>Интегралы от ФКП и вычеты</li></ol></div>
+      <h3>§15–17. Комплексные числа</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>z = a+bi, i² = −1; z̄ = a−bi; z·z̄ = |z|² = a²+b². Деление: умножить числитель и знаменатель на сопряжённое.</li>
+<li>z = r(cosφ+i sinφ) = re^(iφ). Умножение: модули перемножают, аргументы складывают. Деление: модули делят, аргументы вычитают.</li>
+<li>Муавр: zⁿ = rⁿ(cos nφ+i sin nφ). Корень: ⁿ√z = ⁿ√r·(cos((φ+2πk)/n)+i sin((φ+2πk)/n)), k = 0…n−1.</li>
+<li>Аналитичность — условия Коши–Римана: uₓ = vᵧ, uᵧ = −vₓ.</li></ul>
+      </div>
+
+      <h3>§18. Интегралы от ФКП и вычеты</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>∮f dz = 2πi·Σ res f. ∮dz/(z−a) = 2πi, если a внутри контура.</li>
+<li>Простой полюс: res = lim (z−a)f(z). Полюс порядка n: res = 1/(n−1)!·lim dⁿ⁻¹/dzⁿ⁻¹[(z−a)ⁿf(z)].</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t13">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Функции нескольких переменных</h2>
+      <div class="plan">План:<ol><li>Частные производные</li><li>Градиент и производная по направлению</li><li>Экстремумы, касательная плоскость</li></ol></div>
+      <h3>§19. Частные производные</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>∂z/∂x — дифференцируем по x, считая y постоянной. Смешанные: z″ₓᵧ = z″ᵧₓ.</li>
+<li>Полный дифференциал: dz = zₓdx + zᵧdy.</li></ul>
+      </div>
+
+      <h3>§20, 26. Градиент и производная по направлению</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>grad u = (uₓ; uᵧ; u_z). ∂u/∂l = grad u · l/|l|.</li>
+<li>Быстрее всего функция растёт по направлению grad u, скорость роста равна |grad u|.</li></ul>
+      </div>
+
+      <h3>§21. Экстремумы, касательная плоскость</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>zₓ = zᵧ = 0 — стационарные точки. A = zₓₓ, B = zₓᵧ, C = zᵧᵧ, Δ = AC−B².</li>
+<li>Δ &gt; 0 и A &gt; 0 — минимум; Δ &gt; 0 и A &lt; 0 — максимум; Δ &lt; 0 — экстремума нет.</li>
+<li>Касательная плоскость: z−z₀ = zₓ(x−x₀)+zᵧ(y−y₀). Для F(x,y,z) = 0 нормаль — grad F.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t14">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Кратные и криволинейные интегралы</h2>
+      <div class="plan">План:<ol><li>Двойной и тройной интегралы</li><li>Криволинейные интегралы, формула Грина</li></ol></div>
+      <h3>§22–23. Двойной и тройной интегралы</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>∬f dxdy = ∫ₐᵇdx ∫ f dy (повторный интеграл). Площадь: S = ∬dxdy.</li>
+<li>Полярные: x = r cosφ, y = r sinφ, dxdy = r dr dφ.</li>
+<li>Цилиндрические: dV = r dr dφ dz. Сферические: dV = ρ²sinθ dρ dθ dφ. Объём: V = ∭dV.</li></ul>
+      </div>
+
+      <h3>§24. Криволинейные интегралы, формула Грина</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>I рода ∫f dl не зависит от направления обхода. II рода ∫P dx+Q dy меняет знак при смене направления.</li>
+<li>Грин: ∮P dx+Q dy = ∬(Q′ₓ−P′ᵧ)dxdy (обход против часовой стрелки).</li>
+<li>Интеграл не зависит от пути, если Q′ₓ = P′ᵧ.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t15">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Поверхностные интегралы и теория поля</h2>
+      <div class="plan">План:<ol><li>Поверхностные интегралы, теория поля</li></ol></div>
+      <h3>§25, 27. Поверхностные интегралы, теория поля</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>div F = Pₓ+Qᵧ+R_z. rot F = определитель (i j k; ∂ₓ ∂ᵧ ∂_z; P Q R).</li>
+<li>Поток: ∬F·n dS. Циркуляция: ∮F·dr.</li>
+<li>Остроградский–Гаусс: ∯F·n dS = ∭div F dV. Стокс: ∮F·dr = ∬rot F·n dS.</li>
+<li>Поле потенциальное, если rot F = 0; соленоидальное, если div F = 0.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t16">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Числовые и степенные ряды, ряды Фурье</h2>
+      <div class="plan">План:<ol><li>Числовые ряды и признаки сходимости</li><li>Степенные ряды</li><li>Ряды Маклорена и Фурье</li></ol></div>
+      <h3>§28–29. Числовые ряды и признаки сходимости</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Ряд сходится, если существует конечный lim Sₙ. Необходимый признак: aₙ → 0 (если не так — расходится; обратное неверно).</li>
+<li>Геометрический Σqⁿ сходится при |q| &lt; 1, сумма a/(1−q). Σ1/n расходится; Σ1/nᵖ сходится при p &gt; 1.</li>
+<li>Даламбер: D = lim aₙ₊₁/aₙ (&lt;1 сходится, &gt;1 расходится). Коши: lim ⁿ√aₙ. Сравнение, интегральный признак.</li>
+<li>Лейбниц: знакочередующийся ряд с убывающим по модулю aₙ → 0 сходится. Абсолютная сходимость — сходится ряд из модулей.</li></ul>
+      </div>
+
+      <h3>§30. Степенные ряды</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Σaₙ(x−x₀)ⁿ. Радиус: R = lim |aₙ/aₙ₊₁|. Интервал (x₀−R; x₀+R).</li>
+<li>Концы интервала проверяют отдельно.</li></ul>
+      </div>
+
+      <h3>§31. Ряды Маклорена и Фурье</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>f(x) = Σ f⁽ⁿ⁾(0)xⁿ/n!. eˣ = Σxⁿ/n!; sin x = x−x³/3!+x⁵/5!−…; cos x = 1−x²/2!+x⁴/4!−…</li>
+<li>1/(1−x) = Σxⁿ, |x| &lt; 1; ln(1+x) = x−x²/2+x³/3−…</li>
+<li>Фурье: f = a₀/2+Σ(aₙcos nx+bₙsin nx); aₙ = (1/π)∫₋π^π f cos nx dx, bₙ — с sin nx. Чётная — только косинусы, нечётная — только синусы. В точке разрыва — среднее значение.</li></ul>
+      </div>
+    </article>
+    <article class="ktopic" id="t17">
+      <div class="eyebrow">Часть 5 · Интегралы, ДУ, ряды и другие темы</div>
+      <h2>Теория вероятностей и статистика</h2>
+      <div class="plan">План:<ol><li>Определение вероятности</li><li>Алгебра событий, теоремы сложения и умножения</li><li>Случайные величины и законы распределения</li><li>Элементы математической статистики</li></ol></div>
+      <h3>§32. Определение вероятности</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Классическая: P(A) = m/n. 0 ≤ P ≤ 1; достоверное — 1, невозможное — 0.</li>
+<li>Комбинаторика: Pₙ = n!; размещения Aₙᵐ = n!/(n−m)!; сочетания Cₙᵐ = n!/(m!(n−m)!).</li></ul>
+      </div>
+
+      <h3>§33. Алгебра событий, теоремы сложения и умножения</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>P(A+B) = P(A)+P(B)−P(AB); для несовместных — просто сумма. P(Ā) = 1−P(A).</li>
+<li>P(AB) = P(A)·P(B|A); для независимых P(AB) = P(A)P(B).</li>
+<li>Полная вероятность: P(A) = ΣP(Hᵢ)P(A|Hᵢ). Байес: P(Hᵢ|A) = P(Hᵢ)P(A|Hᵢ)/P(A).</li>
+<li>Бернулли: Pₙ(k) = Cₙᵏ pᵏ qⁿ⁻ᵏ, q = 1−p.</li></ul>
+      </div>
+
+      <h3>§34. Случайные величины и законы распределения</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Ряд распределения: ΣPᵢ = 1. M(X) = Σxᵢpᵢ; D(X) = M(X²)−M²(X); σ = √D.</li>
+<li>M(aX+b) = aM+b; D(aX+b) = a²D; M(X+Y) = MX+MY; для независимых D(X+Y) = DX+DY.</li>
+<li>F(x) = P(X &lt; x); плотность f = F′, ∫f dx = 1.</li>
+<li>Биномиальное: M = np, D = npq. Пуассон: M = D = λ. Равномерное: M = (a+b)/2, D = (b−a)²/12. Нормальное N(a, σ²): правило трёх сигм.</li></ul>
+      </div>
+
+      <h3>§35. Элементы математической статистики</h3>
+      <div class="box def">
+        <span class="box-label">Основное</span>
+        <ul><li>Выборочное среднее: x̄ = Σxᵢnᵢ/n. Дисперсия: D = x̄² − (x̄)². Исправленная: s² = n/(n−1)·D.</li>
+<li>Мода — самое частое значение; медиана — серединное. Графики: полигон и гистограмма частот.</li></ul>
+      </div>
+    </article>
+  </section>
+</main>
+
+<script>
+  const picker = document.getElementById('picker');
+  const conspect = document.getElementById('conspect');
+  const topics = Array.from(document.querySelectorAll('.ktopic'));
+  const jump = document.getElementById('topicJump');
+
+  function openTopic(id){
+    topics.forEach(t => t.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    picker.classList.add('hidden');
+    conspect.classList.add('active');
+    jump.value = id;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => openTopic(btn.dataset.goto));
+  });
+
+  document.getElementById('toList').addEventListener('click', () => {
+    conspect.classList.remove('active');
+    picker.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  jump.addEventListener('change', () => openTopic(jump.value));
+</script>
+
+</body>
+</html>
