@@ -2,11 +2,8 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Конспект лекции · Матрицы, СЛАУ, векторы · 1-1-itlpmd</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>
   window.MathJax = {
     tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
@@ -16,199 +13,266 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 <style>
   :root{
-    --white:#ffffff;
-    --ink:#1b2333;
-    --ink-soft:#5b6577;
-    --blue-deep:#123a8c;
-    --blue:#2458d6;
-    --blue-bright:#3d6fef;
-    --blue-tint:#eef3ff;
-    --blue-tint-2:#e2ebff;
-    --line:#dde5f5;
-    --radius:10px;
-    --amber:#b4720a;
-    --amber-tint:#fff6e6;
-    --green:#187a4a;
-    --green-tint:#eafaf1;
+    --white:#ffffff; --ink:#000000; --ink-soft:#6e6e6e;
+    --blue-deep:#1c4db4; --blue:#2f6de0; --blue-light:#8fb0f0;
+    --blue-tint:#edf2fd; --blue-tint-2:#dbe5fb; --line:#dbe4f8; --bar:#f7f8fb;
+    --font:Arial,'Helvetica Neue',Helvetica,'Liberation Sans',sans-serif;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   html,body{max-width:100%;overflow-x:hidden;}
   body{
-    margin:0;
-    background:var(--white);
-    color:var(--ink);
-    font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
-    font-size:16px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
+    margin:0; background:var(--white); color:var(--ink);
+    font-family:var(--font); font-size:16px; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%;
+    padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
   }
-  h1,h2,h3,h4{
-    font-family:'Manrope','Inter',sans-serif;
-    color:var(--blue-deep);
-    margin:0 0 .5em 0;
-    font-weight:800;
-    letter-spacing:-0.02em;
-    line-height:1.2;
-  }
+  h1,h2,h3,h4{ font-family:var(--font); color:var(--ink); margin:0 0 .4em; font-weight:700; line-height:1.15; letter-spacing:-0.01em; }
   a{ color:var(--blue); }
-  .wrap{ max-width:880px; margin:0 auto; padding:0 20px; }
+  .wrap{ max-width:760px; margin:0 auto; padding:0 20px; }
 
+  /* шапка */
   header.site-head{
-    padding:22px 0 16px;
-    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:40; background:var(--white);
+    padding:calc(16px + env(safe-area-inset-top,0px)) 0 16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
   }
-  .brand{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
-  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.25rem; font-weight:800; color:var(--blue-deep); }
-  .brand-text .thin{ color:var(--ink-soft); font-weight:500; font-size:.82rem; display:block; font-family:'Inter',sans-serif; margin-top:3px; }
-  .back-link{
-    display:inline-flex; align-items:center; gap:6px;
-    font-size:.88rem; font-weight:600; color:var(--blue);
-    text-decoration:none; white-space:nowrap;
-  }
-  .back-link:hover{ color:var(--blue-deep); }
+  .brand-text{ font-size:1.25rem; font-weight:700; line-height:1.2; }
+  .brand-text .thin{ display:block; margin-top:3px; color:var(--ink-soft); font-weight:400; font-size:.82rem; }
 
-  main{ padding:30px 0 70px; }
+  main{ padding:40px 0 40px; }
 
-  /* ---------- topic picker (landing grid) ---------- */
-  #picker .lede{ color:var(--ink-soft); max-width:60ch; margin-bottom:22px; }
-  .topic-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-    gap:12px;
+  /* заголовок страницы с волной */
+  .page-title{
+    position:relative; width:fit-content; max-width:100%;
+    font-size:clamp(1.9rem, 7vw, 2.6rem);
+    padding-bottom:.72em; margin-bottom:.2em;
   }
+  .page-title .wave{
+    position:absolute; left:.08em; bottom:.2em;
+    width:calc(100% - .16em); height:.34em;
+    overflow:visible; pointer-events:none;
+  }
+  .page-title .wave path{
+    fill:none; stroke:var(--blue); stroke-width:.18em;
+    stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke;
+  }
+  .lede{ color:var(--ink-soft); font-size:1.1rem; margin:26px 0 0; }
+
+  /* карточка с «вырезом» под подпись */
+  .subject{
+    position:relative; margin-top:52px;
+    padding:38px 22px 24px;
+    border:3px solid var(--line);
+    scroll-margin-top:110px;
+  }
+  .subject::before{
+    content:attr(data-label);
+    position:absolute; top:-17px; left:22px;
+    padding:7px 24px;
+    background:var(--blue-tint); color:var(--blue);
+    font-weight:700; font-size:.95rem; letter-spacing:.02em; text-transform:uppercase;
+    box-shadow:0 0 0 8px var(--white);
+  }
+  .subject-title{ font-size:1.55rem; margin-bottom:16px; }
+  .subject h4{ font-size:1.05rem; margin:0 0 8px; color:var(--blue-deep); }
+
+  /* блоки внутри задания */
+  .box{ margin:16px 0; padding:16px 18px; max-width:100%; }
+  .box p{ margin:0 0 8px; }
+  .box p:last-child{ margin-bottom:0; }
+  .box-label{ display:block; margin-bottom:8px; font-weight:700; font-size:.95rem; }
+
+  .def{ background:var(--blue-tint); }
+  .def .box-label{ color:var(--blue-deep); }
+
+  .example{ padding:6px 0 0; border-top:3px solid var(--line); margin-top:22px; }
+  .example .box-label{ color:var(--ink-soft); }
+
+  .ans{ background:var(--blue); color:#fff; }
+  .ans .box-label{ color:#cfe0ff; }
+  .ans p{ font-weight:700; font-size:1.05rem; }
+
+  .subtask{ margin-top:20px; padding-top:16px; border-top:2px solid var(--line); }
+  .subtask:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
+
+
+  .subtask h4 .num{ color:var(--blue); margin-right:4px; }
+  .subans{ margin-top:12px; padding:10px 14px; background:var(--blue); color:#fff; font-weight:700; font-size:.98rem; }
+  .subans mjx-container{ color:#fff; }
+  .fig{ margin:14px 0 4px; text-align:center; }
+  .fig svg{ max-width:100%; height:auto; background:var(--white); border:3px solid var(--line); }
+  .fig-cap{ font-size:.85rem; color:var(--ink-soft); margin-top:8px; }
+
+  /* оглавление и ссылки — карточки-ссылки как на главной */
+  .link-list{ list-style:none; padding:0; margin:30px 0 0; display:flex; flex-direction:column; gap:12px; }
+  .link-list a, .link-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    width:100%; padding:18px 20px;
+    border:3px solid var(--line); background:var(--white);
+    color:var(--ink); font-family:var(--font); font-size:1.02rem; font-weight:700; line-height:1.25;
+    text-align:left; text-decoration:none;
+    transition:border-color .15s ease, color .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .link-list a::after{
+    content:""; flex:none; width:22px; height:22px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238fb0f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition:transform .2s ease;
+  }
+  .link-list a:hover{ border-color:var(--blue); color:var(--blue-deep); }
+  .link-list a:hover::after{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232f6de0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E"); transform:translateY(2px); }
+
+  .toc-title{ margin:44px 0 0; font-size:1.3rem; }
+
+  footer{ border-top:3px solid var(--line); margin-top:30px; padding:20px 0; color:var(--ink-soft); font-size:.88rem; }
+
+  /* нижняя панель */
+  nav.bottom-nav{
+    position:fixed; left:0; right:0; bottom:0; z-index:50;
+    background:var(--bar); border-top:1px solid var(--line);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .bottom-nav ul{ list-style:none; display:flex; max-width:760px; margin:0 auto; padding:0; }
+  .bottom-nav li{ flex:1; min-width:0; }
+  .bottom-nav a{
+    display:flex; flex-direction:column; align-items:center; gap:7px;
+    padding:13px 4px 11px; font-size:.82rem; text-decoration:none; color:var(--blue-deep);
+    box-shadow:inset 0 3px 0 transparent; transition:box-shadow .2s ease, color .15s ease;
+  }
+  .bottom-nav a:hover{ color:var(--blue); box-shadow:inset 0 3px 0 var(--blue); }
+
+  mjx-container[display="true"]{
+    display:block; margin:6px 0 !important; padding:.4em 0;
+    overflow-x:auto; overflow-y:hidden; max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  .ans mjx-container{ color:#fff; }
+
+  @media (max-width:480px){
+    .wrap{ padding:0 18px; }
+    .subject{ padding:36px 16px 20px; }
+    .subject-title{ font-size:1.35rem; }
+    .box{ padding:14px; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+
+  /* ---------- конспект ---------- */
+  .wave-title{ margin-bottom:.2em; }
+  .topic-list{ display:flex; flex-direction:column; gap:12px; margin-top:30px; }
   .topic-card{
-    text-align:left;
-    border:1px solid var(--line);
-    background:var(--white);
-    border-radius:var(--radius);
-    padding:16px 16px 14px;
-    cursor:pointer;
-    transition:border-color .15s ease, background .15s ease, transform .15s ease;
-    font-family:inherit;
+    position:relative; display:block; width:100%; text-align:left; cursor:pointer;
+    padding:18px 54px 18px 20px; background:var(--white);
+    border:3px solid var(--line); font-family:var(--font); color:var(--ink);
+    transition:border-color .15s ease; -webkit-tap-highlight-color:transparent;
   }
-  .topic-card:hover{ border-color:var(--blue); background:var(--blue-tint); transform:translateY(-1px); }
+  .topic-card::after{
+    content:""; position:absolute; right:20px; top:50%; width:22px; height:22px; margin-top:-11px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238fb0f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition:transform .2s ease;
+  }
+  .topic-card:hover{ border-color:var(--blue); }
+  .topic-card:hover::after{ transform:translateX(3px); }
   .topic-num{
-    display:inline-block;
-    font-family:'Manrope',sans-serif;
-    font-weight:800;
-    font-size:.72rem;
-    color:var(--blue);
-    background:var(--blue-tint-2);
-    padding:2px 8px;
-    border-radius:20px;
-    margin-bottom:8px;
-    letter-spacing:.03em;
+    display:inline-block; margin-bottom:8px; padding:3px 10px;
+    background:var(--blue-tint); color:var(--blue);
+    font-weight:700; font-size:.74rem; letter-spacing:.03em; text-transform:uppercase;
   }
-  .topic-card h3{ font-size:1rem; margin-bottom:4px; color:var(--ink); }
-  .topic-card p{ margin:0; font-size:.85rem; color:var(--ink-soft); line-height:1.45; }
+  .topic-card h3{ font-size:1.08rem; margin:0 0 4px; color:var(--ink); }
+  .topic-card p{ margin:0; font-size:.88rem; color:var(--ink-soft); line-height:1.45; }
 
-  /* ---------- conspect view ---------- */
   #conspect{ display:none; }
   #conspect.active{ display:block; }
   #picker.hidden{ display:none; }
 
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    margin-bottom:22px; flex-wrap:wrap;
-  }
+  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
   .to-list{
-    display:inline-flex; align-items:center; gap:6px;
-    font-size:.88rem; font-weight:600; color:var(--blue);
-    background:none; border:none; cursor:pointer; padding:6px 0; font-family:inherit;
+    display:inline-flex; align-items:center; gap:6px; padding:8px 0;
+    font-family:var(--font); font-size:.92rem; font-weight:700; color:var(--blue);
+    background:none; border:none; cursor:pointer;
   }
   .to-list:hover{ color:var(--blue-deep); }
   .topic-jump{
-    font-size:.85rem; color:var(--ink-soft); border:1px solid var(--line); border-radius:8px;
-    padding:6px 10px; background:var(--white); font-family:inherit; cursor:pointer;
+    max-width:100%; padding:8px 10px; font-family:var(--font); font-size:.88rem; color:var(--ink);
+    background:var(--white); border:3px solid var(--line); border-radius:0; cursor:pointer;
   }
+  .topic-jump:focus{ outline:none; border-color:var(--blue); }
 
-  .ktopic{ display:none; animation:fadeIn .35s ease both; }
+  .ktopic{ display:none; position:relative; margin-top:52px; padding:38px 22px 24px; border:3px solid var(--line); animation:fadeIn .3s ease both; }
   .ktopic.active{ display:block; }
+  .ktopic::before{
+    content:attr(data-label); position:absolute; top:-17px; left:22px; max-width:calc(100% - 44px);
+    padding:7px 24px; background:var(--blue-tint); color:var(--blue);
+    font-weight:700; font-size:.95rem; letter-spacing:.02em; text-transform:uppercase;
+    box-shadow:0 0 0 8px var(--white);
+  }
   @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
-
-  .ktopic .eyebrow{
-    font-size:.78rem; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:.05em;
-    margin-bottom:6px;
-  }
-  .ktopic h2{ font-size:1.6rem; margin-bottom:4px; }
-  .ktopic .plan{
-    color:var(--ink-soft); font-size:.92rem; margin:10px 0 26px;
-    border-left:3px solid var(--blue-tint-2); padding-left:12px;
-  }
+  .ktopic h2{ font-size:1.55rem; margin-bottom:12px; }
+  .ktopic h3{ font-size:1.15rem; margin:34px 0 10px; color:var(--blue-deep); }
+  .ktopic p{ margin:0 0 14px; }
+  .ktopic .plan{ margin:10px 0 26px; padding:2px 0 2px 14px; border-left:4px solid var(--blue-light); color:var(--ink-soft); font-size:.95rem; }
   .ktopic .plan ol{ margin:6px 0 0; padding-left:18px; }
 
-  .ktopic h3{ font-size:1.12rem; margin-top:34px; margin-bottom:10px; }
-  .ktopic p{ margin:0 0 14px; }
-
-  .box{
-    border-radius:var(--radius);
-    padding:14px 16px;
-    margin:14px 0;
-    border:1px solid var(--line);
-    max-width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-  .box-label{
-    font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
-    text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; display:block;
-  }
-  .def{ background:var(--blue-tint); border-color:var(--blue-tint-2); }
+  .box{ margin:16px 0; padding:16px 18px; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .box p{ margin:0 0 8px; }
+  .box p:last-child{ margin-bottom:0; }
+  .box-label{ display:block; margin-bottom:8px; font-weight:700; font-size:.95rem; }
+  .def{ background:var(--blue-tint); }
   .def .box-label{ color:var(--blue-deep); }
-  .thm{ background:var(--blue-tint); border-color:var(--blue-tint-2); }
-  .thm .box-label{ color:var(--blue-deep); }
-  .example{ background:var(--green-tint); border-color:#c9ecd8; }
-  .example .box-label{ color:var(--green); }
-  .note{ background:var(--amber-tint); border-color:#f3e0b3; }
-  .note .box-label{ color:var(--amber); }
-  .summary{ background:#f4f6fb; border-color:var(--line); }
-  .summary .box-label{ color:var(--ink-soft); }
+  .thm{ background:var(--blue-tint); border-left:6px solid var(--blue); }
+  .thm .box-label{ color:var(--blue); }
+  .example{ padding:6px 0 0; border-top:3px solid var(--line); margin-top:22px; }
+  .example .box-label{ color:var(--ink-soft); }
+  .note{ background:var(--bar); border-left:6px solid var(--blue-light); }
+  .note .box-label{ color:var(--blue-deep); }
+  .summary{ background:var(--blue); color:#fff; }
+  .summary .box-label{ color:#cfe0ff; }
   .summary ul{ margin:4px 0 0; padding-left:18px; }
   .summary li{ margin-bottom:5px; }
+  .summary mjx-container{ color:#fff; }
+  hr.sep{ border:none; border-top:3px solid var(--line); margin:34px 0; }
 
-  .box p:last-child{ margin-bottom:0; }
-  .box p{ margin:0 0 8px; }
+  @media (max-width:480px){
+    .ktopic{ padding:36px 16px 20px; }
+    .ktopic h2{ font-size:1.35rem; }
+    .topic-card{ padding:16px 46px 16px 16px; }
+  }
 
-  mjx-container{
-    overflow-x:auto;
-    overflow-y:hidden;
-    max-width:100%;
+  mjx-container[display="true"]{
+    display:block; margin:6px 0 !important; padding:.4em 0;
+    overflow-x:auto; overflow-y:hidden; max-width:100%;
     -webkit-overflow-scrolling:touch;
   }
-  mjx-container[display="true"]{
-    display:block;
-    margin:6px 0 !important;
+  .ans mjx-container{ color:#fff; }
+
+  @media (max-width:480px){
+    .wrap{ padding:0 18px; }
+    .subject{ padding:36px 16px 20px; }
+    .subject-title{ font-size:1.35rem; }
+    .box{ padding:14px; }
   }
-
-  hr.sep{ border:none; border-top:1px solid var(--line); margin:34px 0; }
-
-  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:24px 0 6px; }
-
-  @media (max-width:600px){
-    .topic-grid{ grid-template-columns:1fr; }
-    .ktopic h2{ font-size:1.35rem; }
-  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
 </style>
 </head>
 <body>
 
-<header class="site-head">
-  <div class="wrap brand">
-    <div class="brand-text">Конспект лекции
-      <span class="thin">Матрицы, СЛАУ, векторы · 1 курс, 1 семестр</span>
+<header class="site-head" id="top">
+  <div class="wrap">
+    <div class="brand-text">
+      Сайт Ахвердиева Р.Ф. | КОНСПЕКТ
+      <span class="thin">by Nikita Vinarchuk</span>
     </div>
-    <a class="back-link" href="index.html">&larr; Вернуться на сайт</a>
   </div>
 </header>
 
-<main class="wrap">
+<div class="wrap">
+<main>
 
-  <!-- ===================== ЭКРАН ВЫБОРА ТЕМЫ ===================== -->
   <section id="picker">
+    <h1 class="page-title">Конспект лекции<svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 9 C4.11 9 7.00 1 11.11 1 C15.22 1 18.11 9 22.22 9 C26.33 9 29.22 1 33.33 1 C37.44 1 40.33 9 44.44 9 C48.56 9 51.44 1 55.56 1 C59.67 1 62.56 9 66.67 9 C70.78 9 73.67 1 77.78 1 C81.89 1 84.78 9 88.89 9 C93.00 9 95.89 1 100.00 1"/></svg></h1>
     <p class="lede">Полный письменный конспект курса «Высшая математика»: матрицы и определители, системы линейных алгебраических уравнений, векторная алгебра — по материалам 1-1-itlpmd-matricy-slau-vektora.pdf. Выберите тему — откроются определения, теоремы, формулы и разобранные примеры.</p>
 
-    <div class="topic-grid">
+    <div class="topic-list">
       <button class="topic-card" data-goto="l1">
         <span class="topic-num">Тема 1</span>
         <h3>Матрицы. Определители</h3>
@@ -227,7 +291,6 @@
     </div>
   </section>
 
-  <!-- ===================== ЭКРАН КОНСПЕКТА ===================== -->
   <section id="conspect">
     <div class="topbar">
       <button class="to-list" id="toList">&larr; К списку тем</button>
@@ -239,8 +302,7 @@
     </div>
 
     <!-- ===================== ТЕМА 1 ===================== -->
-    <article class="ktopic" id="l1">
-      <div class="eyebrow">Тема 1</div>
+    <article class="ktopic" id="l1" data-label="Тема 1">
       <h2>Матрицы. Определители</h2>
       <div class="plan">План темы:
         <ol>
@@ -310,8 +372,7 @@
     </article>
 
     <!-- ===================== ТЕМА 2 ===================== -->
-    <article class="ktopic" id="l2">
-      <div class="eyebrow">Тема 2</div>
+    <article class="ktopic" id="l2" data-label="Тема 2">
       <h2>Системы линейных алгебраических уравнений (СЛАУ)</h2>
       <div class="plan">План темы:
         <ol>
@@ -369,8 +430,7 @@
     </article>
 
     <!-- ===================== ТЕМА 3 ===================== -->
-    <article class="ktopic" id="l3">
-      <div class="eyebrow">Тема 3</div>
+    <article class="ktopic" id="l3" data-label="Тема 3">
       <h2>Векторная алгебра</h2>
       <div class="plan">План темы:
         <ol>
@@ -537,6 +597,21 @@
 </main>
 
 <footer>© 2018–2026</footer>
+</div>
+
+<nav class="bottom-nav" aria-label="Навигация">
+  <ul>
+    <li><a href="index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      Назад</a></li>
+    <li><a href="#top" id="navTopics">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      Темы</a></li>
+    <li><a href="#top">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+      Наверх</a></li>
+  </ul>
+</nav>
 
 <script>
   const picker = document.getElementById('picker');
@@ -557,6 +632,8 @@
   document.querySelectorAll('[data-goto]').forEach(btn => {
     btn.addEventListener('click', () => openTopic(btn.dataset.goto));
   });
+
+  document.getElementById('navTopics').addEventListener('click', e => { e.preventDefault(); document.getElementById('toList').click(); });
 
   document.getElementById('toList').addEventListener('click', () => {
     conspect.classList.remove('active');
