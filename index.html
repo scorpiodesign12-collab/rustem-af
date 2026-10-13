@@ -48,14 +48,32 @@
   h2{ font-size:clamp(2rem, 8vw, 2.9rem); }
   h2 .accent{ color:var(--blue); }
 
-  /* волнистая линия под заголовком раздела */
-  .panel > h2::after{
-    content:"";
-    display:block;
-    width:min(100%, 520px);
-    aspect-ratio:520 / 60;
-    margin-top:26px;
-    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 60' fill='none' stroke='%232f6de0' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 48 C28 36 40 16 62 16 S90 40 112 40 S146 16 168 16 S202 40 224 40 S258 16 280 16 S314 40 336 40 S370 16 392 16 S426 40 448 40 C470 40 490 22 510 10'/%3E%3C/svg%3E") left center / 100% 100% no-repeat;
+  /* волнистая линия под заголовком раздела — как в логотипе:
+     гладкая волна, толщина не зависит от растяжения, круглые концы */
+  .panel > h2{
+    position:relative;
+    width:fit-content;
+    max-width:100%;
+    padding-bottom:.72em;
+    margin-bottom:.2em;
+  }
+  .panel > h2 .wave{
+    position:absolute;
+    left:.08em;
+    bottom:.2em;
+    width:calc(100% - .1em);
+    max-width:6.6em;
+    height:.34em;
+    overflow:visible;
+    pointer-events:none;
+  }
+  .panel > h2 .wave path{
+    fill:none;
+    stroke:var(--blue);
+    stroke-width:.18em;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    vector-effect:non-scaling-stroke;
   }
 
   a{ color:var(--blue); }
@@ -516,7 +534,7 @@
 
     <!-- ГЛАВНАЯ -->
     <section class="panel active" id="home">
-      <h2>Материалы для <span class="accent">учёбы</span></h2>
+      <h2>Материалы для <span class="accent">учёбы</span><svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 9 C4.11 9 7.00 1 11.11 1 C15.22 1 18.11 9 22.22 9 C26.33 9 29.22 1 33.33 1 C37.44 1 40.33 9 44.44 9 C48.56 9 51.44 1 55.56 1 C59.67 1 62.56 9 66.67 9 C70.78 9 73.67 1 77.78 1 C81.89 1 84.78 9 88.89 9 C93.00 9 95.89 1 100.00 1"/></svg></h2>
       <p class="lede">На данном сайте, на интересующих вас вкладках, вы можете скачать нужные вам файлы для учёбы: пособия для университета и лекции по отдельным разделам математики.</p>
       <div class="features">
         <div class="feature">
@@ -534,7 +552,7 @@
 
     <!-- УНИВЕРСИТЕТ -->
     <section class="panel" id="university">
-      <h2>Университет</h2>
+      <h2>Университет<svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 9 C4.11 9 7.00 1 11.11 1 C15.22 1 18.11 9 22.22 9 C26.33 9 29.22 1 33.33 1 C37.44 1 40.33 9 44.44 9 C48.56 9 51.44 1 55.56 1 C59.67 1 62.56 9 66.67 9 C70.78 9 73.67 1 77.78 1 C81.89 1 84.78 9 88.89 9 C93.00 9 95.89 1 100.00 1"/></svg></h2>
 
       <div class="crumbs" id="uniCrumbs"></div>
 
@@ -909,7 +927,7 @@
 
     <!-- СПЕЦИАЛЬНЫЕ РАЗДЕЛЫ МАТЕМАТИКИ -->
     <section class="panel" id="special">
-      <h2>Специальные разделы математики</h2>
+      <h2>Специальные разделы математики<svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 9 C4.11 9 7.00 1 11.11 1 C15.22 1 18.11 9 22.22 9 C26.33 9 29.22 1 33.33 1 C37.44 1 40.33 9 44.44 9 C48.56 9 51.44 1 55.56 1 C59.67 1 62.56 9 66.67 9 C70.78 9 73.67 1 77.78 1 C81.89 1 84.78 9 88.89 9 C93.00 9 95.89 1 100.00 1"/></svg></h2>
 
       <div class="subject" data-label="Видеолекции">
         <div class="subject-title"><a href="#">Линейная алгебра</a></div>
