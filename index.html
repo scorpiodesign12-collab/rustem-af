@@ -385,22 +385,9 @@
   .uni-view{ display:none; }
   .uni-view.active{ display:block; animation:panelIn .32s cubic-bezier(.22,1,.36,1) both; }
 
-  /* видео-ссылки */
-  .video-list{ margin-top:18px; display:flex; flex-direction:column; }
-  .video-row{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    padding:14px 0;
-    border-top:2px solid var(--line);
-    text-decoration:none;
-    color:var(--ink);
-    font-size:.95rem;
-    transition:color .15s ease;
-  }
-  .video-row:hover{ color:var(--blue); }
-  .video-row svg{ flex:none; color:var(--blue); margin-top:2px; }
-  .video-row span{ flex:1; min-width:0; word-break:break-word; }
+  /* видео-лекции: кнопки */
+  .video-list{ margin-top:18px; display:flex; flex-wrap:wrap; gap:10px; }
+  .video-list .answer-btn{ flex:1 1 120px; }
 
   .note{ color:var(--ink-soft); font-size:.95rem; margin-top:8px; }
 
@@ -566,15 +553,17 @@
         </ul>
 
         <div class="file-list">
-          <a class="file-row" href="vm-posobie-zhurbenko.pdf" target="_blank" rel="noopener">
-            <span class="file-name">
+          <div class="file-row has-answer">
+            <a class="file-main" href="vm-posobie-zhurbenko.pdf" target="_blank" rel="noopener">
               <span class="file-icon">
                 <svg class="icon-back" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
                 <svg class="icon-front" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
               </span>
               vm-posobie-zhurbenko.pdf
-            </span>
-          </a>
+            </a>
+            <a class="answer-btn" href="otvety-zadachnik.html" target="_blank" rel="noopener">Ответы</a>
+            <a class="answer-btn" href="konspekt-zadachnik.html" target="_blank" rel="noopener">Конспект</a>
+          </div>
           <div class="file-row has-answer">
             <a class="file-main" href="zadachnik.pdf" target="_blank" rel="noopener">
               <span class="file-icon">
@@ -937,26 +926,11 @@
         </span>
 
         <div class="video-list">
-          <a class="video-row" href="https://www.youtube.com/embed/ansDuboonGE" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5v-7Z" fill="currentColor"/></svg>
-            <span>Лекция 1 — youtube.com/embed/ansDuboonGE</span>
-          </a>
-          <a class="video-row" href="https://www.youtube.com/embed/N3DBml3uid0" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5v-7Z" fill="currentColor"/></svg>
-            <span>Лекция 2 — youtube.com/embed/N3DBml3uid0</span>
-          </a>
-          <a class="video-row" href="https://www.youtube.com/embed/-jCOQeQBAqQ" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5v-7Z" fill="currentColor"/></svg>
-            <span>Лекция 3 — youtube.com/embed/-jCOQeQBAqQ</span>
-          </a>
-          <a class="video-row" href="https://www.youtube.com/embed/Dk8L9_9NHf4" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5v-7Z" fill="currentColor"/></svg>
-            <span>Лекция 4 — youtube.com/embed/Dk8L9_9NHf4</span>
-          </a>
-          <a class="video-row" href="https://www.youtube.com/embed/7k84mAyx4t0" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5v-7Z" fill="currentColor"/></svg>
-            <span>Лекция 5 — youtube.com/embed/7k84mAyx4t0</span>
-          </a>
+          <a class="answer-btn" href="https://www.youtube.com/watch?v=ansDuboonGE" target="_blank" rel="noopener">Лекция 1</a>
+          <a class="answer-btn" href="https://www.youtube.com/watch?v=N3DBml3uid0" target="_blank" rel="noopener">Лекция 2</a>
+          <a class="answer-btn" href="https://www.youtube.com/watch?v=-jCOQeQBAqQ" target="_blank" rel="noopener">Лекция 3</a>
+          <a class="answer-btn" href="https://www.youtube.com/watch?v=Dk8L9_9NHf4" target="_blank" rel="noopener">Лекция 4</a>
+          <a class="answer-btn" href="https://www.youtube.com/watch?v=7k84mAyx4t0" target="_blank" rel="noopener">Лекция 5</a>
         </div>
       </div>
 
