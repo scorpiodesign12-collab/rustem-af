@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Линейная и векторная алгебра — решение типового расчёта</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Линейная и векторная алгебра — типовой расчёт, решение</title>
 <script>
   window.MathJax = {
     tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
@@ -16,142 +13,168 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 <style>
   :root{
-    --white:#ffffff;
-    --ink:#1b2333;
-    --ink-soft:#5b6577;
-    --blue-deep:#123a8c;
-    --blue:#2458d6;
-    --blue-bright:#3d6fef;
-    --blue-tint:#eef3ff;
-    --blue-tint-2:#e2ebff;
-    --line:#dde5f5;
-    --radius:10px;
-    --amber:#b4720a;
-    --amber-tint:#fff6e6;
-    --green:#187a4a;
-    --green-tint:#eafaf1;
+    --white:#ffffff; --ink:#000000; --ink-soft:#6e6e6e;
+    --blue-deep:#1c4db4; --blue:#2f6de0; --blue-light:#8fb0f0;
+    --blue-tint:#edf2fd; --blue-tint-2:#dbe5fb; --line:#dbe4f8; --bar:#f7f8fb;
+    --font:Arial,'Helvetica Neue',Helvetica,'Liberation Sans',sans-serif;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   html,body{max-width:100%;overflow-x:hidden;}
   body{
-    margin:0;
-    background:var(--white);
-    color:var(--ink);
-    font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
-    font-size:16px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
+    margin:0; background:var(--white); color:var(--ink);
+    font-family:var(--font); font-size:16px; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%;
+    padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
   }
-  h1,h2,h3,h4{
-    font-family:'Manrope','Inter',sans-serif;
-    color:var(--blue-deep);
-    margin:0 0 .5em 0;
-    font-weight:800;
-    letter-spacing:-0.02em;
-    line-height:1.2;
-  }
+  h1,h2,h3,h4{ font-family:var(--font); color:var(--ink); margin:0 0 .4em; font-weight:700; line-height:1.15; letter-spacing:-0.01em; }
   a{ color:var(--blue); }
-  .wrap{ max-width:880px; margin:0 auto; padding:0 20px; }
+  .wrap{ max-width:760px; margin:0 auto; padding:0 20px; }
 
+  /* шапка */
   header.site-head{
-    padding:22px 0 16px;
-    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:40; background:var(--white);
+    padding:calc(16px + env(safe-area-inset-top,0px)) 0 16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
   }
-  .brand{ display:flex; align-items:center; gap:14px; }
-  .brand-icon{
-    flex:none; width:44px; height:44px; border-radius:12px;
-    background:linear-gradient(145deg,var(--blue-bright),var(--blue-deep));
-    display:flex; align-items:center; justify-content:center;
-    color:#fff; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.2rem;
-  }
-  .brand-text{ font-family:'Manrope',sans-serif; font-size:1.25rem; font-weight:800; color:var(--blue-deep); }
-  .brand-text .thin{ color:var(--ink-soft); font-weight:500; font-size:.82rem; display:block; font-family:'Inter',sans-serif; margin-top:3px; }
-  .back-link{
-    display:inline-flex; align-items:center; gap:6px;
-    font-size:.88rem; font-weight:600; color:var(--blue);
-    text-decoration:none; white-space:nowrap; margin-top:14px;
-  }
-  .back-link:hover{ color:var(--blue-deep); }
+  .brand-text{ font-size:1.25rem; font-weight:700; line-height:1.2; }
+  .brand-text .thin{ display:block; margin-top:3px; color:var(--ink-soft); font-weight:400; font-size:.82rem; }
 
-  main{ padding:26px 0 70px; }
+  main{ padding:40px 0 40px; }
 
-  nav.toc{ margin:22px 0 0; }
-  .toc-label{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin:0 0 8px 0; }
-  .toc ul{ list-style:none; margin:0; padding:0; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
-  .toc li + li{ border-top:1px solid var(--line); }
-  .toc a{
-    display:block; padding:11px 14px; font-size:.94rem; color:var(--ink); text-decoration:none;
+  /* заголовок страницы с волной */
+  .page-title{
+    position:relative; width:fit-content; max-width:100%;
+    font-size:clamp(1.9rem, 7vw, 2.6rem);
+    padding-bottom:.72em; margin-bottom:.2em;
   }
-  .toc a:hover{ background:var(--blue-tint); color:var(--blue-deep); }
-
-  .task{ margin-bottom:44px; scroll-margin-top:16px; }
-  .task .eyebrow{
-    font-size:.78rem; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:.05em;
-    margin-bottom:6px;
+  .page-title .wave{
+    position:absolute; left:.08em; bottom:.2em;
+    width:calc(100% - .16em); height:.34em;
+    overflow:visible; pointer-events:none;
   }
-  .task h2{ font-size:1.3rem; margin-bottom:14px; }
-
-  .task h4{ font-size:.98rem; margin:0 0 8px; color:var(--ink); }
-
-  .box{
-    border-radius:var(--radius);
-    padding:14px 16px;
-    margin:14px 0;
-    border:1px solid var(--line);
-    max-width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
+  .page-title .wave path{
+    fill:none; stroke:var(--blue); stroke-width:.18em;
+    stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke;
   }
-  .box-label{
-    font-family:'Manrope',sans-serif; font-weight:800; font-size:.72rem;
-    text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; display:block;
-  }
-  .def{ background:var(--blue-tint); border-color:var(--blue-tint-2); }
-  .def .box-label{ color:var(--blue-deep); }
-  .example{ background:var(--green-tint); border-color:#c9ecd8; }
-  .example .box-label{ color:var(--green); }
-  .note{ background:var(--amber-tint); border-color:#f3e0b3; }
-  .note .box-label{ color:var(--amber); }
-  .ans{ background:var(--blue-tint-2); border-color:var(--blue); border-width:1.5px; }
-  .ans .box-label{ color:var(--blue-deep); }
-  .ans p{ font-weight:700; font-size:1.02rem; }
+  .lede{ color:var(--ink-soft); font-size:1.1rem; margin:26px 0 0; }
 
-  .box p:last-child{ margin-bottom:0; }
+  /* карточка с «вырезом» под подпись */
+  .subject{
+    position:relative; margin-top:52px;
+    padding:38px 22px 24px;
+    border:3px solid var(--line);
+    scroll-margin-top:110px;
+  }
+  .subject::before{
+    content:attr(data-label);
+    position:absolute; top:-17px; left:22px;
+    padding:7px 24px;
+    background:var(--blue-tint); color:var(--blue);
+    font-weight:700; font-size:.95rem; letter-spacing:.02em; text-transform:uppercase;
+    box-shadow:0 0 0 8px var(--white);
+  }
+  .subject-title{ font-size:1.55rem; margin-bottom:16px; }
+  .subject h4{ font-size:1.05rem; margin:0 0 8px; color:var(--blue-deep); }
+
+  /* блоки внутри задания */
+  .box{ margin:16px 0; padding:16px 18px; max-width:100%; }
   .box p{ margin:0 0 8px; }
+  .box p:last-child{ margin-bottom:0; }
+  .box-label{ display:block; margin-bottom:8px; font-weight:700; font-size:.95rem; }
 
-  .subtask{ margin-top:18px; padding-top:16px; border-top:1px dashed var(--line); }
+  .def{ background:var(--blue-tint); }
+  .def .box-label{ color:var(--blue-deep); }
+
+  .example{ padding:6px 0 0; border-top:3px solid var(--line); margin-top:22px; }
+  .example .box-label{ color:var(--ink-soft); }
+
+  .ans{ background:var(--blue); color:#fff; }
+  .ans .box-label{ color:#cfe0ff; }
+  .ans p{ font-weight:700; font-size:1.05rem; }
+
+  .subtask{ margin-top:20px; padding-top:16px; border-top:2px solid var(--line); }
   .subtask:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
 
-  hr.sep{ border:none; border-top:1px solid var(--line); margin:34px 0; }
 
-  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:24px 0 6px; }
+  .subtask h4 .num{ color:var(--blue); margin-right:4px; }
+  .subans{ margin-top:12px; padding:10px 14px; background:var(--blue); color:#fff; font-weight:700; font-size:.98rem; }
+  .subans mjx-container{ color:#fff; }
+  .fig{ margin:14px 0 4px; text-align:center; }
+  .fig svg{ max-width:100%; height:auto; background:var(--white); border:3px solid var(--line); }
+  .fig-cap{ font-size:.85rem; color:var(--ink-soft); margin-top:8px; }
 
-  mjx-container{
-    overflow-x:auto;
-    overflow-y:hidden;
-    max-width:100%;
+  /* оглавление и ссылки — карточки-ссылки как на главной */
+  .link-list{ list-style:none; padding:0; margin:30px 0 0; display:flex; flex-direction:column; gap:12px; }
+  .link-list a, .link-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    width:100%; padding:18px 20px;
+    border:3px solid var(--line); background:var(--white);
+    color:var(--ink); font-family:var(--font); font-size:1.02rem; font-weight:700; line-height:1.25;
+    text-align:left; text-decoration:none;
+    transition:border-color .15s ease, color .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .link-list a::after{
+    content:""; flex:none; width:22px; height:22px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238fb0f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition:transform .2s ease;
+  }
+  .link-list a:hover{ border-color:var(--blue); color:var(--blue-deep); }
+  .link-list a:hover::after{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232f6de0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E"); transform:translateY(2px); }
+
+  .toc-title{ margin:44px 0 0; font-size:1.3rem; }
+
+  footer{ border-top:3px solid var(--line); margin-top:30px; padding:20px 0; color:var(--ink-soft); font-size:.88rem; }
+
+  /* нижняя панель */
+  nav.bottom-nav{
+    position:fixed; left:0; right:0; bottom:0; z-index:50;
+    background:var(--bar); border-top:1px solid var(--line);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .bottom-nav ul{ list-style:none; display:flex; max-width:760px; margin:0 auto; padding:0; }
+  .bottom-nav li{ flex:1; min-width:0; }
+  .bottom-nav a{
+    display:flex; flex-direction:column; align-items:center; gap:7px;
+    padding:13px 4px 11px; font-size:.82rem; text-decoration:none; color:var(--blue-deep);
+    box-shadow:inset 0 3px 0 transparent; transition:box-shadow .2s ease, color .15s ease;
+  }
+  .bottom-nav a:hover{ color:var(--blue); box-shadow:inset 0 3px 0 var(--blue); }
+
+  mjx-container[display="true"]{
+    display:block; margin:6px 0 !important; padding:.4em 0;
+    overflow-x:auto; overflow-y:hidden; max-width:100%;
     -webkit-overflow-scrolling:touch;
   }
-  mjx-container[display="true"]{
-    display:block;
-    margin:6px 0 !important;
+  .ans mjx-container{ color:#fff; }
+
+  @media (max-width:480px){
+    .wrap{ padding:0 18px; }
+    .subject{ padding:36px 16px 20px; }
+    .subject-title{ font-size:1.35rem; }
+    .box{ padding:14px; }
   }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
 </style>
 </head>
 <body>
 
-<header class="site-head">
+<header class="site-head" id="top">
   <div class="wrap">
-    <div class="brand">
-      <div class="brand-icon">√</div>
-      <div class="brand-text">Линейная и векторная алгебра
-        <span class="thin">Типовой расчёт · полное решение всех 6 заданий по варианту</span>
-      </div>
+    <div class="brand-text">
+      Сайт Ахвердиева Р.Ф. | ОТВЕТЫ
+      <span class="thin">by Nikita Vinarchuk</span>
     </div>
-    <a class="back-link" href="konspekt.html">&larr; К конспекту лекций</a>
+  </div>
+</header>
 
-    <div class="box def" style="margin-top:18px;">
+<div class="wrap">
+  <main>
+    <h1 class="page-title">Линейная и векторная алгебра<svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 9 C4.11 9 7.00 1 11.11 1 C15.22 1 18.11 9 22.22 9 C26.33 9 29.22 1 33.33 1 C37.44 1 40.33 9 44.44 9 C48.56 9 51.44 1 55.56 1 C59.67 1 62.56 9 66.67 9 C70.78 9 73.67 1 77.78 1 C81.89 1 84.78 9 88.89 9 C93.00 9 95.89 1 100.00 1"/></svg></h1>
+    <p class="lede">Типовой расчёт: полное решение всех 6 заданий — определители, системы уравнений, векторы, треугольник и пирамида.</p>
+
+    <div class="box def" style="margin-top:30px;">
       <span class="box-label">Вариант</span>
       <p>Группа 761-101 ($\alpha=7,\ \beta=6,\ \gamma=1,\ \delta=1$), номер по списку $n=3$.</p>
       <p>
@@ -161,26 +184,18 @@
       </p>
     </div>
 
-    <nav class="toc">
-      <div class="toc-label">Задания</div>
-      <ul>
-        <li><a href="#task1">1. Определитель 3-го порядка (два способа)</a></li>
-        <li><a href="#task2">2. Система уравнений по формулам Крамера (2×2)</a></li>
-        <li><a href="#task3">3. Система уравнений: Крамер и метод Гаусса (3×3)</a></li>
-        <li><a href="#task4">4. Скалярное и векторное произведение (по модулям и углу)</a></li>
-        <li><a href="#task5">5. Векторы в координатах: произведения, длина, тройное произведение</a></li>
-        <li><a href="#task6">6. Геометрия треугольника ABC и пирамиды ABCD</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+    <h2 class="toc-title">Задания</h2>
+    <ul class="link-list" id="toc">
+      <li><a href="#task1">1. Определитель 3-го порядка (два способа)</a></li>
+      <li><a href="#task2">2. Система уравнений по формулам Крамера (2×2)</a></li>
+      <li><a href="#task3">3. Система уравнений: Крамер и метод Гаусса (3×3)</a></li>
+      <li><a href="#task4">4. Скалярное и векторное произведение (по модулям и углу)</a></li>
+      <li><a href="#task5">5. Векторы в координатах: произведения, длина, тройное произведение</a></li>
+      <li><a href="#task6">6. Геометрия треугольника ABC и пирамиды ABCD</a></li>
+    </ul>
 
-<main class="wrap">
-
-  <!-- ===================== ЗАДАНИЕ 1 ===================== -->
-  <article class="task" id="task1">
-    <div class="eyebrow">Задание 1</div>
-    <h2>Вычислить определитель 3-го порядка двумя способами</h2>
+<article class="subject" id="task1" data-label="Задание 1">
+    <h2 class="subject-title">Вычислить определитель 3-го порядка двумя способами</h2>
 
     <div class="box def">
       <span class="box-label">Дано</span>
@@ -210,11 +225,8 @@
       <p>$\Delta=102$</p>
     </div>
   </article>
-
-  <!-- ===================== ЗАДАНИЕ 2 ===================== -->
-  <article class="task" id="task2">
-    <div class="eyebrow">Задание 2</div>
-    <h2>Решить систему уравнений по формулам Крамера</h2>
+<article class="subject" id="task2" data-label="Задание 2">
+    <h2 class="subject-title">Решить систему уравнений по формулам Крамера</h2>
 
     <div class="box def">
       <span class="box-label">Дано</span>
@@ -240,11 +252,8 @@
       <p>$x=5,\ y=-3$</p>
     </div>
   </article>
-
-  <!-- ===================== ЗАДАНИЕ 3 ===================== -->
-  <article class="task" id="task3">
-    <div class="eyebrow">Задание 3</div>
-    <h2>Решить систему уравнений (а — Крамер, б — метод Гаусса)</h2>
+<article class="subject" id="task3" data-label="Задание 3">
+    <h2 class="subject-title">Решить систему уравнений (а — Крамер, б — метод Гаусса)</h2>
 
     <div class="box def">
       <span class="box-label">Дано</span>
@@ -285,11 +294,8 @@
       <p>$x_1=1,\ x_2=-1,\ x_3=3$</p>
     </div>
   </article>
-
-  <!-- ===================== ЗАДАНИЕ 4 ===================== -->
-  <article class="task" id="task4">
-    <div class="eyebrow">Задание 4</div>
-    <h2>Скалярное и векторное произведение по модулям и углу</h2>
+<article class="subject" id="task4" data-label="Задание 4">
+    <h2 class="subject-title">Скалярное и векторное произведение по модулям и углу</h2>
 
     <div class="box def">
       <span class="box-label">Дано</span>
@@ -320,11 +326,8 @@
       <p>а) $\vec c\cdot\vec d=-192$&nbsp;&nbsp; б) $|\vec c\times\vec d|=32$</p>
     </div>
   </article>
-
-  <!-- ===================== ЗАДАНИЕ 5 ===================== -->
-  <article class="task" id="task5">
-    <div class="eyebrow">Задание 5</div>
-    <h2>Векторы в координатах</h2>
+<article class="subject" id="task5" data-label="Задание 5">
+    <h2 class="subject-title">Векторы в координатах</h2>
 
     <div class="box def">
       <span class="box-label">Дано</span>
@@ -363,11 +366,8 @@
       <p>в) $(\vec c,\vec d,\vec e)=196$</p>
     </div>
   </article>
-
-  <!-- ===================== ЗАДАНИЕ 6 ===================== -->
-  <article class="task" id="task6">
-    <div class="eyebrow">Задание 6</div>
-    <h2>Геометрия треугольника ABC и пирамиды ABCD</h2>
+<article class="subject" id="task6" data-label="Задание 6">
+    <h2 class="subject-title">Геометрия треугольника ABC и пирамиды ABCD</h2>
 
     <div class="box def">
       <span class="box-label">Дано</span>
@@ -414,9 +414,24 @@
     </div>
   </article>
 
-</main>
+  </main>
 
-<footer class="wrap">Типовой расчёт «Линейная и векторная алгебра» — вариант $m=3,\ l=3,\ n=3$ (группа 761-101)</footer>
+  <footer>Типовой расчёт «Линейная и векторная алгебра» — вариант $m=3,\ l=3,\ n=3$ (группа 761-101)</footer>
+</div>
+
+<nav class="bottom-nav" aria-label="Навигация">
+  <ul>
+    <li><a href="index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      Назад</a></li>
+    <li><a href="#toc">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      Задания</a></li>
+    <li><a href="#top">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+      Наверх</a></li>
+  </ul>
+</nav>
 
 </body>
 </html>
