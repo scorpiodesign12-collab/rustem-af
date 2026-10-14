@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>Конспект · Математика в примерах и задачах</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+<style>
+  :root{
+    --white:#ffffff; --ink:#000000; --ink-soft:#6e6e6e;
+    --blue-deep:#1c4db4; --blue:#2f6de0; --blue-light:#8fb0f0;
+    --blue-tint:#edf2fd; --blue-tint-2:#dbe5fb; --line:#dbe4f8; --bar:#f7f8fb;
+    --font:Arial,'Helvetica Neue',Helvetica,'Liberation Sans',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{max-width:100%;overflow-x:hidden;}
+  body{
+    margin:0; background:var(--white); color:var(--ink);
+    font-family:var(--font); font-size:16px; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%;
+    padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
+  }
+  h1,h2,h3,h4{ font-family:var(--font); color:var(--ink); margin:0 0 .4em; font-weight:700; line-height:1.15; letter-spacing:-0.01em; }
+  a{ color:var(--blue); }
+  .wrap{ max-width:760px; margin:0 auto; padding:0 20px; }
+
+  /* шапка */
+  header.site-head{
+    position:sticky; top:0; z-index:40; background:var(--white);
+    padding:calc(16px + env(safe-area-inset-top,0px)) 0 16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+  }
+  .brand-text{ font-size:1.25rem; font-weight:700; line-height:1.2; }
+  .brand-text .thin{ display:block; margin-top:3px; color:var(--ink-soft); font-weight:400; font-size:.82rem; }
+
+  main{ padding:40px 0 40px; }
+
+  /* заголовок страницы с волной */
+  .page-title{
+    position:relative; width:fit-content; max-width:100%;
+    font-size:clamp(1.9rem, 7vw, 2.6rem);
+    padding-bottom:.72em; margin-bottom:.2em;
+  }
+  .page-title .wave{
+    position:absolute; left:.08em; bottom:.2em;
+    width:calc(100% - .16em); height:.34em;
+    overflow:visible; pointer-events:none;
+  }
+  .page-title .wave path{
+    fill:none; stroke:var(--blue); stroke-width:.18em;
+    stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke;
+  }
+  .lede{ color:var(--ink-soft); font-size:1.1rem; margin:26px 0 0; }
+
+  /* карточка с «вырезом» под подпись */
+  .subject{
+    position:relative; margin-top:52px;
+    padding:38px 22px 24px;
+    border:3px solid var(--line);
+    scroll-margin-top:110px;
+  }
+  .subject::before{
+    content:attr(data-label);
+    position:absolute; top:-17px; left:22px;
+    padding:7px 24px;
+    background:var(--blue-tint); color:var(--blue);
+    font-weight:700; font-size:.95rem; letter-spacing:.02em; text-transform:uppercase;
+    box-shadow:0 0 0 8px var(--white);
+  }
+  .subject-title{ font-size:1.55rem; margin-bottom:16px; }
+  .subject h4{ font-size:1.05rem; margin:0 0 8px; color:var(--blue-deep); }
+
+  /* блоки внутри задания */
+  .box{ margin:16px 0; padding:16px 18px; max-width:100%; }
+  .box p{ margin:0 0 8px; }
+  .box p:last-child{ margin-bottom:0; }
+  .box-label{ display:block; margin-bottom:8px; font-weight:700; font-size:.95rem; }
+
+  .def{ background:var(--blue-tint); }
+  .def .box-label{ color:var(--blue-deep); }
+
+  .example{ padding:6px 0 0; border-top:3px solid var(--line); margin-top:22px; }
+  .example .box-label{ color:var(--ink-soft); }
+
+  .ans{ background:var(--blue); color:#fff; }
+  .ans .box-label{ color:#cfe0ff; }
+  .ans p{ font-weight:700; font-size:1.05rem; }
+
+  .subtask{ margin-top:20px; padding-top:16px; border-top:2px solid var(--line); }
+  .subtask:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
+
+
+  .subtask h4 .num{ color:var(--blue); margin-right:4px; }
+  .subans{ margin-top:12px; padding:10px 14px; background:var(--blue); color:#fff; font-weight:700; font-size:.98rem; }
+  .subans mjx-container{ color:#fff; }
+  .fig{ margin:14px 0 4px; text-align:center; }
+  .fig svg{ max-width:100%; height:auto; background:var(--white); border:3px solid var(--line); }
+  .fig-cap{ font-size:.85rem; color:var(--ink-soft); margin-top:8px; }
+
+  /* оглавление и ссылки — карточки-ссылки как на главной */
+  .link-list{ list-style:none; padding:0; margin:30px 0 0; display:flex; flex-direction:column; gap:12px; }
+  .link-list a, .link-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    width:100%; padding:18px 20px;
+    border:3px solid var(--line); background:var(--white);
+    color:var(--ink); font-family:var(--font); font-size:1.02rem; font-weight:700; line-height:1.25;
+    text-align:left; text-decoration:none;
+    transition:border-color .15s ease, color .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .link-list a::after{
+    content:""; flex:none; width:22px; height:22px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238fb0f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition:transform .2s ease;
+  }
+  .link-list a:hover{ border-color:var(--blue); color:var(--blue-deep); }
+  .link-list a:hover::after{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232f6de0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E"); transform:translateY(2px); }
+
+  .toc-title{ margin:44px 0 0; font-size:1.3rem; }
+
+  footer{ border-top:3px solid var(--line); margin-top:30px; padding:20px 0; color:var(--ink-soft); font-size:.88rem; }
+
+  /* нижняя панель */
+  nav.bottom-nav{
+    position:fixed; left:0; right:0; bottom:0; z-index:50;
+    background:var(--bar); border-top:1px solid var(--line);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .bottom-nav ul{ list-style:none; display:flex; max-width:760px; margin:0 auto; padding:0; }
+  .bottom-nav li{ flex:1; min-width:0; }
+  .bottom-nav a{
+    display:flex; flex-direction:column; align-items:center; gap:7px;
+    padding:13px 4px 11px; font-size:.82rem; text-decoration:none; color:var(--blue-deep);
+    box-shadow:inset 0 3px 0 transparent; transition:box-shadow .2s ease, color .15s ease;
+  }
+  .bottom-nav a:hover{ color:var(--blue); box-shadow:inset 0 3px 0 var(--blue); }
+
+  mjx-container[display="true"]{
+    display:block; margin:6px 0 !important; padding:.4em 0;
+    overflow-x:auto; overflow-y:hidden; max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  .ans mjx-container{ color:#fff; }
+
+  @media (max-width:480px){
+    .wrap{ padding:0 18px; }
+    .subject{ padding:36px 16px 20px; }
+    .subject-title{ font-size:1.35rem; }
+    .box{ padding:14px; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+
+  /* ---------- конспект ---------- */
+  .wave-title{ margin-bottom:.2em; }
+  .topic-list{ display:flex; flex-direction:column; gap:12px; margin-top:30px; }
+  .topic-card{
+    position:relative; display:block; width:100%; text-align:left; cursor:pointer;
+    padding:18px 54px 18px 20px; background:var(--white);
+    border:3px solid var(--line); font-family:var(--font); color:var(--ink);
+    transition:border-color .15s ease; -webkit-tap-highlight-color:transparent;
+  }
+  .topic-card::after{
+    content:""; position:absolute; right:20px; top:50%; width:22px; height:22px; margin-top:-11px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238fb0f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition:transform .2s ease;
+  }
+  .topic-card:hover{ border-color:var(--blue); }
+  .topic-card:hover::after{ transform:translateX(3px); }
+  .topic-num{
+    display:inline-block; margin-bottom:8px; padding:3px 10px;
+    background:var(--blue-tint); color:var(--blue);
+    font-weight:700; font-size:.74rem; letter-spacing:.03em; text-transform:uppercase;
+  }
+  .topic-card h3{ font-size:1.08rem; margin:0 0 4px; color:var(--ink); }
+  .topic-card p{ margin:0; font-size:.88rem; color:var(--ink-soft); line-height:1.45; }
+
+  #conspect{ display:none; }
+  #conspect.active{ display:block; }
+  #picker.hidden{ display:none; }
+
+  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+  .to-list{
+    display:inline-flex; align-items:center; gap:6px; padding:8px 0;
+    font-family:var(--font); font-size:.92rem; font-weight:700; color:var(--blue);
+    background:none; border:none; cursor:pointer;
+  }
+  .to-list:hover{ color:var(--blue-deep); }
+  .topic-jump{
+    max-width:100%; padding:8px 10px; font-family:var(--font); font-size:.88rem; color:var(--ink);
+    background:var(--white); border:3px solid var(--line); border-radius:0; cursor:pointer;
+  }
+  .topic-jump:focus{ outline:none; border-color:var(--blue); }
+
+  .ktopic{ display:none; position:relative; margin-top:52px; padding:38px 22px 24px; border:3px solid var(--line); animation:fadeIn .3s ease both; }
+  .ktopic.active{ display:block; }
+  .ktopic::before{
+    content:attr(data-label); position:absolute; top:-17px; left:22px; max-width:calc(100% - 44px);
+    padding:7px 24px; background:var(--blue-tint); color:var(--blue);
+    font-weight:700; font-size:.95rem; letter-spacing:.02em; text-transform:uppercase;
+    box-shadow:0 0 0 8px var(--white);
+  }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .ktopic h2{ font-size:1.55rem; margin-bottom:12px; }
+  .ktopic h3{ font-size:1.15rem; margin:34px 0 10px; color:var(--blue-deep); }
+  .ktopic p{ margin:0 0 14px; }
+  .ktopic .plan{ margin:10px 0 26px; padding:2px 0 2px 14px; border-left:4px solid var(--blue-light); color:var(--ink-soft); font-size:.95rem; }
+  .ktopic .plan ol{ margin:6px 0 0; padding-left:18px; }
+
+  .box{ margin:16px 0; padding:16px 18px; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .box p{ margin:0 0 8px; }
+  .box p:last-child{ margin-bottom:0; }
+  .box-label{ display:block; margin-bottom:8px; font-weight:700; font-size:.95rem; }
+  .def{ background:var(--blue-tint); }
+  .def .box-label{ color:var(--blue-deep); }
+  .thm{ background:var(--blue-tint); border-left:6px solid var(--blue); }
+  .thm .box-label{ color:var(--blue); }
+  .example{ padding:6px 0 0; border-top:3px solid var(--line); margin-top:22px; }
+  .example .box-label{ color:var(--ink-soft); }
+  .note{ background:var(--bar); border-left:6px solid var(--blue-light); }
+  .note .box-label{ color:var(--blue-deep); }
+  .summary{ background:var(--blue); color:#fff; }
+  .summary .box-label{ color:#cfe0ff; }
+  .summary ul{ margin:4px 0 0; padding-left:18px; }
+  .summary li{ margin-bottom:5px; }
+  .summary mjx-container{ color:#fff; }
+  hr.sep{ border:none; border-top:3px solid var(--line); margin:34px 0; }
+
+  @media (max-width:480px){
+    .ktopic{ padding:36px 16px 20px; }
+    .ktopic h2{ font-size:1.35rem; }
+    .topic-card{ padding:16px 46px 16px 16px; }
+  }
+
+  mjx-container[display="true"]{
+    display:block; margin:6px 0 !important; padding:.4em 0;
+    overflow-x:auto; overflow-y:hidden; max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  .ans mjx-container{ color:#fff; }
+
+  @media (max-width:480px){
+    .wrap{ padding:0 18px; }
+    .subject{ padding:36px 16px 20px; }
+    .subject-title{ font-size:1.35rem; }
+    .box{ padding:14px; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+</style></head><body>
+<header class="site-head" id="top">
+  <div class="wrap">
+    <div class="brand-text">
+      Сайт Ахвердиева Р.Ф. | КОНСПЕКТ ПОСОБИЯ
+      <span class="thin">by Nikita Vinarchuk</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+  
+<section id="picker"><h1 class="page-title">Конспект пособия<svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 9 C4.11 9 7.00 1 11.11 1 C15.22 1 18.11 9 22.22 9 C26.33 9 29.22 1 33.33 1 C37.44 1 40.33 9 44.44 9 C48.56 9 51.44 1 55.56 1 C59.67 1 62.56 9 66.67 9 C70.78 9 73.67 1 77.78 1 C81.89 1 84.78 9 88.89 9 C93.00 9 95.89 1 100.00 1"/></svg></h1>
+<p class="lede">Журбенко и др., «Математика в примерах и задачах». Выберите тему — откроются определения, теоремы, формулы и примеры.</p><div class="topic-list"><button class="topic-card" data-goto="t0"><span class="topic-num">Разделы 1–2</span><h3>Линейная алгебра и векторы</h3><p>Определители, матрицы, СЛАУ (Гаусс, Крамер), скалярное, векторное и смешанное произведения.</p></button><button class="topic-card" data-goto="t1"><span class="topic-num">Разделы 3–5</span><h3>Аналитическая геометрия</h3><p>Прямая и плоскость, прямая в пространстве, окружность, эллипс, гипербола, парабола.</p></button><button class="topic-card" data-goto="t2"><span class="topic-num">Разделы 6–8</span><h3>Функции, пределы, непрерывность</h3><p>Предел по Коши, б.м. и б.б., замечательные пределы, точки разрыва.</p></button><button class="topic-card" data-goto="t3"><span class="topic-num">Разделы 9–10</span><h3>Производная и исследование функций</h3><p>Определение, касательная, правила, правило Лопиталя, экстремумы, перегибы, асимптоты.</p></button><button class="topic-card" data-goto="t4"><span class="topic-num">Разделы 11–12</span><h3>Функции нескольких переменных</h3><p>Частные производные, дифференциал, градиент, экстремум.</p></button><button class="topic-card" data-goto="t5"><span class="topic-num">Разделы 13–14</span><h3>Комплексные числа</h3><p>Формы записи, действия, формула Муавра, корни.</p></button><button class="topic-card" data-goto="t6"><span class="topic-num">Разделы 15–16</span><h3>Неопределённый интеграл</h3><p>Первообразная, таблица, замена переменной, по частям, классы интегрируемых функций.</p></button><button class="topic-card" data-goto="t7"><span class="topic-num">Разделы 17–19</span><h3>Определённый интеграл</h3><p>Формула Ньютона — Лейбница, площадь, длина дуги, объём.</p></button><button class="topic-card" data-goto="t8"><span class="topic-num">Разделы 20–22</span><h3>Дифференциальные уравнения</h3><p>Задача Коши, разделяющиеся переменные, однородные, линейные, II порядок.</p></button><button class="topic-card" data-goto="t9"><span class="topic-num">Разделы 23–28</span><h3>Кратные интегралы и теория поля</h3><p>Двойной и тройной интегралы, криволинейные и поверхностные интегралы, div, rot.</p></button><button class="topic-card" data-goto="t10"><span class="topic-num">Разделы 29–31</span><h3>Ряды</h3><p>Сходимость, признаки, степенные ряды, ряды Тейлора и Фурье.</p></button><button class="topic-card" data-goto="t11"><span class="topic-num">Разделы 34–36</span><h3>Вероятность и статистика</h3><p>Комбинаторика, сложение и умножение вероятностей, полная вероятность.</p></button></div></section>
+<section id="conspect"><div class="topbar"><button class="to-list" id="toList">&larr; К списку тем</button><select class="topic-jump" id="topicJump"><option value="t0">Линейная алгебра и векторы</option><option value="t1">Аналитическая геометрия</option><option value="t2">Функции, пределы, непрерывность</option><option value="t3">Производная и исследование функций</option><option value="t4">Функции нескольких переменных</option><option value="t5">Комплексные числа</option><option value="t6">Неопределённый интеграл</option><option value="t7">Определённый интеграл</option><option value="t8">Дифференциальные уравнения</option><option value="t9">Кратные интегралы и теория поля</option><option value="t10">Ряды</option><option value="t11">Вероятность и статистика</option></select></div><article class="ktopic" id="t0" data-label="Главы 1 · разд. 1–2"><h2>Линейная алгебра и векторы</h2><h3>1. Определители</h3><div class="box def"><span class="box-label">Определитель</span>$$\Delta=\begin{vmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{vmatrix}=a_{11}a_{22}-a_{21}a_{12}$$<p>Для III порядка — разложение по строке: $\det A=\sum_j a_{ij}A_{ij}$, где $A_{ij}=(-1)^{i+j}M_{ij}$ — алгебраическое дополнение, $M_{ij}$ — минор.</p></div><div class="box note"><strong>Свойства.</strong> $\det A^{T}=\det A$; перестановка двух строк меняет знак $\Delta$; общий множитель ряда выносится за знак $\Delta$; $\Delta=0$ при двух равных или пропорциональных рядах; прибавление к строке другой строки, умноженной на $k$, не меняет $\Delta$.</div><h3>2. Системы линейных уравнений</h3><div class="box def"><span class="box-label">СЛАУ</span>$$\sum_{j=1}^{n}a_{ij}x_j=b_i,\quad i=\overline{1,m}$$<p>Система совместна (определена — единственное решение; неопределена — бесконечно много) или несовместна.</p></div><div class="box thm"><span class="box-label">Метод Гаусса</span><p>Расширенную матрицу $(A\,|\,B)$ элементарными преобразованиями строк приводят к ступенчатому виду; число ненулевых строк равно $\operatorname{rang}(A|B)$. Совместность: $\operatorname{rang}A=\operatorname{rang}(A|B)$ (Кронекер — Капелли).</p></div><div class="box thm"><span class="box-label">Формулы Крамера</span><p>При $m=n$ и $\Delta=\det A\ne0$: $$x_j=\frac{\Delta_j}{\Delta},\quad j=\overline{1,n},$$ где $\Delta_j$ получается из $\Delta$ заменой $j$-го столбца столбцом свободных членов.</p></div><h3>3. Матрицы</h3><div class="box def"><span class="box-label">Действия</span><p>$A+B=(a_{ij}+b_{ij})$, $\mu A=(\mu a_{ij})$. Произведение $A_{m\times p}\cdot B_{p\times n}=C_{m\times n}$: $$c_{ij}=a_{i1}b_{1j}+a_{i2}b_{2j}+\dots+a_{ip}b_{pj}$$</p><p>Вообще $AB\ne BA$; $AE=EA=A$.</p></div><div class="box thm"><span class="box-label">Обратная матрица</span><p>$A^{-1}$ существует $\iff\det A\ne0$: $$A^{-1}=\frac1{\det A}\begin{pmatrix}A_{11}&A_{21}&\cdots&A_{n1}\\A_{12}&A_{22}&\cdots&A_{n2}\\\vdots&\vdots&\ddots&\vdots\\A_{1n}&A_{2n}&\cdots&A_{nn}\end{pmatrix}$$</p><p>Матричное решение СЛАУ: $AX=B\Rightarrow X=A^{-1}B$.</p></div><div class="box example"><span class="box-label">Пример</span><p>$\begin{cases}x+2y=5\\3x-y=1\end{cases}$: $\Delta=-7$, $\Delta_1=-7$, $\Delta_2=-14$, значит $x=1,\ y=2$.</p></div><h3>4. Векторная алгебра</h3><div class="box def"><span class="box-label">Произведения векторов</span>$$\vec a\cdot\vec b=|\vec a||\vec b|\cos\varphi=a_xb_x+a_yb_y+a_zb_z$$$$\vec a\times\vec b=\begin{vmatrix}\vec i&\vec j&\vec k\\a_x&a_y&a_z\\b_x&b_y&b_z\end{vmatrix},\quad |\vec a\times\vec b|=S_{\text{паралл.}}$$$$(\vec a,\vec b,\vec c)=\begin{vmatrix}a_x&a_y&a_z\\b_x&b_y&b_z\\c_x&c_y&c_z\end{vmatrix},\quad V_{\text{паралл.}}=|(\vec a,\vec b,\vec c)|$$</div><div class="box note"><p>$\vec a\perp\vec b\iff\vec a\cdot\vec b=0$; $\vec a\parallel\vec b\iff\vec a\times\vec b=\vec0$; три вектора компланарны $\iff(\vec a,\vec b,\vec c)=0$.</p></div><div class="box summary"><span class="box-label">Итоги</span><ul><li>СЛАУ решают методом Гаусса, Крамера или матрично, $A^{-1}$ существует при $\det A\ne0$.</li><li>Скалярное произведение даёт угол, векторное — площадь, смешанное — объём.</li></ul></div></article><article class="ktopic" id="t1" data-label="Главы 1 · разд. 3–5"><h2>Аналитическая геометрия</h2><h3>1. Прямая на плоскости</h3><div class="box def"><span class="box-label">Уравнения прямой</span>$$y=kx+b,\quad Ax+By+C=0,\quad \frac{x-x_0}{m}=\frac{y-y_0}{n},\quad \frac xa+\frac yb=1$$<p>$k=\operatorname{tg}\alpha$ — угловой коэффициент; $\vec n=(A,B)$ — нормаль. Через две точки: $\dfrac{x-x_1}{x_2-x_1}=\dfrac{y-y_1}{y_2-y_1}$.</p></div><div class="box thm"><span class="box-label">Угол и расстояние</span>$$\operatorname{tg}\varphi=\left|\frac{k_2-k_1}{1+k_1k_2}\right|,\quad d=\frac{|Ax_0+By_0+C|}{\sqrt{A^2+B^2}}$$<p>Параллельность: $k_1=k_2$; перпендикулярность: $k_1k_2=-1$.</p></div><h3>2. Плоскость и прямая в пространстве</h3><div class="box def"><span class="box-label">Плоскость</span>$$A(x-x_0)+B(y-y_0)+C(z-z_0)=0,\quad d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$$<p>Прямая (канонически): $\dfrac{x-x_0}{m}=\dfrac{y-y_0}{n}=\dfrac{z-z_0}{p}$, $\vec s=(m,n,p)$ — направляющий вектор.</p></div><h3>3. Кривые второго порядка</h3><div class="box thm"><span class="box-label">Канонические уравнения</span><p>Окружность: $(x-a)^2+(y-b)^2=R^2$.</p><p>Эллипс: $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1$, $c^2=a^2-b^2$, $\varepsilon=\dfrac ca<1$.</p><p>Гипербола: $\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=1$, $c^2=a^2+b^2$, асимптоты $y=\pm\dfrac bax$.</p><p>Парабола: $y^2=2px$, фокус $\left(\dfrac p2,0\right)$, директриса $x=-\dfrac p2$.</p></div><div class="box summary"><span class="box-label">Итоги</span><ul><li>Прямая и плоскость задаются точкой и нормалью (или направляющим вектором).</li><li>Эллипс, гипербола, парабола — ГМТ с постоянной суммой, разностью расстояний до фокусов и равным расстоянием до фокуса и директрисы.</li></ul></div></article><article class="ktopic" id="t2" data-label="Глава 2"><h2>Функции, пределы, непрерывность</h2><h3>1. Предел</h3><div class="box def"><span class="box-label">Предел функции в точке</span>$$\lim_{x\to a}f(x)=b\iff\forall\varepsilon>0\ \exists\delta>0:\ 0<|x-a|<\delta\Rightarrow|f(x)-b|<\varepsilon$$<p>Предел последовательности: $\lim x_n=a\iff\forall\varepsilon\ \exists N:\ n>N\Rightarrow|x_n-a|<\varepsilon$.</p></div><div class="box note"><strong>Б.м.</strong> $\alpha(x)\to0$; <strong>б.б.</strong> $1/\alpha\to\infty$. Сравнение: $\alpha=o(\beta)$, если $\alpha/\beta\to0$; эквивалентные $\alpha\sim\beta$, если $\alpha/\beta\to1$.</div><div class="box thm"><span class="box-label">Замечательные пределы</span>$$\lim_{x\to0}\frac{\sin x}{x}=1,\qquad\lim_{x\to\infty}\left(1+\frac1x\right)^x=e$$<p>Эквивалентности при $x\to0$: $\sin x\sim x$, $\operatorname{tg}x\sim x$, $\ln(1+x)\sim x$, $e^x-1\sim x$, $1-\cos x\sim\dfrac{x^2}2$.</p></div><div class="box example"><span class="box-label">Пример</span><p>$\displaystyle\lim_{x\to0}\frac{\sin5x}{3x}=\frac53$; $\displaystyle\lim_{x\to\infty}\frac{2x^2+1}{x^2-3x}=2$.</p></div><h3>2. Непрерывность</h3><div class="box def"><span class="box-label">Определение</span><p>$f$ непрерывна в $x_0$, если $\displaystyle\lim_{x\to x_0}f(x)=f(x_0)$. Точка разрыва I рода — односторонние пределы конечны (устранимый, скачок); II рода — хотя бы один бесконечен или не существует.</p></div><div class="box summary"><span class="box-label">Итоги</span><ul><li>Неопределённости $\frac00,\frac\infty\infty$ раскрывают сокращением, эквивалентностями и замечательными пределами.</li></ul></div></article><article class="ktopic" id="t3" data-label="Глава 3"><h2>Производная и исследование функций</h2><h3>1. Производная</h3><div class="box def"><span class="box-label">Определение</span>$$y'=\lim_{\Delta x\to0}\frac{\Delta y}{\Delta x}=\lim_{\Delta x\to0}\frac{f(x+\Delta x)-f(x)}{\Delta x}$$<p>Физический смысл: $v=s'(t)$. Геометрический: $f'(x_0)=\operatorname{tg}\alpha=k$; касательная $y-y_0=f'(x_0)(x-x_0)$. Дифференцируема $\Rightarrow$ непрерывна.</p></div><div class="box thm"><span class="box-label">Правила</span><p>$(uv)'=u'v+uv'$, $\left(\dfrac uv\right)'=\dfrac{u'v-v'u}{v^2}$, $(\varphi[\psi(x)])'=\varphi'[\psi]\psi'$.</p><p>Логарифмическая: $(\ln y)'=y'/y$; $(u^v)'=vu^{v-1}u'+u^v\ln u\cdot v'$.</p></div><div class="box note"><p>Таблица: $(x^n)'=nx^{n-1}$, $(e^x)'=e^x$, $(\ln x)'=\frac1x$, $(\sin x)'=\cos x$, $(\cos x)'=-\sin x$, $(\operatorname{tg}x)'=\frac1{\cos^2x}$, $(\arcsin x)'=\frac1{\sqrt{1-x^2}}$, $(\operatorname{arctg}x)'=\frac1{1+x^2}$.</p></div><h3>2. Исследование функции</h3><div class="box thm"><span class="box-label">Схема</span><p>1) $D(f)$, чётность, периодичность, пересечения с осями. 2) Асимптоты: $k=\lim\dfrac{f(x)}x$, $b=\lim(f(x)-kx)$. 3) $f'>0$ — возрастает, $f'<0$ — убывает; смена знака $+\to-$ даёт максимум. 4) $f''>0$ — вогнута ($\cup$), $f''<0$ — выпукла ($\cap$); смена знака $f''$ — перегиб. 5) График.</p></div><div class="box def"><span class="box-label">Правило Лопиталя</span>$$\lim\frac{f(x)}{g(x)}=\lim\frac{f'(x)}{g'(x)}\quad\text{для }\tfrac00,\ \tfrac\infty\infty$$</div><div class="box summary"><span class="box-label">Итоги</span><ul><li>Критические точки: $f'=0$ или не существует; наибольшее/наименьшее на отрезке — среди критических точек и концов.</li></ul></div></article><article class="ktopic" id="t4" data-label="Глава 4"><h2>Функции нескольких переменных</h2><h3>1. Дифференцирование</h3><div class="box def"><span class="box-label">Частные производные</span>$$\frac{\partial z}{\partial x}=\lim_{\Delta x\to0}\frac{z(x+\Delta x,y)-z(x,y)}{\Delta x},\qquad dz=\frac{\partial z}{\partial x}dx+\frac{\partial z}{\partial y}dy$$</div><div class="box thm"><span class="box-label">Сложная функция</span><p>$z=f(u,v)$, $u=u(t)$, $v=v(t)$: $\dfrac{dz}{dt}=\dfrac{\partial z}{\partial u}\dfrac{du}{dt}+\dfrac{\partial z}{\partial v}\dfrac{dv}{dt}$.</p></div><div class="box def"><span class="box-label">Градиент</span>$$\operatorname{grad}z=\left(\frac{\partial z}{\partial x},\frac{\partial z}{\partial y}\right),\qquad\frac{\partial z}{\partial\vec l}=\operatorname{grad}z\cdot\vec l^{\,0}$$<p>Градиент указывает направление наибыстрейшего роста функции.</p></div><h3>2. Экстремум</h3><div class="box thm"><span class="box-label">Достаточное условие</span><p>В стационарной точке ($z_x=z_y=0$) положим $A=z_{xx}$, $B=z_{xy}$, $C=z_{yy}$, $\Delta=AC-B^2$. Если $\Delta>0$ — экстремум ($A>0$ — минимум, $A<0$ — максимум); $\Delta<0$ — экстремума нет.</p></div><div class="box summary"><span class="box-label">Итоги</span><ul><li>Условный экстремум ищут методом Лагранжа: $L=f+\lambda\varphi$.</li></ul></div></article><article class="ktopic" id="t5" data-label="Глава 5"><h2>Комплексные числа</h2><div class="box def"><span class="box-label">Формы</span>$$z=x+iy=r(\cos\varphi+i\sin\varphi)=re^{i\varphi},\quad r=|z|=\sqrt{x^2+y^2},\ \varphi=\arg z$$<p>$i^2=-1$; сопряжённое $\bar z=x-iy$; $z\bar z=|z|^2$.</p></div><div class="box thm"><span class="box-label">Действия</span>$$z_1z_2=r_1r_2\,e^{i(\varphi_1+\varphi_2)},\qquad\frac{z_1}{z_2}=\frac{r_1}{r_2}e^{i(\varphi_1-\varphi_2)},\qquad z^n=r^n(\cos n\varphi+i\sin n\varphi)$$<p>Корень: $$\sqrt[n]z=\sqrt[n]r\left(\cos\frac{\varphi+2\pi k}n+i\sin\frac{\varphi+2\pi k}n\right),\ k=0,\dots,n-1$$</p></div><div class="box note"><p>Формула Эйлера: $e^{i\varphi}=\cos\varphi+i\sin\varphi$. Функции комплексного переменного дифференцируемы при выполнении условий Коши — Римана $u_x=v_y,\ u_y=-v_x$.</p></div></article><article class="ktopic" id="t6" data-label="Глава 6 · разд. 15–16"><h2>Неопределённый интеграл</h2><div class="box def"><span class="box-label">Определение</span>$$\int f(x)\,dx=F(x)+c,\quad F'(x)=f(x)$$<p>Свойства: $(\int f)'=f$; $\int(f\pm g)=\int f\pm\int g$; $\int cf=c\int f$; $\int f(ax+b)dx=\dfrac1aF(ax+b)+c$.</p></div><div class="box note"><p>$\int x^ndx=\dfrac{x^{n+1}}{n+1}$ $(n\ne-1)$; $\int\dfrac{dx}x=\ln|x|$; $\int e^xdx=e^x$; $\int a^xdx=\dfrac{a^x}{\ln a}$; $\int\sin x=-\cos x$; $\int\cos x=\sin x$; $\int\dfrac{dx}{\cos^2x}=\operatorname{tg}x$; $\int\dfrac{dx}{\sqrt{1-x^2}}=\arcsin x$; $\int\dfrac{dx}{1+x^2}=\operatorname{arctg}x$; $\int\operatorname{tg}x=-\ln|\cos x|$.</p></div><div class="box thm"><span class="box-label">Методы</span><p>Замена: $\int f(\varphi(t))\varphi'(t)dt=\int f(x)dx$.</p><p>По частям: $$\int u\,dv=uv-\int v\,du$$</p><p>Рациональные дроби — разложение на простейшие; $R(\sin x,\cos x)$ — подстановка $t=\operatorname{tg}\dfrac x2$.</p></div><div class="box example"><span class="box-label">Пример</span><p>$\int xe^xdx$: $u=x$, $dv=e^xdx$ $\Rightarrow$ $xe^x-e^x+c$.</p></div></article><article class="ktopic" id="t7" data-label="Глава 6 · разд. 17–19"><h2>Определённый интеграл</h2><div class="box def"><span class="box-label">Определение</span>$$\int_a^bf(x)dx=\lim_{\lambda\to0}\sum_{i=1}^nf(\xi_i)\Delta x_i$$</div><div class="box thm"><span class="box-label">Формула Ньютона — Лейбница</span>$$\int_a^bf(x)\,dx=F(b)-F(a)$$<p>Замена: $\int_a^bf(x)dx=\int_\alpha^\beta f(\varphi(t))\varphi'(t)dt$; по частям: $\int_a^budv=uv\big|_a^b-\int_a^bvdu$.</p></div><div class="box def"><span class="box-label">Приложения</span><p>Площадь: $S=\int_a^b|f(x)|dx$. Длина дуги: $L=\int_a^b\sqrt{1+(y')^2}\,dx$. Объём вращения вокруг $Ox$: $$V=\pi\int_a^by^2dx$$</p></div><div class="box note"><p>Несобственные интегралы: $\int_a^{\infty}f\,dx=\lim_{b\to\infty}\int_a^bf\,dx$; $\int_1^\infty\dfrac{dx}{x^p}$ сходится при $p>1$.</p></div></article><article class="ktopic" id="t8" data-label="Глава 7"><h2>Дифференциальные уравнения</h2><div class="box def"><span class="box-label">Основные понятия</span><p>ОДУ $n$-го порядка: $F(x,y,y',\dots,y^{(n)})=0$. Задача Коши: $y'=f(x,y)$, $y(x_0)=y_0$ — решение существует и единственно, если $f$ и $f'_y$ непрерывны вблизи $(x_0,y_0)$.</p></div><div class="box thm"><span class="box-label">Типы I порядка</span><p>Разделяющиеся: $$f_2(y)\,dy=f_1(x)\,dx\ \Rightarrow\ \int f_2\,dy=\int f_1\,dx+c$$</p><p>Однородные ($f(\lambda x,\lambda y)=\lambda^nf(x,y)$): $y=ux$. Линейные $y'+p(x)y=q(x)$: $y=uv$.</p></div><div class="box thm"><span class="box-label">II порядок, постоянные коэффициенты</span><p>$y''+py'+qy=0$, характеристическое $k^2+pk+q=0$: $$D>0:\ y=C_1e^{k_1x}+C_2e^{k_2x};\ D=0:\ y=(C_1+C_2x)e^{kx};\ D<0:\ y=e^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)$$</p></div><div class="box note"><p>Неоднородное: $y=y_{\text{одн}}+y_{\text{частн}}$. Прикладные задачи: концентрация раствора, охлаждение тела, движение.</p></div></article><article class="ktopic" id="t9" data-label="Главы 8–9"><h2>Кратные интегралы и теория поля</h2><div class="box def"><span class="box-label">Двойной интеграл</span>$$\iint_Df\,dx\,dy=\int_a^bdx\int_{\varphi_1(x)}^{\varphi_2(x)}f\,dy,\qquad\iint_Df\,dx\,dy=\iint f(r\cos\varphi,r\sin\varphi)\,r\,dr\,d\varphi$$<p>Площадь $S=\iint_Ddx\,dy$; объём $V=\iiint_\Omega dx\,dy\,dz$. В цилиндрических координатах $dV=r\,dr\,d\varphi\,dz$, в сферических $dV=\rho^2\sin\theta\,d\rho\,d\theta\,d\varphi$.</p></div><div class="box thm"><span class="box-label">Криволинейные интегралы</span><p>I рода: $\int_Lf\,dl=\int_a^bf(x,y(x))\sqrt{1+y'^2}\,dx$.</p><p>II рода: $\int_LP\,dx+Q\,dy$. Формула Грина: $$\oint_LP\,dx+Q\,dy=\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)dx\,dy$$</p></div><div class="box thm"><span class="box-label">Поле</span><p>$\operatorname{div}\vec a=\dfrac{\partial P}{\partial x}+\dfrac{\partial Q}{\partial y}+\dfrac{\partial R}{\partial z}$. Остроградский: $\oiint\vec a\cdot\vec n\,d\sigma=\iiint\operatorname{div}\vec a\,dV$. Стокс: $\oint\vec a\cdot d\vec r=\iint\operatorname{rot}\vec a\cdot\vec n\,d\sigma$.</p></div></article><article class="ktopic" id="t10" data-label="Глава 10"><h2>Ряды</h2><div class="box def"><span class="box-label">Числовой ряд</span>$$\sum_{n=1}^\infty u_n,\quad S_n=u_1+\dots+u_n;\ \text{сходится, если}\ \exists\lim S_n=S$$<p>Геометрический $\sum aq^{n-1}$ сходится при $|q|<1$; $\sum\dfrac1{n^p}$ сходится при $p>1$.</p></div><div class="box thm"><span class="box-label">Признаки</span><p>Необходимый: $\sum u_n$ сходится $\Rightarrow\lim u_n=0$ (если $\ne0$ — расходится).</p><p>Даламбера: $\lim\dfrac{u_{n+1}}{u_n}=l$; $l<1$ — сходится, $l>1$ — расходится. Коши: $\lim\sqrt[n]{u_n}=l$. Лейбниц: знакочередующийся ряд с убывающим $|u_n|\to0$ сходится.</p></div><div class="box def"><span class="box-label">Степенной ряд и Тейлор</span>$$\sum a_nx^n,\ R=\lim\left|\frac{a_n}{a_{n+1}}\right|;\qquad f(x)=\sum_{n=0}^\infty\frac{f^{(n)}(0)}{n!}x^n$$<p>$e^x=\sum\dfrac{x^n}{n!}$, $\sin x=\sum(-1)^n\dfrac{x^{2n+1}}{(2n+1)!}$, $\dfrac1{1-x}=\sum x^n$ $(|x|<1)$.</p></div><div class="box note"><p>Ряд Фурье на $[-\pi,\pi]$: $f(x)=\dfrac{a_0}2+\sum(a_n\cos nx+b_n\sin nx)$, $a_n=\dfrac1\pi\int_{-\pi}^\pi f\cos nx\,dx$, $b_n=\dfrac1\pi\int_{-\pi}^\pi f\sin nx\,dx$.</p></div></article><article class="ktopic" id="t11" data-label="Глава 12"><h2>Вероятность и статистика</h2><div class="box def"><span class="box-label">Комбинаторика</span>$$P_n=n!,\qquad A_n^m=\frac{n!}{(n-m)!},\qquad C_n^m=\frac{n!}{m!\,(n-m)!}$$</div><div class="box thm"><span class="box-label">Формулы вероятности</span><p>$P(A\cup B)=P(A)+P(B)-P(AB)$; $P(\bar A)=1-P(A)$; $P(AB)=P(A|B)P(B)$; независимые: $P(AB)=P(A)P(B)$.</p><p>Полная вероятность: $$P(A)=\sum_{i=1}^nP(H_i)P(A|H_i),\quad\text{Байес: }P(H_i|A)=\frac{P(H_i)P(A|H_i)}{P(A)}$$</p></div><div class="box note"><p>Случайная величина: $M\xi=\sum x_ip_i$, $D\xi=M\xi^2-(M\xi)^2$; нормальное $N(a,\sigma)$. Статистика: выборочное среднее, дисперсия, доверительные интервалы.</p></div></article></section>
+</main><footer>Источник: vm-posobie-zhurbenko.pdf, М.: ИНФРА-М, 2009</footer></div>
+<nav class="bottom-nav" aria-label="Навигация">
+  <ul>
+    <li><a href="index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      Назад</a></li>
+    <li><a href="#top" id="navTopics">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      Темы</a></li>
+    <li><a href="#top">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+      Наверх</a></li>
+  </ul>
+</nav>
+
+<script>
+  const picker = document.getElementById('picker');
+  const conspect = document.getElementById('conspect');
+  const topics = Array.from(document.querySelectorAll('.ktopic'));
+  const jump = document.getElementById('topicJump');
+
+  function openTopic(id){
+    topics.forEach(t => t.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    picker.classList.add('hidden');
+    conspect.classList.add('active');
+    jump.value = id;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => openTopic(btn.dataset.goto));
+  });
+
+  document.getElementById('navTopics').addEventListener('click', e => { e.preventDefault(); document.getElementById('toList').click(); });
+
+  document.getElementById('toList').addEventListener('click', () => {
+    conspect.classList.remove('active');
+    picker.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  jump.addEventListener('change', () => openTopic(jump.value));
+</script></body></html>
